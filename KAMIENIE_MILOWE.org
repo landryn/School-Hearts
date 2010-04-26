@@ -1,0 +1,19 @@
+* Palpitacje
+  - HUI
+  - jeden stół na serwer
+  - autoryzacja kto pierwszy ten lepszy
+
+* Szpital
+  - lobby, logowanie
+
+* Zawały i resuscytacje
+  - wstrzymywanie i wznawianie
+  - dokumentacja logiki
+    - akcje na stanie serwera => akcje na stanie klienta
+    - akcje na stanie klienta => akcje na HUI
+    - warunki występowania błędów
+
+* Marzenia ściętej głowy
+  - grafika
+  - przywracanie haseł
+  - podręcznik użytkownika

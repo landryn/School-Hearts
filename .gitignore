@@ -1,7 +1,4 @@
-/Hearts Client/nbproject/private
-/Hearts Definitions/nbproject/private
-/Hearts Judge/nbproject/private
-/Hearts Protocol/nbproject/private
-/Hearts Server/nbproject/private
-/Hearts Storage/nbproject/private
-/Hearts State/nbproject/private
+/*/nbproject/private
+/*/dist
+/*/build
+*~

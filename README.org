@@ -1,7 +1,14 @@
-* Za co grozi śmierć?
-  - Za dodanie prywatnych ustawień projektu (katalog *private* wew.
-    katalogu projektu)
-  - za złorzeczenie Królowej.
+* Propozycja: używanie grup w NetBeans
+  Żeby trzymać wszystkie projekty na raz otwarte oddzielnie od
+  reszty zajęć fajnie jest sobie utworzyć grupę.
+
+  1. Klikejszon File -> Project Group -> New Group...
+  2. tam wybieramy "Folder of Projects" i wybieramy folder
+     z projektami
+  3. :)
+
+  Polecam też wygenerować sobie javadoca z Definitions i czytanie
+  tam dokumentacji.
 
 * Technicznie
   - Używamy *NetBeansa 6.7.1*, bo 6.8 nie wprowadza istotnych zmian
@@ -13,10 +20,10 @@
     na tym.
 
 * Strategia
-  Póki co taki pomysł:
   - każdy pracuje w swoim forku, wrzuca do mojego mastera tylko sprawne
     i *przetestowane* komponenty, może najlepiej z plikiem *jar*?
     (może "oficjalne" jary pójdą do katalogu Lib ?)
+  - nazwy funkcji i klas po ang. komentarze, commity i dokumentacja po PL
   - master nie służy też do pisania czegoś w dwie osoby i synchronizacji
     na bieżąco.
     Do tego git jest systemem rozproszonym, żeby takie akcje robić poza
@@ -24,25 +31,29 @@
   - problemy z mergowaniem z masterem zostawcie Szymonowi ;)
 
 * Projekty Hearts ___
-** Server
-   Mega serwer w Javie
+  Opisy projektów są trochę nieaktualne, przydziały jak najbardziej ;)
 
-   | Opiekun: | +     | Zależy od:   | Wymagane przez: |
-   |----------+-------+--------------+-----------------|
-   | Michał   | Paweł | Definitions  | brak            |
-   |          |       | Judge        |                 |
-   |          |       | Protocol     |                 |
-   |          |       | Storage      |                 |
-   |          |       | State        |                 |
+  Kolumna "Implementuje" mówi, że implementuje np. hearts.defs.state.*
+  jako hearts.state.*
+
+** Server
+   Mega serwer w Javie, agreguje implementację protokołu i stanu, ma
+   własnego StateGuarda
+
+   | Opiekun: | + | Zależy od:  | Wymagane przez: | Implementuje:       |
+   |----------+---+-------------+-----------------+---------------------|
+   | Michał   |   | Definitions | brak            | hearts.def.server.* |
+   |          |   | Protocol    |                 |                     |
+   |          |   | State       |                 |                     |
 
 ** Client  
    Piękny klient w Swingu.
 
-   | Opiekun: | + | Zależy od:   | Wymagane przez: |
-   |----------+---+--------------+-----------------|
-   | Szymon   |   | Definitions  | brak            |
-   |          |   | Protocol     |                 |
-   |          |   | State        |                 |
+   | Opiekun: | + | Zależy od:  | Wymagane przez: |
+   |----------+---+-------------+-----------------|
+   | Szymon   |   | Definitions | brak            |
+   |          |   | Protocol    |                 |
+   |          |   | State       |                 |
 
 ** Definitions
    Definicje wszystkich interfejsów gry, centralne miejsce na projektowanie
@@ -59,39 +70,30 @@
 
 
 ** State
-   Format zapisu stanu gry.
+   Zapis stanu gry, wszystkie akcje, sędzia (sprawdza czy można wykonać akcję).
+   - Łukasz:
+     - implementacja akcji serwera,
+     - zaślepki wynikających z akcji serwera akcji klienta;
+   - Paweł:
+     - implementacja akcji klienta,
+     - zaślepki akcji GUI;
+   - Szymon:
+     - implementacja akcji GUI.
 
-   | Opiekun: | + | Zależy od:  | Wymagane przez: |
-   |----------+---+-------------+-----------------|
-   | Szymon   |   | Definitions | Server          |
-   |          |   |             | Client          |
+   | Opiekun: | +      | Zależy od:  | Wymagane przez: | Implementuje:         |
+   |----------+--------+-------------+-----------------+-----------------------|
+   | Paweł    | Łukasz | Definitions | Server          | hearts.defs.state.*   |
+   |          | Szymon |             | Client          | hearts.defs.actions.* |
+   |          |        |             |                 | hearts.defs.judge.*   |
 
 ** Protocol
    Implementacja protokołu zarówno dla klienta jak i serwera.
 
-   | Opiekun: | + | Zależy od:   | Wymagane przez: |
-   |----------+---+--------------+-----------------|
-   | Michał   |   | Definitions  | Server          |
-   |          |   |              | Client          |
-
-
-** Judge
-   Implementacja zasad gry, na wejściu otrzymujemy State, na wyjściu
-   nowy State.
-
-   | Opiekun: | + | Zależy od:  | Wymagane przez: |
-   |----------+---+-------------+-----------------|
-   | Łukasz   |   | Definitions | Server          |
-
-** Storage
-   - serializowanie i zapis stanu gry.
-   - przywracanie
-
-   | Opiekun: | + | Zależy od:  | Wymagane przez: |
-   |----------+---+-------------+-----------------|
-   | Paweł    |   | Definitions | Server          |
-
-
+   | Opiekun: | +      | Zależy od:  | Wymagane przez: | Implementuje:          |
+   |----------+--------+-------------+-----------------+------------------------|
+   | Michał   | Szymon | Definitions | Server          | hearts.defs.protocol.* |
+   |          |        |             | Client          |                        |
+     
 * Ten plik
   Został stworzony w org-mode w Emacsie, ale składnia jest tak oczywista, 
   że możecie to edytować sami, niech będzie powiedzmy tablicą ogłoszeń.
