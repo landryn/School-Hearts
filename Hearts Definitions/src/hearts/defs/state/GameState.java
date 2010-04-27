@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author szymon
  */
 public interface GameState extends Serializable, Cloneable {
-
+    
     /**
      * Implementacja powinna zwracać klon stanu gry z pustą kolejką akcji
      * pierwszą instrukcją powinno być chyba Object o = super.clone();
@@ -123,4 +123,6 @@ public interface GameState extends Serializable, Cloneable {
      * @return akcja albo null, jeśli lista pusta.
      */
     public Action nextAction();
+
+
 }

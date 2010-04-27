@@ -33,4 +33,10 @@ public interface Trick {
      */
     public boolean isLast();
 
+    /**
+     * Zwraca gracza liste graczy.
+     * @return
+     */
+   
+    public int[] getUserId();
 }

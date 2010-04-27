@@ -9,5 +9,7 @@ public abstract class ErrorAction extends Action {
     public ErrorAction(int receiver) {
         super(receiver);
     }
+    
+
 
 }

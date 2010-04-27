@@ -3,7 +3,7 @@ package hearts.defs.state;
 import java.io.Serializable;
 
 /**
- *
+ *dlaczego karta jest interfejsem? Paweł
  * @author szymon
  */
 public interface Card extends Serializable, Cloneable {
