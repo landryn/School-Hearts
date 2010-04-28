@@ -27,6 +27,7 @@ public interface ITrick {
      * @return
      */
     public boolean isLast();
+    
 
     public ITrick clone();
 
