@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package hearts.defs.state;
 
-import hearts.defs.state.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,6 +8,12 @@ import java.util.List;
  * @author szymon
  */
 public interface IUserState extends Serializable, Cloneable {
+
+    /**
+     * 
+     * @return głęboka kopia obiektu
+     */
+    public IUserState clone();
 
     /**
      * Dodaje kartę do kart

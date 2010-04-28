@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package hearts.defs.protocol;
 
 /**
@@ -11,5 +6,4 @@ package hearts.defs.protocol;
  * @author szymon
  */
 public interface IServerSocket extends IObjectSocket {
-
 }

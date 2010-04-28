@@ -1,12 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package hearts.state;
 
-import hearts.defs.actions.AAction;
-import hearts.defs.actions.gui.AGUIAction;
-import hearts.defs.judge.IJudge;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
@@ -14,37 +7,40 @@ import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
 import hearts.state.exceptions.IllegalModeChangeException;
 import hearts.state.exceptions.UserExistsException;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.Serializable;
 
 /**
  *
  * @author szymon
  */
-public class GameState implements IGameState {
+public class GameState
+        extends AActionList
+        implements IGameState, Cloneable, Serializable {
 
-    protected List<AAction> actions = new LinkedList<AAction>();
-    protected ITrick trick; // TODO - implementacja wziątki
+    protected ITrick trick = new Trick(false);
     protected CardColor trump = null;
-    protected IJudge judge;
     protected IUserState[] userStates = {null, null, null, null};
     protected int activeUserId;
     protected boolean auction = false;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
-    public GameState(IJudge judge) {
-        this.judge = judge;
+    @Override
+    public IGameState clone() {
+        GameState stateClone = (GameState) super.clone();
+        // kopiowanie zmiennych obiektów:
+        for (int i = 0; i < stateClone.userStates.length; ++i) {
+            stateClone.userStates[i] = stateClone.userStates[i].clone();
+        }
+        stateClone.trick = stateClone.trick.clone();
+        return stateClone;
     }
 
     @Override
-    public GameState clone() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public IUserState getUserState(int id) {
         return userStates[id];
     }
 
+    @Override
     public synchronized void setUserState(int id, IUserState state)
             throws GameStateException {
         if (userStates[id] == null) {
@@ -54,19 +50,23 @@ public class GameState implements IGameState {
         }
     }
 
+    @Override
     public synchronized int getActiveUser() {
         return activeUserId;
     }
 
+    @Override
     public synchronized int nextUser() {
         activeUserId = (activeUserId + 1) % 4;
         return activeUserId;
     }
 
+    @Override
     public synchronized Mode getMode() {
         return mode;
     }
 
+    @Override
     public synchronized Mode nextMode() throws IllegalModeChangeException {
         Mode[] modes = Mode.values();
         try {
@@ -82,44 +82,35 @@ public class GameState implements IGameState {
         return mode;
     }
 
+    @Override
     public synchronized CardColor getTrump() {
         return trump;
     }
 
+    @Override
     public synchronized void setTrump(CardColor c) throws GameStateException {
         // TODO: w zaleznosci od trybu i stanu gry rzucić wyjątkiem.
         this.trump = c;
     }
 
+    @Override
     public synchronized boolean isAuction() {
         return auction;
     }
 
+    @Override
     public synchronized void setAuction(boolean auction) throws GameStateException {
         // TODO: w zaleznosci od trybu i stanu gry rzucić wyjątkiem.
         this.auction = auction;
     }
-    
+
+    @Override
     public synchronized ITrick getTrick() {
         return trick;
     }
 
-    public void clearTrick() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    public void clearTrick(boolean last) {
+        trick = new Trick(last);
     }
-
-    public synchronized void addAction(AAction a) {
-        actions.add(a);
-    }
-
-    public synchronized AAction nextAction() {
-        AAction a = null;
-        try {
-            a = actions.remove(0);
-        } catch (IndexOutOfBoundsException ex) {
-            // ma zwrócić null.
-        }
-        return a;
-    }
-
 }

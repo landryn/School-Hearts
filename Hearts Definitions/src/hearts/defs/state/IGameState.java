@@ -124,7 +124,7 @@ public interface IGameState extends Serializable, Cloneable {
     /**
      * Ustawia aktualną wziątkę na nowy obiekt typu trick.
      */
-    public void clearTrick();
+    public void clearTrick(boolean last);
 
     /**
      * Jeśli akcja wywołana na stanie gry owocuje rozesłaniem akcji
