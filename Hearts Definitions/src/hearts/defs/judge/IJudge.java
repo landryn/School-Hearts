@@ -9,12 +9,12 @@ import hearts.defs.actions.AAction;
  *
  * @author szymon
  */
-<<<<<<< HEAD:Hearts Definitions/src/hearts/defs/judge/Judge.java
-public interface Judge {
 
-=======
+
+
+
 public interface IJudge {
->>>>>>> 0ca2e9647352fcefabb120e63d6ccde0c70920cf:Hearts Definitions/src/hearts/defs/judge/IJudge.java
+
     /**
      * <p>Dostaje stan gry i akcję, na podstawie typu akcji ocenia, czy akcja
      * jest w tym momencie dozwolona i wywołuje na akcji perform()
