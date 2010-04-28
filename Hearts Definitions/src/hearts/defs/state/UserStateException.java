@@ -11,4 +11,8 @@ package hearts.defs.state;
  */
 class UserStateException extends GameStateException {
 
+    public UserStateException(String message) {
+        super(message);
+    }
+
 }
