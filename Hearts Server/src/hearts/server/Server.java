@@ -71,6 +71,10 @@ public class Server implements IServerSocket {
         }
     }
 
+    /**
+     * Według przykazania zwraca GameConstants.SERVER
+     * @return GameConstants.SERVER
+     */
     public int getId() {
         return GameConstants.SERVER;
     }
@@ -79,6 +83,10 @@ public class Server implements IServerSocket {
         listeners.add(listener);
     }
 
+    /**
+     * Powiadamia wszystkich actionsListenerów o zdarzeniu.
+     * @param action o której powiadamia
+     */
     public void notifyListeners(AAction action) {
         for(IActionListener listener: listeners) {
             listener.actionReceived(action);

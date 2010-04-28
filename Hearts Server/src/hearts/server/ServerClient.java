@@ -21,10 +21,26 @@ import java.util.logging.Logger;
  */
 public class ServerClient implements IUserSocket {
 
+    /**
+     * Socket do komunikacji.
+     */
     private Socket socket;
+
+    /**
+     * Stream do odbierania obiektów.
+     */
     private ObjectInputStream input = null;
+
+    /**
+     *  Stream do wysyłania obiektów.
+     */
     private ObjectOutputStream output = null;
+
+    /**
+     * Lista actionListenerów powiadamianych o odebranych akcjach.
+     */
     private ArrayList<IActionListener> listeners = null;
+
     private int id;
     private String name = "";
 
@@ -43,6 +59,13 @@ public class ServerClient implements IUserSocket {
         Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "ServerClient utworzony.");
     }
 
+    /**
+     * <p>Nasłuchuje w nieskończonej pętli na dane.</p>
+     * Odebrane dane są deserializowane do obiektu AAction.
+     * Następnie powiadamiani są wszyscy ActionListenerzy.
+     * 
+     * Po zakończeniu nasłuchiwania zamyka wszystkie streamy i socket.
+     */
     public void run() {
         try {
             while (true) {
@@ -108,7 +131,7 @@ public class ServerClient implements IUserSocket {
     }
 
     /**
-     * Rozłącza użytkownika przez brutalne zamknięcie socketa i spowodowanie wyjątku w pętli głowej wątku.
+     * Rozłącza użytkownika przez brutalne zamknięcie socketa i spowodowanie wyjątku w pętli wątku.
      */
     public void disconnect() {
         try {
