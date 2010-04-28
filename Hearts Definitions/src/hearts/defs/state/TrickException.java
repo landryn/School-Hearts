@@ -8,14 +8,14 @@ import java.util.List;
  * @author szymon
  */
 class TrickException extends Exception {
-    List<Card> cards;
+    List<ICard> cards;
 
-    public TrickException(String message, List<Card> cards) {
+    public TrickException(String message, List<ICard> cards) {
         super(message);
         this.cards = cards;
     }
 
-    public List<Card> getCards() {
+    public List<ICard> getCards() {
         return cards;
     }
 }

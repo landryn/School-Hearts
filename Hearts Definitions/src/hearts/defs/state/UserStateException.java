@@ -5,11 +5,13 @@
 
 package hearts.defs.state;
 
+import hearts.defs.state.*;
+
 /**
  * Jeśli coś złego miałoby się stać ze stanem usera.
  * @author szymon
  */
-class UserStateException extends GameStateException {
+public class UserStateException extends GameStateException {
 
     public UserStateException(String message) {
         super(message);

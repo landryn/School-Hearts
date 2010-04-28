@@ -5,7 +5,7 @@
 
 package hearts.state.exceptions;
 
-import hearts.defs.state.GameState.Mode;
+import hearts.defs.state.IGameState.Mode;
 import hearts.defs.state.GameStateException;
 
 /**

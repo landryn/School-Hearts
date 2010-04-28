@@ -5,7 +5,7 @@
 package hearts.state.exceptions;
 
 import hearts.defs.state.GameStateException;
-import hearts.defs.state.UserState;
+import hearts.defs.state.IUserState;
 
 /**
  *
@@ -13,10 +13,10 @@ import hearts.defs.state.UserState;
  */
 public class UserExistsException extends GameStateException {
 
-    private UserState userState;
+    private IUserState userState;
     private int userId;
 
-    public UserExistsException(UserState userState, int userId) {
+    public UserExistsException(IUserState userState, int userId) {
         super("User with id " + userId + " exists in GameState.");
         this.userState = userState;
         this.userId = userId;
@@ -26,7 +26,7 @@ public class UserExistsException extends GameStateException {
         return userId;
     }
 
-    public UserState getUserState() {
+    public IUserState getUserState() {
         return userState;
     }
 }

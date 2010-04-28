@@ -4,13 +4,14 @@
  */
 package hearts.state;
 
-import hearts.defs.actions.Action;
-import hearts.defs.judge.Judge;
+import hearts.defs.actions.AAction;
+import hearts.defs.actions.gui.AGUIAction;
+import hearts.defs.judge.IJudge;
 import hearts.defs.state.CardColor;
-import hearts.defs.state.GameState;
 import hearts.defs.state.GameStateException;
-import hearts.defs.state.Trick;
-import hearts.defs.state.UserState;
+import hearts.defs.state.IGameState;
+import hearts.defs.state.ITrick;
+import hearts.defs.state.IUserState;
 import hearts.state.exceptions.IllegalModeChangeException;
 import hearts.state.exceptions.UserExistsException;
 import java.util.LinkedList;
@@ -20,18 +21,18 @@ import java.util.List;
  *
  * @author szymon
  */
-public class UniversalGameState implements GameState {
+public class GameState implements IGameState {
 
-    protected List<Action> actions = new LinkedList<Action>();
-    protected Trick trick; // TODO - implementacja wziątki
+    protected List<AAction> actions = new LinkedList<AAction>();
+    protected ITrick trick; // TODO - implementacja wziątki
     protected CardColor trump = null;
-    protected Judge judge;
-    protected UserState[] userStates = {null, null, null, null};
+    protected IJudge judge;
+    protected IUserState[] userStates = {null, null, null, null};
     protected int activeUserId;
     protected boolean auction = false;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
-    public UniversalGameState(Judge judge) {
+    public GameState(IJudge judge) {
         this.judge = judge;
     }
 
@@ -40,11 +41,12 @@ public class UniversalGameState implements GameState {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public UserState getUserState(int id) {
+    public IUserState getUserState(int id) {
         return userStates[id];
     }
 
-    public synchronized void setUserState(int id, UserState state) throws GameStateException {
+    public synchronized void setUserState(int id, IUserState state)
+            throws GameStateException {
         if (userStates[id] == null) {
             userStates[id] = state;
         } else {
@@ -98,7 +100,7 @@ public class UniversalGameState implements GameState {
         this.auction = auction;
     }
     
-    public synchronized Trick getTrick() {
+    public synchronized ITrick getTrick() {
         return trick;
     }
 
@@ -106,12 +108,12 @@ public class UniversalGameState implements GameState {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public synchronized void addAction(Action a) {
+    public synchronized void addAction(AAction a) {
         actions.add(a);
     }
 
-    public synchronized Action nextAction() {
-        Action a = null;
+    public synchronized AAction nextAction() {
+        AAction a = null;
         try {
             a = actions.remove(0);
         } catch (IndexOutOfBoundsException ex) {

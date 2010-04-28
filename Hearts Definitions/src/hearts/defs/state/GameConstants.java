@@ -6,7 +6,7 @@ package hearts.defs.state;
  * nich?
  * @author szymon
  */
-public interface GameConstants {
+public class GameConstants {
     /**
      * Stała używana w Action, jeśli chcemy nadać coś do wszystkich
      * użytkowników

@@ -4,6 +4,7 @@
  */
 package hearts.defs.state;
 
+import hearts.defs.state.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,20 +12,20 @@ import java.util.List;
  * Stan usera
  * @author szymon
  */
-public interface UserState extends Serializable, Cloneable {
+public interface IUserState extends Serializable, Cloneable {
 
     /**
      * Dodaje kartę do kart
      * @param c
      */
-    public void addCard(Card c);
+    public void addCard(ICard c);
 
     /**
      * Wyciągnij kartę c z puli usera
      * @param c karta do wyciągnięcia
      * @throws UserStateException jeśli karty nie ma w puli
      */
-    public void withdrawCard(Card c) throws UserStateException;
+    public void withdrawCard(ICard c) throws UserStateException;
 
     /**
      * Pobierz nazwę usera przyporządkowanego temu obiektowi
@@ -42,13 +43,13 @@ public interface UserState extends Serializable, Cloneable {
      * Dodaj userowi wziątkę do jego listy
      * @param trick
      */
-    public void addTrick(Trick trick);
+    public void addTrick(ITrick trick);
 
     /**
      * Pobierz listę wziątek usera.
      * @return
      */
-    public List<Trick> getTricks();
+    public List<ITrick> getTricks();
 
     /**
      * Wyczyść wziątki, na koniec tury.

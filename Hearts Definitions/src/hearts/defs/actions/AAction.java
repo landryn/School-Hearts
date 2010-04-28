@@ -1,6 +1,6 @@
 package hearts.defs.actions;
 
-import hearts.defs.state.GameState;
+import hearts.defs.state.IGameState;
 import hearts.defs.state.GameStateException;
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * performOnCopy() z kopią stanu gry zamiast oryginałem.
  * @author szymon
  */
-public abstract class Action implements Serializable, Cloneable {
+public abstract class AAction implements Serializable, Cloneable {
 
     /**
      * Pole musi być ustawione podczas tworzenia obiektu
@@ -27,31 +27,18 @@ public abstract class Action implements Serializable, Cloneable {
      * Konstruktor wymuszający ustawienie adresata
      * @param receiver
      */
-    public Action(int receiver) {
+    public AAction(int receiver) {
         this.receiver = receiver;
     }
 
     /**
-     * Metoda używana wywoływana przez użytkownika klasy.
-     * Wywołuje performOnCopy() z klonem stanu gry.
      * @param old stary stan gry
      * @return nowy stan gry po przeleceniu
      */
-    public final GameState perform(GameState old)
-            throws GameStateException {
-        return performOnCopy(old.clone());
-    }
-
-    /**
-     * Metoda do zaimplementowania logiki akcji, dostaje kopię stanu gry
-     * czyli bezpieczenie moze robić z nim co chce,
-     * @param copy
-     * @return zmodyfikowana kopia stanu gry przez tę akcję
-     * @throws GameStateException
-     */
-    protected abstract GameState performOnCopy(GameState copy)
+    public abstract IGameState perform(IGameState old)
             throws GameStateException;
 
+ 
     /**
      * Pobiera nadawcę.
      * @return

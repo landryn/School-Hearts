@@ -4,7 +4,7 @@
  */
 package hearts.defs.state;
 
-import hearts.defs.actions.Action;
+import hearts.defs.actions.AAction;
 import java.io.Serializable;
 
 /**
@@ -12,21 +12,21 @@ import java.io.Serializable;
  * i nextAction()
  * @author szymon
  */
-public interface GameState extends Serializable, Cloneable {
+public interface IGameState extends Serializable, Cloneable {
 
     /**
      * Implementacja powinna zwracać klon stanu gry z pustą kolejką akcji
      * pierwszą instrukcją powinno być chyba Object o = super.clone();
      * @return
      */
-    public GameState clone();
+    public IGameState clone();
 
     /**
      * Pobiera stan użytkownika
      * @param id
      * @return
      */
-    public UserState getUserState(int id);
+    public IUserState getUserState(int id);
 
     /**
      * Ustawia cały stan usera za jednym zamachem. Powinno być użyte tylko na
@@ -34,7 +34,7 @@ public interface GameState extends Serializable, Cloneable {
      * @param id
      * @param state
      */
-    public void setUserState(int id, UserState state)
+    public void setUserState(int id, IUserState state)
             throws GameStateException;
 
     /**
@@ -119,7 +119,7 @@ public interface GameState extends Serializable, Cloneable {
      * i wkładamy tutaj. Potem pobieramy wziątkę i wrzucamy userowi.
      * @return
      */
-    public Trick getTrick();
+    public ITrick getTrick();
 
     /**
      * Ustawia aktualną wziątkę na nowy obiekt typu trick.
@@ -131,12 +131,12 @@ public interface GameState extends Serializable, Cloneable {
      * w inne miejsca, to używa tej metody by dodać akcje do rozesłania
      * do kolejki
      */
-    public void addAction(Action a);
+    public void addAction(AAction a);
 
     /**
      * Zdejmuje z kolejki akcji pierwszą akcję do wysłania.
      * Docelowo do używania w implementacji protokołu.
      * @return akcja albo null, jeśli lista pusta.
      */
-    public Action nextAction();
+    public AAction nextAction();
 }

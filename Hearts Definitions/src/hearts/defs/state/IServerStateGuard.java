@@ -1,8 +1,8 @@
-package hearts.defs.server;
+package hearts.defs.state;
 
-import hearts.defs.protocol.UserSocket;
-import hearts.defs.actions.ActionListener;
-import hearts.defs.state.GameState;
+import hearts.defs.protocol.IUserSocket;
+import hearts.defs.actions.IActionListener;
+import hearts.defs.state.IGameState;
 import hearts.defs.state.GameStateException;
 
 /**
@@ -25,7 +25,7 @@ import hearts.defs.state.GameStateException;
  *
  * @author szymon
  */
-public interface ServerStateGuard extends ActionListener, Runnable {
+public interface IServerStateGuard extends IActionListener, Runnable {
 
     /**
      * <ol>
@@ -40,11 +40,11 @@ public interface ServerStateGuard extends ActionListener, Runnable {
      * @throws GameStateException jeśli próbujemy dodać więcej userów niż 4.
      * @return id usera 0...3
      */
-    public int addUser(UserSocket socket) throws GameStateException;
+    public int addUser(IUserSocket socket) throws GameStateException;
 
     /**
      * Pobiera aktualny stan gry.
      * @return
      */
-    public GameState getState();
+    public IGameState getState();
 }
