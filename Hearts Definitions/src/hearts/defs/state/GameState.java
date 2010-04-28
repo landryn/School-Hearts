@@ -34,7 +34,8 @@ public interface GameState extends Serializable, Cloneable {
      * @param id
      * @param state
      */
-    public void setUserState(int id, UserState state);
+    public void setUserState(int id, UserState state)
+            throws GameStateException;
 
     /**
      * Pobiera id następnego usera
@@ -84,19 +85,34 @@ public interface GameState extends Serializable, Cloneable {
      * Przejdź do następnego etapu gry
      * @return nowy tryb
      */
-    public Mode nextMode();
+    public Mode nextMode() throws GameStateException;
 
     /**
      * Pobierz atu.
      * @return null jeśli tryb jest bezatutowy
      */
-    public Mode getTrump();
+    public CardColor getTrump();
+
+    /**
+     * Ustaw atu.
+     * @param c
+     * @throws GameStateException jeśli ustawiamy w złym trybie gry
+     */
+    public void setTrump(CardColor c) throws GameStateException;
 
     /**
      * Czy odbywa się aukcja
      * @return
      */
     public boolean isAuction();
+
+    /**
+     * Ustaw tryb aukcji
+     * @return
+     * @throws GameStateException jeśli próbujemy to zrobić
+     * w nieodpowienim momencie
+     */
+    public void setAuction(boolean auction) throws GameStateException;
 
     /**
      * aktualna wziątka leżąca na stole, wyciągamy karty od użytkowników
