@@ -6,17 +6,17 @@ package hearts.defs.state;
  * nich?
  * @author szymon
  */
-public interface GameConstants {
+public class GameConstants {
     /**
      * Stała używana w Action, jeśli chcemy nadać coś do wszystkich
      * użytkowników
      */
-    int ALL_USERS = -1;
+    public static final int ALL_USERS = -1;
 
     /**
      * Stała mówiąca, że nadawcą albo odbiorcą jest serwer.
      * np. akcje usera podczas gry powinny być skierowane do serwera.
      */
-    int SERVER = -2;
+    public static final int SERVER = -2;
 
 }

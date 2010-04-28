@@ -5,6 +5,6 @@ package hearts.defs.actions;
  * ActionListenerom i ustawiania akcjom odpowiedniego sendera.
  * @author szymon
  */
-public interface ActionNotifier {
-    public void addActionListener(ActionListener listener);
+public interface IActionNotifier {
+    public void addActionListener(IActionListener listener);
 }

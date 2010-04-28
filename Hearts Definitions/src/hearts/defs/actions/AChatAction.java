@@ -9,9 +9,9 @@ package hearts.defs.actions;
  * stanu gry oprócz ew. dodania komunikatów do rozesłania</p>
  * @author szymon
  */
-public abstract class ChatAction extends Action {
+public abstract class AChatAction extends AAction {
 
-    public ChatAction(int receiver) {
+    public AChatAction(int receiver) {
         super(receiver);
     }
 

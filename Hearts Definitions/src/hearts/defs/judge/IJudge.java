@@ -1,0 +1,34 @@
+package hearts.defs.judge;
+
+import hearts.defs.state.IGameState;
+import hearts.defs.state.GameStateException;
+import hearts.defs.actions.AAction;
+
+/**
+ * Klasa decydująca o tym, czy podaną akcję na podanym stanie gry można wykonać
+ *
+ * @author szymon
+ */
+<<<<<<< HEAD:Hearts Definitions/src/hearts/defs/judge/Judge.java
+public interface Judge {
+
+=======
+public interface IJudge {
+>>>>>>> 0ca2e9647352fcefabb120e63d6ccde0c70920cf:Hearts Definitions/src/hearts/defs/judge/IJudge.java
+    /**
+     * <p>Dostaje stan gry i akcję, na podstawie typu akcji ocenia, czy akcja
+     * jest w tym momencie dozwolona i wywołuje na akcji perform()
+     * z kopią stanu gry. Dla akcji typu ChatAction wywołuje perform
+     * z dumbState'em</p>
+     *
+     * <p>Potem sam podejmuje ew. własne czynności i dodaje swoje komunikaty do kolejki
+     * w stanie gry przez state.addAction();</p>
+     *
+     * @param state aktualny stan gry
+     * @param action akcja do rozpatrzenia
+     * @return nowy stan gry
+     * @throws GameStateException jeśli akcja nie jest dozwolona albo nie wie
+     * co z nią zrobić.
+     */
+    public IGameState judge(IGameState state, AAction action) throws GameStateException;
+}
