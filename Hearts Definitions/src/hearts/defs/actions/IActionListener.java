@@ -5,10 +5,10 @@ package hearts.defs.actions;
  * interfejs.
  * @author szymon
  */
-public interface ActionListener {
+public interface IActionListener {
     /**
      * Otrzymano akcję a
      * @param a
      */
-    public void actionReceived(Action a);
+    public void actionReceived(AAction a);
 }

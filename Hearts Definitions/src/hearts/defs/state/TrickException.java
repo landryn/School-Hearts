@@ -1,21 +1,26 @@
 package hearts.defs.state;
 
-import java.util.List;
-
 /**
  * Wyjątek rzucany, gdy do wziątki (Trick) próbujemy dodać 2 razy tę samą kartę
  * lub za dużo kart
  * @author szymon
  */
-class TrickException extends Exception {
-    List<Card> cards;
+public class TrickException extends GameStateException {
 
-    public TrickException(String message, List<Card> cards) {
+    protected ICard[] cards;
+    protected int userId;
+
+    public TrickException(String message, int userId, ICard[] cards) {
         super(message);
-        this.cards = cards;
+        this.cards = cards.clone();
+        this.userId = userId;
     }
 
-    public List<Card> getCards() {
+    public ICard[] getCards() {
         return cards;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 }
