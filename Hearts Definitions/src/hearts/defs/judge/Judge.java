@@ -10,6 +10,7 @@ import hearts.defs.actions.Action;
  * @author szymon
  */
 public interface Judge {
+
     /**
      * <p>Dostaje stan gry i akcję, na podstawie typu akcji ocenia, czy akcja
      * jest w tym momencie dozwolona i wywołuje na akcji perform();</p>
