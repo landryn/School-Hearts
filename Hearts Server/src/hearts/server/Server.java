@@ -4,9 +4,9 @@
  */
 package hearts.server;
 
-import hearts.defs.actions.Action;
-import hearts.defs.actions.ActionListener;
-import hearts.defs.protocol.ServerSocket;
+import hearts.defs.actions.AAction;
+import hearts.defs.actions.IActionListener;
+import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GameConstants;
 import java.io.IOException;
 import java.net.Socket;
@@ -18,14 +18,14 @@ import java.util.logging.Logger;
  *
  * @author orbit
  */
-public class Server implements ServerSocket {
+public class Server implements IServerSocket {
 
     private int port;
     private String host;
     private java.net.ServerSocket socket = null;
     private ArrayList<ServerClient> clientsList = null;
 
-    private ArrayList<ActionListener> listeners = null;
+    private ArrayList<IActionListener> listeners = null;
 
     /**
      * <p>Tworzy obiekt serwera, który później trzeba wystartować.</p>
@@ -39,7 +39,7 @@ public class Server implements ServerSocket {
 
         this.socket = new java.net.ServerSocket(port);
         clientsList = new ArrayList<ServerClient>();
-        listeners = new ArrayList<ActionListener>();
+        listeners = new ArrayList<IActionListener>();
     }
 
     /**
@@ -75,17 +75,17 @@ public class Server implements ServerSocket {
         return GameConstants.SERVER;
     }
 
-    public void addActionListener(ActionListener listener) {
+    public void addActionListener(IActionListener listener) {
         listeners.add(listener);
     }
 
-    public void notifyListeners(Action action) {
-        for(ActionListener listener: listeners) {
+    public void notifyListeners(AAction action) {
+        for(IActionListener listener: listeners) {
             listener.actionReceived(action);
         }
     }
 
-    public void actionReceived(Action a) {
+    public void actionReceived(AAction a) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

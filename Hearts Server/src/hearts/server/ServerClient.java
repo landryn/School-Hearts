@@ -4,9 +4,9 @@
  */
 package hearts.server;
 
-import hearts.defs.actions.Action;
-import hearts.defs.actions.ActionListener;
-import hearts.defs.protocol.UserSocket;
+import hearts.defs.actions.AAction;
+import hearts.defs.actions.IActionListener;
+import hearts.defs.protocol.IUserSocket;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,12 +19,12 @@ import java.util.logging.Logger;
  *
  * @author orbit
  */
-public class ServerClient implements UserSocket {
+public class ServerClient implements IUserSocket {
 
     private Socket socket;
     private ObjectInputStream input = null;
     private ObjectOutputStream output = null;
-    private ArrayList<ActionListener> listeners = null;
+    private ArrayList<IActionListener> listeners = null;
     private int id;
     private String name = "";
 
@@ -39,14 +39,14 @@ public class ServerClient implements UserSocket {
         input = new ObjectInputStream(socket.getInputStream());
         output = new ObjectOutputStream(socket.getOutputStream());
 
-        listeners = new ArrayList<ActionListener>();
+        listeners = new ArrayList<IActionListener>();
         Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "ServerClient utworzony.");
     }
 
     public void run() {
         try {
             while (true) {
-                Action action = (Action) input.readObject();
+                AAction action = (AAction) input.readObject();
                 if (action == null) {
                     break;
                 }
@@ -76,11 +76,11 @@ public class ServerClient implements UserSocket {
         return this.id;
     }
 
-    public void addActionListener(ActionListener listener) {
+    public void addActionListener(IActionListener listener) {
         this.listeners.add(listener);
     }
 
-    public void actionReceived(Action a) {
+    public void actionReceived(AAction a) {
         try {
             this.output.writeObject(a);
             this.output.flush();
@@ -101,8 +101,8 @@ public class ServerClient implements UserSocket {
      * Powiadamia actionListenerów.
      * @param action
      */
-    public void notifyListeners(Action action) {
-        for (ActionListener listener : this.listeners) {
+    public void notifyListeners(AAction action) {
+        for (IActionListener listener : this.listeners) {
             listener.actionReceived(action);
         }
     }
