@@ -18,4 +18,15 @@ public class Main {
         // TODO code application logic here
     }
 
+
+    public static void abc() {
+        System.out.println("abc");
+    }
+    
+    static {
+        System.out.println("dupa");
+    }
+
+
+
 }
