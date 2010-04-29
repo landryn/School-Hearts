@@ -14,8 +14,14 @@ import java.util.logging.Logger;
 public class Trick implements ITrick, Serializable, Cloneable {
 
     protected ICard[] cards = new ICard[4];
+    /**
+     * Określa ilość kart w lewie, już połozonych na stole.
+     */
     private int manyCards=0;
     protected boolean last;
+    /**
+     * Kto wyszedł.
+     */
     protected int first;
     /**
      * Tworzy nową wziątkę.

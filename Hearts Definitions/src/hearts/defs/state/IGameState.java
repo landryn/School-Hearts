@@ -48,9 +48,34 @@ public interface IGameState extends Serializable, Cloneable {
      * @return
      */
     public int nextUser();
+  /**
+   * Ustawia rozdającego;
+   * @param dealer
+   */
+
+    public void setDealer(int dealer);
+    /**
+     *Wyznacza nastepnego rozdającego.
+     * @return
+     */
+    public int nextDealer();
+    /**
+     * Zwraca aktualnego rozdającego.
+     * @return
+     */
+    public int getDealer();
+
+    /**
+     * Ustawia aktywnego usera.
+     * @param user
+     */
+    public void setAtiveUser(int user);
+
     /**
      * Wyliczenie określające tryb gry.
      */
+
+
     public enum Mode {
 
         /**

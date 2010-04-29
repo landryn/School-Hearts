@@ -20,6 +20,8 @@ public class GameState
     protected ITrick trick = new Trick(false);
     protected CardColor trump = null;
     protected IUserState[] userStates = {null, null, null, null};
+
+    protected int dealer=0;
     
     protected int activeUserId=0;
     protected boolean dealEnd=false;
@@ -144,6 +146,23 @@ public class GameState
 
     public void setNumTrick(int i){
         this.menyTricks=i;
+    }
+
+    public void setAtiveUser(int user) {
+        this.activeUserId=user;
+    }
+
+    public void setDealer(int dealer) {
+       this.dealer=dealer;
+    }
+
+    public int nextDealer() {
+        dealer=(dealer+1)%4;
+        return dealer;
+    }
+
+    public int getDealer() {
+       return this.dealer;
     }
 
     

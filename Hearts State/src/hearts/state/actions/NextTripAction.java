@@ -9,6 +9,7 @@ import hearts.defs.actions.AAction;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 import hearts.state.GameState;
+import hearts.state.actions.gui.NextTripAGUI;
 
 /**
  * Zdarzenie rozpoczynającą klejnę lewe. Serwer po każdym pozytywnym zdarzeni powinien sprawdzić czy lewe się zakończyła
@@ -49,6 +50,16 @@ public class NextTripAction extends AAction {
         game.getUserState(winer).addTrick(game.getTrick());
         game.clearTrick(last);
 
+
+      
+       NextTripAGUI ac=null;
+       for (int i = 0; i < 4; i++) {
+                ac = new NextTripAGUI(i);
+                ac.setWiner(winer);
+                ac.setSender(this.getSender());
+                game.addAction(ac);
+            }
+        game.setAtiveUser(winer);
         return game;
     }
 

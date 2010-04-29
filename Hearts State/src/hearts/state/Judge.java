@@ -11,11 +11,10 @@ import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.IUserState;
 import hearts.state.actions.AddCardToTrickAction;
-import hearts.state.actions.NewDaelForUserAction;
+import hearts.state.actions.gui.NewDaelForUserAGUI;
 import hearts.state.actions.NextModeAction;
 import hearts.state.actions.NextTripAction;
 import hearts.state.exceptions.WrongCardValueException;
-import java.sql.Time;
 import java.util.Date;
 import java.util.Random;
 import java.util.logging.Level;
@@ -79,18 +78,12 @@ public class Judge implements hearts.defs.judge.IJudge {
                 checkReaverRules(state, action);
 
             } else if (state.getMode() == state.getMode().WIN_BACK) {
-                checkWin_BackRules(state, action);
+                checkWinBackRules(state, action);
             } else {
                 throw new GameStateException("Unknown error");
             }
 
-            AddCardToTrickAction ac = null;
-            for (int i = 0; i < 4; i++) {
-                ac = new AddCardToTrickAction(i);
-                ac.setCard(((AddCardToTrickAction) (action)).getCard());
-                ac.setSender(action.getSender());
-                this.actionToDo.addAction(ac);
-            }
+            
             copyState= action.perform(state); 
 
 
@@ -99,7 +92,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             if (!state.trickEnds()) {
                 throw new GameStateException("Trick not end");
             }
-            NextTripAction ac = null;
+           
             ((NextTripAction) action).setWiner(this.findWiner(state));
 
             if (state.getMode() == state.getMode().BANDIT && state.getNumTrick() >= 11) {
@@ -108,13 +101,7 @@ public class Judge implements hearts.defs.judge.IJudge {
                 ((NextTripAction) action).setLast(false);
             }
 
-            ac.setWiner(this.findWiner(state));
-            for (int i = 0; i < 4; i++) {
-                ac = new NextTripAction(i);
-
-                ac.setSender(action.getSender());
-                this.actionToDo.addAction(ac);
-            }
+            ((NextTripAction) action).setWiner(this.findWiner(state));
             copyState= action.perform(state);
 
 
@@ -133,29 +120,25 @@ public class Judge implements hearts.defs.judge.IJudge {
              * 5. Cieszyć sie możliwością gry w zbója
              */
             NextModeAction ac = (NextModeAction) action;
-            NewDaelForUserAction[] tab = new NewDaelForUserAction[4];
+            
 
             ICard[] pack = this.generateNewCardTab();
             for (int i = 0; i < 4; i++) {
 
-                tab[i] = new NewDaelForUserAction(i);
+               
                 ICard[] tabC = new ICard[13];
 
                 for (int k = 0; k < 13; k++) {
                     tabC[k] = pack[i * 13 + k];
 
                 }//mam tali kart gracza
-                tab[i].setCards(tabC);
+                
                 ac.setICard(i, tabC);
             }// mam nowe rozdanie kart
             copyState = action.perform(state);
             //nowy stan gry
 
-            for(int i=0;i<4;i++){
-                tab[i].setListTriks(copyState.getUserState(i).getPointsList());
-                tab[i].setMode(copyState.getMode());
-                this.actionToDo.addAction(tab[i]);//dadałe akcję do wysłania
-            }
+           
         }
 
 
@@ -176,7 +159,7 @@ public class Judge implements hearts.defs.judge.IJudge {
      * @param state
      * @param action
      */
-    private void checkWin_BackRules(IGameState state, AAction action) throws GameStateException {
+    private void checkWinBackRules(IGameState state, AAction action) throws GameStateException {
     }
 
     /**

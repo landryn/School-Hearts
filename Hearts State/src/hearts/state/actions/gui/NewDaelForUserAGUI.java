@@ -3,22 +3,22 @@
  * and open the template in the editor.
  */
 
-package hearts.state.actions;
+package hearts.state.actions.gui;
 
-import hearts.defs.actions.AAction;
-import hearts.defs.state.GameStateException;
+import hearts.defs.actions.gui.AGUIAction;
+import hearts.defs.state.GUIStateException;
 import hearts.defs.state.ICard;
+import hearts.defs.state.IGUIState;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.IGameState.Mode;
-import hearts.defs.state.ITrick;
 import java.util.List;
 
 /**
- * Klasa przygotowana specjalnie z myślą o klijencie, zawiera nowe karty gracza i z aktualizowaną punktacje
+ * Klasa przygotowana specjalnie z myślą o klijencie, zawiera nowe karty gracza i zaktualizowaną punktacje
  * oraz, nowy Typ rozgrywki.
  * @author Paweł Trynkiewicz
  */
-public class NewDaelForUserAction extends AAction {
+public class NewDaelForUserAGUI extends AGUIAction {
 
     private ICard []cards=null;
     private List<Integer> listPoints=null;
@@ -53,14 +53,16 @@ public class NewDaelForUserAction extends AAction {
 
 
     
-    public NewDaelForUserAction(int receiver) {
+    public NewDaelForUserAGUI(int receiver) {
         super(receiver);
     }
     
 
+   
+
     @Override
-    public IGameState perform(IGameState old) throws GameStateException {
-        throw new UnsupportedOperationException("This function can not be execute. Sorry");
+    public void perform(IGUIState gui) throws GUIStateException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
