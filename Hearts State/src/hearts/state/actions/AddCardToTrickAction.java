@@ -38,7 +38,11 @@ public class AddCardToTrickAction  extends  AAction{
     @Override
     public IGameState perform(IGameState old) throws GameStateException {
        GameState game= (GameState) old.clone();
+       //dodaje karte
        game.getTrick().addCard(card, sender);
+       //usrtawiam aktuwnego usera
+       game.nextUser();
+       
        return game;
     }
 

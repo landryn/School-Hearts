@@ -338,7 +338,7 @@ is divided into following sections:
             -->
     <target depends="init" name="deps-jar" unless="no.deps">
         <ant antfile="${project.Hearts_Definitions}/build.xml" inheritall="false" target="jar"/>
-        <ant antfile="${project.Hearts_Judge}/build.xml" inheritall="false" target="jar"/>
+      
         <ant antfile="${project.Hearts_Protocol}/build.xml" inheritall="false" target="jar"/>
         <ant antfile="${project.Hearts_State}/build.xml" inheritall="false" target="jar"/>
     </target>
@@ -694,7 +694,7 @@ is divided into following sections:
             -->
     <target depends="init" name="deps-clean" unless="no.deps">
         <ant antfile="${project.Hearts_Definitions}/build.xml" inheritall="false" target="clean"/>
-        <ant antfile="${project.Hearts_Judge}/build.xml" inheritall="false" target="clean"/>
+        
         <ant antfile="${project.Hearts_Protocol}/build.xml" inheritall="false" target="clean"/>
         <ant antfile="${project.Hearts_State}/build.xml" inheritall="false" target="clean"/>
     </target>

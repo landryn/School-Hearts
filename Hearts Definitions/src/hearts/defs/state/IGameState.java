@@ -147,4 +147,22 @@ public interface IGameState extends Serializable, Cloneable {
      * @return zwraca stan zorgrywki.
      */
     public Mode addUser(IUserState user) ;
+
+    /**
+     * Zwraca czy lew została zakończona
+     * @return
+     */
+    public boolean trickEnds();
+
+    /**
+     * Sprawdza czy rozdanie zostało zakończone
+     * @return
+     */
+    public boolean dealEnds();
+    /**
+     * Zwraca ile, było lew
+     * @return
+     */
+    public int getNumTrick();
 }
+

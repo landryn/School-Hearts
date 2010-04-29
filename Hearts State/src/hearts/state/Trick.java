@@ -14,8 +14,9 @@ import java.util.logging.Logger;
 public class Trick implements ITrick, Serializable, Cloneable {
 
     protected ICard[] cards = new ICard[4];
+    private int manyCards=0;
     protected boolean last;
-
+    protected int first;
     /**
      * Tworzy nową wziątkę.
      * @param last jeśli jest jedną z dwóch ostatnich wziątek.
@@ -31,6 +32,8 @@ public class Trick implements ITrick, Serializable, Cloneable {
         if (cards[userId] != null) {
             throw new TrickException("User " + userId + " already put card.", userId, cards);
         }
+        manyCards++;
+        cards[userId]=c;
     }
 
     public ICard[] getCards() {
@@ -50,5 +53,17 @@ public class Trick implements ITrick, Serializable, Cloneable {
             Logger.getLogger(Trick.class.getName()).log(Level.SEVERE, null, ex);
         }
         return trickClone;
+    }
+
+    public int getFirst() {
+        return first;
+    }
+
+    public void setFirst(int user) {
+        first=user;
+    }
+
+    public boolean ends() {
+       return (manyCards==4);
     }
 }

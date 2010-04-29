@@ -31,4 +31,9 @@ public interface ITrick {
 
     public ITrick clone();
 
+    public int getFirst();
+    public void setFirst(int user);
+
+    public boolean ends();
+    
 }

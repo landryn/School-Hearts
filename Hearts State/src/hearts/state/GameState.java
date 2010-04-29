@@ -22,6 +22,8 @@ public class GameState
     protected IUserState[] userStates = {null, null, null, null};
     
     protected int activeUserId=0;
+    protected boolean dealEnd=false;
+    private int menyTricks=0;
     protected boolean auction = false;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
@@ -113,6 +115,7 @@ public class GameState
     @Override
     public void clearTrick(boolean last) {
         trick = new Trick(last);
+        trick.setFirst(activeUserId);
     }
     
     public Mode addUser(IUserState user) {
@@ -125,4 +128,23 @@ public class GameState
         return mode;
 
     }
+
+    public boolean trickEnds() {
+        return trick.ends();
+    }
+
+    public boolean dealEnds() {
+        return (menyTricks==13);
+       
+    }
+
+    public int getNumTrick() {
+        return menyTricks;
+    }
+
+    public void setNumTrick(int i){
+        this.menyTricks=i;
+    }
+
+    
 }
