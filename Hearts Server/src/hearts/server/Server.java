@@ -4,9 +4,13 @@
  */
 package hearts.server;
 
-import hearts.defs.protocol.ServerSocket;
+import hearts.defs.actions.AAction;
+import hearts.defs.actions.IActionListener;
+import hearts.defs.protocol.IServerSocket;
+import hearts.defs.state.GameConstants;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,11 +18,14 @@ import java.util.logging.Logger;
  *
  * @author orbit
  */
-public class Server extends Thread {
+public class Server implements IServerSocket {
 
     private int port;
     private String host;
     private java.net.ServerSocket socket = null;
+    private ArrayList<ServerClient> clientsList = null;
+
+    private ArrayList<IActionListener> listeners = null;
 
     /**
      * <p>Tworzy obiekt serwera, który później trzeba wystartować.</p>
@@ -31,13 +38,25 @@ public class Server extends Thread {
         this.host = host;
 
         this.socket = new java.net.ServerSocket(port);
+        clientsList = new ArrayList<ServerClient>();
+        listeners = new ArrayList<IActionListener>();
     }
 
-    @Override
+    /**
+     * Metoda nasłuchuje w oczekiwaniu na klientów.
+     * Dla każdego nowego klienta tworzny obiekt ServerClient,
+     * dodaje go do list i startuje wątek nasłuchujący.
+     */
     public void run() {
         try {
             while (true) {
                 Socket s = this.socket.accept();
+                Logger.getLogger(Server.class.getName()).log(Level.INFO, "Ktoś się połączył.");
+                ServerClient sc = new ServerClient(s);
+                clientsList.add(sc);
+                Thread th = new Thread(sc);
+                th.start();
+
             }
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.INFO, "IOException on listening for clients.", ex);
@@ -50,5 +69,31 @@ public class Server extends Thread {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, "Error closing socket.", ex);
             }
         }
+    }
+
+    /**
+     * Według przykazania zwraca GameConstants.SERVER
+     * @return GameConstants.SERVER
+     */
+    public int getId() {
+        return GameConstants.SERVER;
+    }
+
+    public void addActionListener(IActionListener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * Powiadamia wszystkich actionsListenerów o zdarzeniu.
+     * @param action o której powiadamia
+     */
+    public void notifyListeners(AAction action) {
+        for(IActionListener listener: listeners) {
+            listener.actionReceived(action);
+        }
+    }
+
+    public void actionReceived(AAction a) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
