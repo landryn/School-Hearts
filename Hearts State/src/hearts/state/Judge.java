@@ -14,8 +14,18 @@ import hearts.defs.state.IGameState;
  * @author Paweł Trynkiewicz
  */
 public class Judge implements hearts.defs.judge.IJudge {
+    /**
+     * Lista akcji do wykonania
+     */
+    protected AActionList actionTodo=null;
 
-    
+    public AActionList getActionTodo() {
+        return actionTodo;
+    }
+
+    public void setActionTodo(AActionList actionTodo) {
+        this.actionTodo = actionTodo;
+    }
 
      /**
       * Cała logika gry tu będzie implementowa.
@@ -24,8 +34,13 @@ public class Judge implements hearts.defs.judge.IJudge {
       * @return nowy stan gry
       * @throws GameStateException
       */
+
     public IGameState judge(IGameState state, AAction action) throws GameStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+       GameState copyState=(GameState) state.clone();
+       
+
+
+       return copyState;
     }
 
 }

@@ -1,5 +1,6 @@
 package hearts.state;
 
+import hearts.state.exceptions.WrongCardValueException;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.ICard;
 import java.io.Serializable;

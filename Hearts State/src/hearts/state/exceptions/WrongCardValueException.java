@@ -1,4 +1,4 @@
-package hearts.state;
+package hearts.state.exceptions;
 
 import hearts.defs.state.GameStateException;
 
@@ -6,7 +6,7 @@ import hearts.defs.state.GameStateException;
  *
  * @author szymon
  */
-class WrongCardValueException extends GameStateException {
+public class WrongCardValueException extends GameStateException {
 int value;
 
     public WrongCardValueException(int value) {

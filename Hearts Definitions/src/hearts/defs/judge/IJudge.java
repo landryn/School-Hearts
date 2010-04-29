@@ -14,7 +14,7 @@ import hearts.defs.actions.AAction;
 
 
 public interface IJudge {
-
+    
     /**
      * <p>Dostaje stan gry i akcję, na podstawie typu akcji ocenia, czy akcja
      * jest w tym momencie dozwolona i wywołuje na akcji perform()
