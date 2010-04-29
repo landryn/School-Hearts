@@ -73,4 +73,10 @@ public interface IUserState extends Serializable, Cloneable {
      * Usuwa wszystkie karty gracza.
      */
     public void removeAllCard();
+    /**
+     * Sprawdza czy gracz ma kartę  w tym kolorze.
+     * @param color
+     * @return
+     */
+    public boolean userHaveCardInColor(CardColor color);
 }

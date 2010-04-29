@@ -5,6 +5,7 @@
 
 package hearts.state;
 
+import hearts.defs.state.CardColor;
 import hearts.defs.state.ICard;
 import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
@@ -38,10 +39,6 @@ class UserState implements  IUserState,Cloneable, Serializable {
         this.id = id;
         this.name = name;
     }
-
-
-
-
     @Override
     public IUserState clone() {
         UserState state=null;
@@ -106,6 +103,19 @@ class UserState implements  IUserState,Cloneable, Serializable {
 
     public void removeAllCard() {
         this.cardList=new Vector();
+    }
+
+    public boolean userHaveCardInColor(CardColor color) {
+       boolean ok=false;
+
+       for(int i=0;i<cardList.size();i++){
+           if (cardList.get(i).getColor().equals(color)) {
+               ok=true;
+               break;
+           }
+       }
+
+       return ok;
     }
 
 }

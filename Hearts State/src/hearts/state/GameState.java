@@ -20,7 +20,8 @@ public class GameState
     protected ITrick trick = new Trick(false);
     protected CardColor trump = null;
     protected IUserState[] userStates = {null, null, null, null};
-    protected int activeUserId;
+    
+    protected int activeUserId=0;
     protected boolean auction = false;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
@@ -112,5 +113,16 @@ public class GameState
     @Override
     public void clearTrick(boolean last) {
         trick = new Trick(last);
+    }
+    
+    public Mode addUser(IUserState user) {
+        int i=0;
+        while(i<userStates.length && userStates[i]==null) i++;
+        if (i<userStates.length ) {
+            userStates[i]=user;
+            if(i==3) mode=Mode.BANDIT;
+        }
+        return mode;
+
     }
 }

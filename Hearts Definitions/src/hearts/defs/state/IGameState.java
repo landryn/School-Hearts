@@ -57,6 +57,8 @@ public interface IGameState extends Serializable, Cloneable {
          * czekanie na użytkowników
          */
         WAITING_FOR_PLAYERS,
+
+        
         /**
          * zbój (punktowanie ujemne)
          */
@@ -139,4 +141,10 @@ public interface IGameState extends Serializable, Cloneable {
      * @return akcja albo null, jeśli lista pusta.
      */
     public AAction nextAction();
+    /**
+     * Dodaje urzytkownika do stanu gry.
+     * @param user
+     * @return zwraca stan zorgrywki.
+     */
+    public Mode addUser(IUserState user) ;
 }

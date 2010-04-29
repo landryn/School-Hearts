@@ -60,4 +60,8 @@ public class DumbState extends AActionList {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public Mode addUser(IUserState user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

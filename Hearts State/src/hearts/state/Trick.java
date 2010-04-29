@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *Przechowuje informacje o wziątce.
  * @author szymon
  */
 public class Trick implements ITrick, Serializable, Cloneable {
