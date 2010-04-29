@@ -68,4 +68,9 @@ public interface IUserState extends Serializable, Cloneable {
      * @param points
      */
     public void addPoints(int points);
+
+    /**
+     * Usuwa wszystkie karty gracza.
+     */
+    public void removeAllCard();
 }
