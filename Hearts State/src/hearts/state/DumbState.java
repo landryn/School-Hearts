@@ -7,7 +7,10 @@ import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
 
 /**
- *
+ * Głupi stan gry. Dla StateGuarda do wykonywania na nim akcji typu ChatMessage
+ * i poźniej rozsyłania efektu.
+ * 
+ * Implementuje tylko kolejkę (dziedziczy po AActionList)
  * @author szymon
  */
 public class DumbState extends AActionList {

@@ -10,7 +10,7 @@ import hearts.state.exceptions.UserExistsException;
 import java.io.Serializable;
 
 /**
- *
+ * Implementacja stanu gry
  * @author szymon
  */
 public class GameState
@@ -24,6 +24,16 @@ public class GameState
     protected boolean auction = false;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
+
+    /**
+     * Klonowanie głębokie stanu gry.
+     * Wszystkie modyfikowalne obiekty są klonowane:
+     * <ul>
+     * <li>stan userów</li>
+     * <li>aktualna wziątka na stole</li>
+     * </ul>
+     * @return
+     */
     @Override
     public IGameState clone() {
         GameState stateClone = (GameState) super.clone();
@@ -109,6 +119,10 @@ public class GameState
         return trick;
     }
 
+    /**
+     * Ustawia wziątkę na nowo stoworzony obiekt.
+     * @param last czy wziątka jest jedną z dwóch ostatnich
+     */
     @Override
     public void clearTrick(boolean last) {
         trick = new Trick(last);

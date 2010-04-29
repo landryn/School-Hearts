@@ -5,7 +5,7 @@ import hearts.defs.state.ICard;
 import java.io.Serializable;
 
 /**
- *
+ * Implemantacja karty.
  * @author szymon
  */
 public class Card implements ICard, Serializable, Cloneable {

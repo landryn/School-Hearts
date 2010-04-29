@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Implementacja wziątki
  * @author szymon
  */
 public class Trick implements ITrick, Serializable, Cloneable {
@@ -41,11 +41,17 @@ public class Trick implements ITrick, Serializable, Cloneable {
         return last;
     }
 
+    /**
+     * Jako, że obiekty kart są niemodyfikowalne, klonowana jest tylko
+     * tablica kart z tymi samymi kartami.
+     * @return
+     */
     @Override
     public ITrick clone() {
         Trick trickClone = null;
         try {
             trickClone = (Trick) super.clone();
+            trickClone.cards = trickClone.cards.clone();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(Trick.class.getName()).log(Level.SEVERE, null, ex);
         }
