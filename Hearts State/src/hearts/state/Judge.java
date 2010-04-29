@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package hearts.judge;
+package hearts.state;
 
 import hearts.defs.actions.AAction;
 import hearts.defs.state.GameStateException;
@@ -14,6 +14,8 @@ import hearts.defs.state.IGameState;
  * @author Paweł Trynkiewicz
  */
 public class Judge implements hearts.defs.judge.IJudge {
+
+    
 
      /**
       * Cała logika gry tu będzie implementowa.
