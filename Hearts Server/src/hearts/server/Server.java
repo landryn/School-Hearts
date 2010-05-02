@@ -124,7 +124,7 @@ public class Server implements IServerSocket, IMaintenaceListener {
         if(maintenance instanceof CreateAccountMaintenance) {
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             CreateAccountMaintenance m = (CreateAccountMaintenance) maintenance;
-            if(!m.getReply() && m.getLogin() != null && m.getPassword()!=null) {
+            if(!m.isReply() && m.getLogin() != null && m.getPassword()!=null) {
                 if(authenticator.addUser(m.getLogin(), m.getPassword())) {
                     sc.sendMaintenance(new CreateAccountMaintenance(true));
                     Logger.getLogger(Server.class.getName()).log(Level.INFO, "Konto zostało założone: " + m.getLogin());
