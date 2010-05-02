@@ -1,7 +1,7 @@
 package hearts.defs.protocol;
 
-import hearts.defs.actions.ActionListener;
-import hearts.defs.actions.ActionNotifier;
+import hearts.defs.actions.IActionListener;
+import hearts.defs.actions.IActionNotifier;
 
 /**
  * <p>Socket odbierający i wysyłający obiekty do/z przypisanego połączenia.
@@ -13,7 +13,7 @@ import hearts.defs.actions.ActionNotifier;
  * </p>
  * @author szymon
  */
-public interface ObjectSocket extends ActionNotifier, ActionListener, Runnable {
+public interface IObjectSocket extends IActionNotifier, IActionListener, Runnable {
     /**
      * Pobiera id
      * @return id, obiektu, GameConstants.SERVER w przypadku implementacji

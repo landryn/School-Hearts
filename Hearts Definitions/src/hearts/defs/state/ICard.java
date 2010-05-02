@@ -6,7 +6,7 @@ import java.io.Serializable;
  *
  * @author szymon
  */
-public interface Card extends Serializable, Cloneable {
+public interface ICard extends Serializable, Cloneable {
 
     public static final int JACK = 11;
     public static final int QUEEN = 12;

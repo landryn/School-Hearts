@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package hearts.defs.state;
 
 /**
@@ -10,14 +5,14 @@ package hearts.defs.state;
  * jest id usera dokłającego kartę.
  * @author szymon
  */
-public interface Trick {
+public interface ITrick {
     /**
      * Dodaje kartę zaznaczając, który user ją dodał
      * @param c
      * @param userId
      * @throws TrickException
      */
-    public void addCard(Card c, int userId) throws TrickException;
+    public void addCard(ICard c, int userId) throws TrickException;
 
 
     /**
@@ -25,12 +20,18 @@ public interface Trick {
      * Indeks tablicy określa id usera
      * @return
      */
-    public Card[] getCards();
+    public ICard[] getCards();
 
     /**
      * Czy ta wziątka jest jedną z dwóch ostatnich (punktowanych podwójnie)
      * @return
      */
     public boolean isLast();
+
+    /**
+     * Robi głęboki klon obiektu. Musi sklonować tablicę obiektów.
+     * @return
+     */
+    public ITrick clone();
 
 }

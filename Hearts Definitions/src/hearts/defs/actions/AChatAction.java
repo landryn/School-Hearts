@@ -2,16 +2,16 @@ package hearts.defs.actions;
 
 /**
  * <p>Klasa służąca o chatu. Sędzia powinien obsługiwać chat
- * podając do akcji dziedziczących po ChatAction pusty stan gry
- * np. klasa DumbState implementująca tylko listę akcji do rozesłania.</p>
+ * podając do akcji dziedziczących po ChatAction pusty stan gry,
+ * klasa DumbState! </p>
  *
  * <p>Generalnie akcje implementujące ten interfejs nie powinny modifikować
  * stanu gry oprócz ew. dodania komunikatów do rozesłania</p>
  * @author szymon
  */
-public abstract class ChatAction extends Action {
+public abstract class AChatAction extends AAction {
 
-    public ChatAction(int receiver) {
+    public AChatAction(int receiver) {
         super(receiver);
     }
 

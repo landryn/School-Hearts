@@ -7,7 +7,7 @@ package hearts.defs.protocol;
  * Jest także ActionListenerem, popychającym obiekty Action do klienta.
  * @author szymon
  */
-public interface UserSocket extends ObjectSocket {
+public interface IUserSocket extends IObjectSocket {
     /**
      * Ustawia id (0...3) obowiązujące na stole, w którym gra user.
      *
