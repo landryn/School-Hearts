@@ -8,6 +8,7 @@ package hearts.maintenance.answers;
 import hearts.defs.state.GUIStateException;
 import hearts.defs.state.IGUIState;
 import java.io.Serializable;
+import javax.swing.JOptionPane;
 
 /**
  * Odpowiedź na logowanie.
@@ -30,7 +31,8 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
 
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        gui.getSocket().setLoggedIn(success);
+        gui.showMessage("YEAH!", JOptionPane.INFORMATION_MESSAGE, success.toString());
     }
 
     /**

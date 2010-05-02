@@ -6,6 +6,7 @@ package hearts.server;
 
 import hearts.defs.actions.AAction;
 import hearts.defs.actions.IActionListener;
+import hearts.defs.actions.IActionNotifier;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GameConstants;
 import hearts.maintenance.CreateAccountMaintenance;
@@ -26,7 +27,10 @@ import java.util.logging.Logger;
  * Nasłuchuje w oczekiwaniu na połączenia.
  * @author Michał Charmas
  */
-public class Server implements IServerSocket, IMaintenaceListener {
+public class Server
+        implements IMaintenaceListener,
+        IActionListener, IActionNotifier,
+        Runnable {
 
     private int port;
     private String host;
@@ -115,11 +119,11 @@ public class Server implements IServerSocket, IMaintenaceListener {
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             LoginMaintenance m = (LoginMaintenance) maintenance;
             if(sc.isLoggedIn()) {
-                sc.actionReceived(new LoginAnswer(true, null));
+                sc.actionReceived(new LoginAnswer(true, ""));
             } else if(authenticator.checkUser(m.getLogin(), m.getPassword())) {
                 sc.setName(m.getLogin());
                 sc.setLoggedIn(true);
-                sc.actionReceived(new LoginAnswer(true, null));
+                sc.actionReceived(new LoginAnswer(true, ""));
             } else {
                 sc.actionReceived(new LoginAnswer(false, "Bad username or password."));
             }

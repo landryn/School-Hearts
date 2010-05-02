@@ -8,14 +8,24 @@
  *
  * Created on 2010-05-02, 17:06:51
  */
-
 package hearts.client.hui;
+
+import hearts.client.NetClient;
+import hearts.defs.state.IGUIState;
+import hearts.maintenance.LoginMaintenance;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author szymon
  */
 public class loginPanel extends javax.swing.JPanel {
+
+    IGUIState gui = null;
 
     /** Creates new form loginPanel */
     public loginPanel() {
@@ -121,6 +131,11 @@ public class loginPanel extends javax.swing.JPanel {
         add(passwordField, gridBagConstraints);
 
         loginButton.setText("Zaloguj");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -141,7 +156,22 @@ public class loginPanel extends javax.swing.JPanel {
         add(jSeparator2, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        try {
+            gui.setSocket(new NetClient(serverField.getText(), (Integer) portSpinner.getValue()));
+            gui.getSocket().maintenanceReceived(
+                    new LoginMaintenance(
+                    loginField.getText(),
+                    new String(passwordField.getPassword())));
 
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(loginPanel.class.getName()).log(Level.SEVERE, null, ex);
+            gui.showMessage("Błąd połączenia", JOptionPane.ERROR_MESSAGE, ex.getLocalizedMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(loginPanel.class.getName()).log(Level.SEVERE, null, ex);
+            gui.showMessage("Błąd połączenia", JOptionPane.ERROR_MESSAGE, ex.getLocalizedMessage());
+        }
+    }//GEN-LAST:event_loginButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JSeparator jSeparator1;
@@ -157,4 +187,11 @@ public class loginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel serverLabel;
     // End of variables declaration//GEN-END:variables
 
+    public void setGui(IGUIState gui) {
+        this.gui = gui;
+    }
+
+    public IGUIState getGui() {
+        return gui;
+    }
 }

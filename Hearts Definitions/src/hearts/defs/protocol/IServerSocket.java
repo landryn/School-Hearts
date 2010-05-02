@@ -6,4 +6,8 @@ package hearts.defs.protocol;
  * @author szymon
  */
 public interface IServerSocket extends IObjectSocket, IMaintenaceListener, IMaintenanceNotifier {
+
+    public boolean isLoggedIn();
+
+    public void setLoggedIn(boolean loggedIn);
 }
