@@ -1,6 +1,5 @@
 package hearts.client;
 
-import hearts.maintenance.CreateAccountMaintenance;
 import hearts.maintenance.LoginMaintenance;
 import java.io.IOException;
 import java.net.UnknownHostException;
