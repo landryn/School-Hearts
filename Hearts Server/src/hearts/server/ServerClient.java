@@ -7,19 +7,25 @@ package hearts.server;
 import hearts.defs.actions.AAction;
 import hearts.defs.actions.IActionListener;
 import hearts.defs.protocol.IUserSocket;
+import hearts.maintenance.IMaintenaceListener;
+import hearts.maintenance.IMaintenance;
+import hearts.maintenance.IMaintenanceNotifier;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author orbit
+ * Wątek klienta tworzony przez serwer w celu nasłuchiwania na socketcie klienta.
+ * Powiadamia ActionListenerów o otrzymanych akcjach gry pod warunkiem że klient jest zalogowany.
+ * Powiadamia MaintanaceListenerów o otrzymancych akcjach typu (zalogowanie, utworzenie stołu, ...).
+ * @author Michał Charmas
  */
-public class ServerClient implements IUserSocket {
+public class ServerClient implements IUserSocket, IMaintenanceNotifier {
 
     /**
      * Socket do komunikacji.
@@ -41,6 +47,13 @@ public class ServerClient implements IUserSocket {
      */
     private ArrayList<IActionListener> listeners = null;
 
+    /**
+     * Lista mainenance listenerów powiadamianych o zdarzeniach Maintanace.
+     */
+    private ArrayList<IMaintenaceListener> maintenanceListeners = null;
+
+    private boolean loggedIn = false;
+
     private int id;
     private String name = "";
 
@@ -56,6 +69,7 @@ public class ServerClient implements IUserSocket {
         output = new ObjectOutputStream(socket.getOutputStream());
 
         listeners = new ArrayList<IActionListener>();
+        maintenanceListeners = new ArrayList<IMaintenaceListener>();
         Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "ServerClient utworzony.");
     }
 
@@ -69,12 +83,15 @@ public class ServerClient implements IUserSocket {
     public void run() {
         try {
             while (true) {
-                AAction action = (AAction) input.readObject();
-                if (action == null) {
-                    break;
+                Serializable object = (Serializable) input.readObject();
+                Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Otrzymano obiekt.");
+                if(object instanceof AAction && isLoggedIn()) {
+                    Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Powiadomiam actionListenerow");
+                    notifyListeners((AAction) object);
+                } else if (object instanceof IMaintenance){
+                    Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Powiadomiam mainteneceListenerow");
+                    notifyMaintenanceListeners((IMaintenance) object);
                 }
-                Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Otrzymano akcję.");
-                notifyListeners(action);
             }
         } catch (IOException ex) {
             Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, "Klient mógł się rozłączyć.", ex);
@@ -142,4 +159,39 @@ public class ServerClient implements IUserSocket {
             Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, "Bład zamykania socketu przy rozłączniu użytkownika.", ex);
         }
     }
+
+    /**
+     * Dodaje maintenance listenera.
+     * @param listener
+     */
+    public void addMaintenanceListener(IMaintenaceListener listener) {
+        maintenanceListeners.add(listener);
+    }
+
+    /**
+     * Powiadamia maintenece listenerów.
+     * @param maintenance
+     */
+    public void notifyMaintenanceListeners(IMaintenance maintenance) {
+        for(IMaintenaceListener listener: maintenanceListeners) {
+            listener.maintenanceReceived(maintenance);
+        }
+    }
+
+    /**
+     *
+     * @return czy użytkownik jest zalogowany.
+     */
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    /**
+     * Ustawia czy użytkownik jest zalgoowany.
+     * @param loggedIn czy użytkownik jest zalogowany.
+     */
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
 }

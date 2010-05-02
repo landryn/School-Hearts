@@ -8,6 +8,8 @@ import hearts.defs.actions.AAction;
 import hearts.defs.actions.IActionListener;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GameConstants;
+import hearts.maintenance.IMaintenaceListener;
+import hearts.maintenance.IMaintenance;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author orbit
  */
-public class Server implements IServerSocket {
+public class Server implements IServerSocket, IMaintenaceListener {
 
     private int port;
     private String host;
@@ -53,10 +55,11 @@ public class Server implements IServerSocket {
                 Socket s = this.socket.accept();
                 Logger.getLogger(Server.class.getName()).log(Level.INFO, "Ktoś się połączył.");
                 ServerClient sc = new ServerClient(s);
+                sc.addActionListener(this);
+                sc.addMaintenanceListener(this);
                 clientsList.add(sc);
                 Thread th = new Thread(sc);
                 th.start();
-
             }
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.INFO, "IOException on listening for clients.", ex);
@@ -94,6 +97,10 @@ public class Server implements IServerSocket {
     }
 
     public void actionReceived(AAction a) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void maintenanceReceived(IMaintenance maintenance) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
