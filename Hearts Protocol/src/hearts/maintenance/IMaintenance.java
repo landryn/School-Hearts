@@ -5,6 +5,7 @@
 
 package hearts.maintenance;
 
+import hearts.defs.protocol.IUserSocket;
 import java.io.Serializable;
 
 /**
@@ -12,5 +13,6 @@ import java.io.Serializable;
  * i innych zadań specjalnych tego typu. 
  */
 public interface IMaintenance extends Serializable {
-    
+    public void setUserSocket(IUserSocket userSocket);
+    public IUserSocket getUserSocket();
 }
