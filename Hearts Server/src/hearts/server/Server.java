@@ -12,6 +12,7 @@ import hearts.maintenance.CreateAccountMaintenance;
 import hearts.maintenance.IMaintenaceListener;
 import hearts.maintenance.IMaintenance;
 import hearts.maintenance.LoginMaintenance;
+import hearts.maintenance.answers.LoginAnswer;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -113,13 +114,13 @@ public class Server implements IServerSocket, IMaintenaceListener {
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             LoginMaintenance m = (LoginMaintenance) maintenance;
             if(sc.isLoggedIn()) {
-                sc.sendMaintenance(new LoginMaintenance(true));
+                sc.actionReceived(new LoginAnswer(true, null));
             } else if(authenticator.checkUser(m.getLogin(), m.getPassword())) {
                 sc.setName(m.getLogin());
                 sc.setLoggedIn(true);
-                sc.sendMaintenance(new LoginMaintenance(true));
+                sc.actionReceived(new LoginAnswer(true, null));
             } else {
-                sc.sendMaintenance(new LoginMaintenance(false));
+                sc.actionReceived(new LoginAnswer(false, "Bad username or password."));
             }
         }
 
