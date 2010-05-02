@@ -8,8 +8,11 @@ package hearts.maintenance;
 import hearts.defs.protocol.IUserSocket;
 
 /**
- *
- * @author orbit
+ * Obiekty tej klasy używane są do wysyłania requestów o zalogowanie i obsługiwanie odpowiedzi.
+ * Gdy obiekt jest rządaniem isRequest jest prawdą.
+ * Gdy obiekt jest odpowiedzią na rządanie isRequest powinno być fałszem a o tym, czy udało się zalogować
+ * można dowiedzieć się przez isSuccess
+ * @author Michał Charmas
  */
 public class LoginMaintenance implements IMaintenance{
     
@@ -20,8 +23,7 @@ public class LoginMaintenance implements IMaintenance{
     private Boolean success = false;
 
     /**
-     * Konstruktor używany przy wysyłaniu odpowiedzi.
-     * Ustawia automatycznie typ na REPLY (odpowiedź na rządanie logowania).
+     * Konstruktor używany bezparametrowy.
      */
     public LoginMaintenance() {
         this.login = null;
@@ -29,14 +31,17 @@ public class LoginMaintenance implements IMaintenance{
         this.request = false;
     }
 
+    /**
+     * Konstrutor używany to tworzenia obiektu z odpowiedzią na rządanie logowania.
+     * @param success czy udało się zalogować
+     */
     public LoginMaintenance(Boolean success) {
         this();
         this.success = success;
     }
 
     /**
-     * Konstruktor używany do wysyłania requestu zalogowania.
-     * Typ automatycznie ustawiany jest na REQUEST.
+     * Konstruktor używany do tworzenia obiektu rządania do zalogowania.
      * @param login login użytkownika
      * @param password hasło użytkownika
      */
@@ -49,8 +54,8 @@ public class LoginMaintenance implements IMaintenance{
     /**
      * Ustawia referencje na userSocket od którego request przyszyszedł żeby
      * do właściwego klienta odesłać informacje czy powiodło się logowania czy nie
-     * i odpowiednio go oznaczyć.
-     * @param userSocket zazwyczaj będzie this
+     * i odpowiednio go oznaczyć. Tylko i wyłącznie po stronie serwera.
+     * @param userSocket zazwyczaj będzie this, po stronie klienta null
      */
     public void setUserSocket(IUserSocket userSocket) {
         this.userSocket = userSocket;
@@ -75,14 +80,6 @@ public class LoginMaintenance implements IMaintenance{
     }
 
     /**
-     * Ustawia prawidłowość logowania.
-     * @param success
-     */
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    /**
      * Zwraca typ pakietu.
      * @return true jeżeli to jest prośba o zalogowanie, false jeżeli odpowiedź.
      */
@@ -90,10 +87,20 @@ public class LoginMaintenance implements IMaintenance{
         return request;
     }
 
+    /**
+     * Zwraca login do sprawdzenia przy rządaniu.
+     * W innym przypadku null.
+     * @return login do sprawdzenia
+     */
     public String getLogin() {
         return login;
     }
 
+    /**
+     * Hasło do sprawdzenia przy rządaniu
+     * W innym przypadku null
+     * @return hasło do sprawdzenia.
+     */
     public String getPassword() {
         return password;
     }

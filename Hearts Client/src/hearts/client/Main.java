@@ -1,12 +1,10 @@
 package hearts.client;
 
 import hearts.maintenance.CreateAccountMaintenance;
-import hearts.maintenance.LoginMaintenance;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import netclient.NetClient;
 
 /**
  *
@@ -20,7 +18,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             NetClient nc = new NetClient("localhost", 9999);
-            nc.start();
+            Thread th = new Thread(nc);
+            th.start();
             nc.sendMaintenece(new CreateAccountMaintenance("dupa", "jasio"));
             //nc.sendMaintenece(new LoginMaintenance("dupa", "jasio"));
         } catch (UnknownHostException ex) {
