@@ -1,11 +1,13 @@
 package hearts.state;
 
+import hearts.state.exceptions.WrongCardValueException;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.ICard;
 import java.io.Serializable;
 
 /**
  * Implemantacja karty.
+ * prezentuje obiekt niezmienny, nie potrzeby klonowania samego obiektu.
  * @author szymon
  */
 public class Card implements ICard, Serializable, Cloneable {

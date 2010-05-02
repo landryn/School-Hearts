@@ -51,7 +51,10 @@ public class Trick implements ITrick, Serializable, Cloneable {
         Trick trickClone = null;
         try {
             trickClone = (Trick) super.clone();
-            trickClone.cards = trickClone.cards.clone();
+
+            // klonuje tylko tablicę kart
+            // klonowanie samych kart nie ma sensu, bo są obiektami niezmiennymi.
+            trickClone.cards = this.cards.clone();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(Trick.class.getName()).log(Level.SEVERE, null, ex);
         }

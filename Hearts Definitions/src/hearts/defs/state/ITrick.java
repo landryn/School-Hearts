@@ -28,6 +28,10 @@ public interface ITrick {
      */
     public boolean isLast();
 
+    /**
+     * Robi głęboki klon obiektu. Musi sklonować tablicę obiektów.
+     * @return
+     */
     public ITrick clone();
 
 }

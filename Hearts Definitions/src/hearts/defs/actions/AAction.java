@@ -32,10 +32,12 @@ public abstract class AAction implements Serializable, Cloneable {
     }
 
     /**
-     * @param old stary stan gry
-     * @return nowy stan gry po przeleceniu
+     * Powinno być wywołane z klonem stanu gry!
+     * Tu umieszczamy implementację
+     * @param klon stanu gry
+     * @return stan gry po wykonaniu akcji
      */
-    public abstract IGameState perform(IGameState old)
+    public abstract IGameState perform(IGameState clone)
             throws GameStateException;
 
  

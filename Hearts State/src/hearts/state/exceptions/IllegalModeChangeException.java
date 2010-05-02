@@ -4,7 +4,8 @@ import hearts.defs.state.IGameState.Mode;
 import hearts.defs.state.GameStateException;
 
 /**
- *
+ * Wyjątek występujący, gdy chcemy przeskoczyć np. 2 tryby gry na raz.
+ * używany w GameState.nextMode().
  * @author szymon
  */
 public class IllegalModeChangeException extends GameStateException {
