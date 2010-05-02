@@ -12,6 +12,8 @@ import hearts.maintenance.CreateAccountMaintenance;
 import hearts.maintenance.IMaintenaceListener;
 import hearts.maintenance.IMaintenance;
 import hearts.maintenance.LoginMaintenance;
+import hearts.maintenance.answers.CreateAccountAnswer;
+import hearts.maintenance.answers.LoginAnswer;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -113,13 +115,13 @@ public class Server implements IServerSocket, IMaintenaceListener {
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             LoginMaintenance m = (LoginMaintenance) maintenance;
             if(sc.isLoggedIn()) {
-                sc.sendMaintenance(new LoginMaintenance(true));
+                sc.actionReceived(new LoginAnswer(true, null));
             } else if(authenticator.checkUser(m.getLogin(), m.getPassword())) {
                 sc.setName(m.getLogin());
                 sc.setLoggedIn(true);
-                sc.sendMaintenance(new LoginMaintenance(true));
+                sc.actionReceived(new LoginAnswer(true, null));
             } else {
-                sc.sendMaintenance(new LoginMaintenance(false));
+                sc.actionReceived(new LoginAnswer(false, "Bad username or password."));
             }
         }
 
@@ -127,12 +129,12 @@ public class Server implements IServerSocket, IMaintenaceListener {
         if(maintenance instanceof CreateAccountMaintenance) {
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             CreateAccountMaintenance m = (CreateAccountMaintenance) maintenance;
-            if(!m.isReply() && m.getLogin() != null && m.getPassword()!=null) {
+            if(m.getLogin() != null && m.getPassword()!=null) {
                 if(authenticator.addUser(m.getLogin(), m.getPassword())) {
-                    sc.sendMaintenance(new CreateAccountMaintenance(true));
+                    sc.actionReceived(new CreateAccountAnswer(true, null));
                     Logger.getLogger(Server.class.getName()).log(Level.INFO, "Konto zostało założone: " + m.getLogin());
                 } else {
-                    sc.sendMaintenance(new CreateAccountMaintenance(false));
+                    sc.actionReceived(new CreateAccountAnswer(false, "User already exists."));
                     Logger.getLogger(Server.class.getName()).log(Level.INFO, "Błąd zakładania konta! Użytkownik już istniał: " + m.getLogin());
                 }
             }
