@@ -103,6 +103,7 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
                 input.close();
                 output.close();
                 socket.close();
+                notifyMaintenanceListeners(new ClientDisconnectedMaintenance(this));
             } catch (IOException ex) {
                 Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, "Błąd zamykania socketów.", ex);
             }

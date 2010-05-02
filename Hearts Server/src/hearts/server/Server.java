@@ -19,8 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author orbit
+ * Głowna klasa serwera.
+ * Przechowuję listę połączonych klientów.
+ * Nasłuchuje w oczekiwaniu na połączenia.
+ * @author Michał Charmas
  */
 public class Server implements IServerSocket, IMaintenaceListener {
 
@@ -106,6 +108,7 @@ public class Server implements IServerSocket, IMaintenaceListener {
     public void maintenanceReceived(IMaintenance maintenance) {
 
         // LOGOWANIE ####################################################
+        // TODO: dodać sprawdzanie czy przypadkiem ktoś nie jest już zalogowany
         if(maintenance instanceof LoginMaintenance) {
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             LoginMaintenance m = (LoginMaintenance) maintenance;
@@ -133,6 +136,13 @@ public class Server implements IServerSocket, IMaintenaceListener {
                     Logger.getLogger(Server.class.getName()).log(Level.INFO, "Błąd zakładania konta! Użytkownik już istniał: " + m.getLogin());
                 }
             }
+        }
+
+        // ZAKOŃCZENIE WĄTKU KLIENTA ######################################
+        if(maintenance instanceof ClientDisconnectedMaintenance) {            
+            this.clientsList.remove((ServerClient)(maintenance.getUserSocket()));
+            Logger.getLogger(Server.class.getName()).log(Level.INFO, "Klient został rozłączony i jest usuwany z listy.\n" +
+                    "Ilość podłączonych klientow: " + String.valueOf(clientsList.size()));
         }
     }
 }
