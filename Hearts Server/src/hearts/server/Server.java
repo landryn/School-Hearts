@@ -10,6 +10,7 @@ import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GameConstants;
 import hearts.maintenance.IMaintenaceListener;
 import hearts.maintenance.IMaintenance;
+import hearts.maintenance.LoginMaintenance;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -26,8 +27,9 @@ public class Server implements IServerSocket, IMaintenaceListener {
     private String host;
     private java.net.ServerSocket socket = null;
     private ArrayList<ServerClient> clientsList = null;
-
     private ArrayList<IActionListener> listeners = null;
+
+    private UserAuthenticator authenticator = new UserAuthenticator();
 
     /**
      * <p>Tworzy obiekt serwera, który później trzeba wystartować.</p>
@@ -101,6 +103,19 @@ public class Server implements IServerSocket, IMaintenaceListener {
     }
 
     public void maintenanceReceived(IMaintenance maintenance) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");        
+        if(maintenance instanceof LoginMaintenance) {
+            ServerClient sc = (ServerClient) maintenance.getUserSocket();
+            LoginMaintenance m = (LoginMaintenance) maintenance;
+            if(sc.isLoggedIn()) {
+                sc.sendMaintenance(new LoginMaintenance(true));
+            } else if(authenticator.checkUser(m.getLogin(), m.getPassword())) {
+                sc.setName(m.getLogin());
+                sc.setLoggedIn(true);
+                sc.sendMaintenance(new LoginMaintenance(true));
+            } else {
+                sc.sendMaintenance(new LoginMaintenance(false));
+            }
+        }
     }
 }

@@ -65,9 +65,9 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
     public ServerClient(Socket socket) throws IOException {
         this.socket = socket;
 
-        input = new ObjectInputStream(socket.getInputStream());
         output = new ObjectOutputStream(socket.getOutputStream());
-
+        input = new ObjectInputStream(socket.getInputStream());
+        
         listeners = new ArrayList<IActionListener>();
         maintenanceListeners = new ArrayList<IMaintenaceListener>();
         Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "ServerClient utworzony.");
@@ -89,12 +89,13 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
                     Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Powiadomiam actionListenerow");
                     notifyListeners((AAction) object);
                 } else if (object instanceof IMaintenance){
+                    ((IMaintenance)object).setUserSocket(this);
                     Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Powiadomiam mainteneceListenerow");
                     notifyMaintenanceListeners((IMaintenance) object);
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, "Klient mógł się rozłączyć.", ex);
+            Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Klient mógł się rozłączyć.");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, "Błąd odbierania danych.", ex);
         } finally {
@@ -126,6 +127,15 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
             this.output.flush();
         } catch (IOException ex) {
             Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, "Bład wysyłania akcji.", ex);
+        }
+    }
+
+    public void sendMaintenance(IMaintenance m) {
+        try {
+            this.output.writeObject(m);
+            this.output.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, "Bład wysyłania maintenece.", ex);
         }
     }
 
@@ -192,6 +202,9 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
      */
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
+        if(loggedIn) {
+            Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, "Użytkownik " + this.getName() + " został zalogowany.");
+        }
     }
 
 }

@@ -11,7 +11,7 @@ import hearts.defs.protocol.IUserSocket;
  *
  * @author orbit
  */
-public class LoginMintenance implements IMaintenance{
+public class LoginMaintenance implements IMaintenance{
     
     private String login;
     private String password;
@@ -23,10 +23,15 @@ public class LoginMintenance implements IMaintenance{
      * Konstruktor używany przy wysyłaniu odpowiedzi.
      * Ustawia automatycznie typ na REPLY (odpowiedź na rządanie logowania).
      */
-    public LoginMintenance() {
+    public LoginMaintenance() {
         this.login = null;
         this.password = null;
         this.request = false;
+    }
+
+    public LoginMaintenance(Boolean success) {
+        super();
+        this.success = success;
     }
 
     /**
@@ -35,7 +40,7 @@ public class LoginMintenance implements IMaintenance{
      * @param login login użytkownika
      * @param password hasło użytkownika
      */
-    public LoginMintenance(String login, String password) {
+    public LoginMaintenance(String login, String password) {
         this.login = login;
         this.password = password;
         this.request = true;
@@ -85,4 +90,12 @@ public class LoginMintenance implements IMaintenance{
         return request;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+  
 }
