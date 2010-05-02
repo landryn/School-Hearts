@@ -140,19 +140,9 @@ public class NetClient implements IActionListener, IActionNotifier, IMaintenaceL
 
     /**
      * Metoda zaimplementowana z MainteneceListenera.
-     * Tutaj służy tylko do przetwarzania tego czy udało się zalogować czy nie.
-     * Można to sprawdzić za pomocą metody isLogggedIn()
      * @param maintenance
      */
     public void maintenanceReceived(IMaintenance maintenance) {
-        if (maintenance instanceof LoginMaintenance) {
-            LoginMaintenance m = (LoginMaintenance) maintenance;
-            if (!m.isRequest()) {
-                if (m.isSuccess()) {
-                    this.loggedIn = true;
-                }
-            }
-        }
     }
 
     /**
