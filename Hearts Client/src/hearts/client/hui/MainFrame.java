@@ -1,14 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * MainFrame.java
- *
- * Created on 2010-05-02, 15:08:10
- */
-
 package hearts.client.hui;
 
 /**
@@ -31,18 +20,26 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        loginPanel1 = new hearts.client.hui.loginPanel();
+        mainMenuBar = new javax.swing.JMenuBar();
+        gameMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().add(loginPanel1, java.awt.BorderLayout.CENTER);
+
+        gameMenu.setText("Gra");
+
+        jMenuItem1.setText("jMenuItem1");
+        gameMenu.add(jMenuItem1);
+
+        mainMenuBar.add(gameMenu);
+
+        helpMenu.setText("Pomoc");
+        mainMenuBar.add(helpMenu);
+
+        setJMenuBar(mainMenuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -59,6 +56,11 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu gameMenu;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem jMenuItem1;
+    private hearts.client.hui.loginPanel loginPanel1;
+    private javax.swing.JMenuBar mainMenuBar;
     // End of variables declaration//GEN-END:variables
 
 }
