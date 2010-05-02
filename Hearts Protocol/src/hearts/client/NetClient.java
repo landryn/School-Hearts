@@ -6,13 +6,10 @@ package hearts.client;
 
 import hearts.defs.actions.AAction;
 import hearts.defs.actions.IActionListener;
-import hearts.defs.actions.IActionNotifier;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GameConstants;
-import hearts.maintenance.IMaintenaceListener;
-import hearts.maintenance.IMaintenance;
-import hearts.maintenance.IMaintenanceNotifier;
-import hearts.maintenance.LoginMaintenance;
+import hearts.defs.protocol.IMaintenaceListener;
+import hearts.defs.protocol.IMaintenance;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,7 +24,7 @@ import java.util.logging.Logger;
  * Klasa klienta serwera sieciowego.
  * @author Michał Charmas
  */
-public class NetClient implements IActionListener, IActionNotifier, IMaintenaceListener, IMaintenanceNotifier, IServerSocket {
+public class NetClient implements IServerSocket {
 
     private Socket socket = null;
     private ObjectInputStream input = null;
@@ -143,6 +140,7 @@ public class NetClient implements IActionListener, IActionNotifier, IMaintenaceL
      * @param maintenance
      */
     public void maintenanceReceived(IMaintenance maintenance) {
+        sendMaintenece(maintenance);
     }
 
     /**
@@ -185,5 +183,13 @@ public class NetClient implements IActionListener, IActionNotifier, IMaintenaceL
      */
     public boolean isLoggedIn() {
         return loggedIn;
+    }
+
+    /**
+     * Ustawia czy jest zalogowany
+     * @param loggedIn
+     */
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
     }
 }

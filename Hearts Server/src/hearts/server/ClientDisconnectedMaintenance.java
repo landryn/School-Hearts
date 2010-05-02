@@ -5,6 +5,7 @@
 
 package hearts.server;
 
+import hearts.defs.protocol.IMaintenance;
 import hearts.maintenance.*;
 import hearts.defs.protocol.IUserSocket;
 

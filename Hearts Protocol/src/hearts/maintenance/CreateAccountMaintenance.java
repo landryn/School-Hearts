@@ -5,6 +5,7 @@
 
 package hearts.maintenance;
 
+import hearts.defs.protocol.IMaintenance;
 import hearts.defs.protocol.IUserSocket;
 
 /**

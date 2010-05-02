@@ -5,5 +5,5 @@ package hearts.defs.protocol;
  * getId() powinno zwracać GameConstants.SERVER
  * @author szymon
  */
-public interface IServerSocket extends IObjectSocket {
+public interface IServerSocket extends IObjectSocket, IMaintenaceListener, IMaintenanceNotifier {
 }

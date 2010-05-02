@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package hearts.maintenance;
+package hearts.defs.protocol;
 
 import hearts.defs.protocol.IUserSocket;
 import java.io.Serializable;
