@@ -19,4 +19,11 @@ public class GameConstants {
      */
     public static final int SERVER = -2;
 
+
+    /**
+     * Wtedy, gdy wiadomość jest wysyłana poza grą, tzn. w Lobby czy przy
+     * logowaniu
+     */
+    public static final int NOT_IMPORTANT = -3;
+
 }
