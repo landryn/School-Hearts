@@ -8,6 +8,7 @@ import hearts.defs.actions.AAction;
 import hearts.defs.actions.IActionListener;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GameConstants;
+import hearts.maintenance.CreateAccountMaintenance;
 import hearts.maintenance.IMaintenaceListener;
 import hearts.maintenance.IMaintenance;
 import hearts.maintenance.LoginMaintenance;
@@ -103,7 +104,8 @@ public class Server implements IServerSocket, IMaintenaceListener {
     }
 
     public void maintenanceReceived(IMaintenance maintenance) {
-        //throw new UnsupportedOperationException("Not supported yet.");        
+
+        // LOGOWANIE ####################################################
         if(maintenance instanceof LoginMaintenance) {
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             LoginMaintenance m = (LoginMaintenance) maintenance;
@@ -115,6 +117,21 @@ public class Server implements IServerSocket, IMaintenaceListener {
                 sc.sendMaintenance(new LoginMaintenance(true));
             } else {
                 sc.sendMaintenance(new LoginMaintenance(false));
+            }
+        }
+
+        // ZAKŁADANIE KONTA ##############################################
+        if(maintenance instanceof CreateAccountMaintenance) {
+            ServerClient sc = (ServerClient) maintenance.getUserSocket();
+            CreateAccountMaintenance m = (CreateAccountMaintenance) maintenance;
+            if(!m.getReply() && m.getLogin() != null && m.getPassword()!=null) {
+                if(authenticator.addUser(m.getLogin(), m.getPassword())) {
+                    sc.sendMaintenance(new CreateAccountMaintenance(true));
+                    Logger.getLogger(Server.class.getName()).log(Level.INFO, "Konto zostało założone: " + m.getLogin());
+                } else {
+                    sc.sendMaintenance(new CreateAccountMaintenance(false));
+                    Logger.getLogger(Server.class.getName()).log(Level.INFO, "Błąd zakładania konta! Użytkownik już istniał: " + m.getLogin());
+                }
             }
         }
     }

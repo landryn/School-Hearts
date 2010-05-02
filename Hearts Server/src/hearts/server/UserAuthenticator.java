@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.server;
 
 import java.io.FileInputStream;
@@ -18,6 +17,7 @@ import java.util.logging.Logger;
  * @author orbit
  */
 public class UserAuthenticator {
+
     private Properties userList = null;
     private String fileName = "userList";
 
@@ -60,13 +60,20 @@ public class UserAuthenticator {
 
     /**
      * Metoda dodająca użytkownika do listy a następnie zapisująca listę i ładująca ją ponownie.
+     * Przed założeniem konta sprawdza czy użytkownik wcześniej nie istaniał.
      * @param username nazwa użytkownika do dodania
      * @param password hasło użytkoniwka
+     * @return czy udało się założyć konto
      */
-    public void addUser(String username, String password) {
+    public boolean addUser(String username, String password) {
+        if (userList.containsKey(username)) {
+            return false;
+        }
+
         userList.setProperty(username, password);
         saveProperties();
         loadProperties();
+        return true;
     }
 
     /**
@@ -77,12 +84,12 @@ public class UserAuthenticator {
      * @return false jeśli użytkownika nie ma w bazie lub jego hasło jest nieprawidłowe, true jeśli wszystko jest ok.
      */
     public boolean checkUser(String username, String password) {
-        if(!userList.containsKey(username)) {
+        if (!userList.containsKey(username)) {
             return false;
         }
 
         String dbPass = userList.getProperty(username);
-        if(dbPass != null && dbPass.equals(password)) {
+        if (dbPass != null && dbPass.equals(password)) {
             return true;
         }
 
@@ -107,6 +114,4 @@ public class UserAuthenticator {
         saveProperties();
         loadProperties();
     }
-
-
 }

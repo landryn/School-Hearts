@@ -30,7 +30,7 @@ public class LoginMaintenance implements IMaintenance{
     }
 
     public LoginMaintenance(Boolean success) {
-        super();
+        this();
         this.success = success;
     }
 
