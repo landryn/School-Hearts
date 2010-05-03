@@ -11,7 +11,6 @@ import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.IUserState;
 import hearts.state.actions.AddCardToTrickAction;
-import hearts.state.actions.gui.NewDaelForUserAGUI;
 import hearts.state.actions.NextModeAction;
 import hearts.state.actions.NextTripAction;
 import hearts.state.exceptions.WrongCardValueException;

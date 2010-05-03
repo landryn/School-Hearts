@@ -23,7 +23,16 @@ public class NewDaelForUserAGUI extends AGUIAction {
     private ICard []cards=null;
     private List<Integer> listPoints=null;
     private IGameState.Mode mode;
+    private int dealer;
 
+    public int getDealer() {
+        return dealer;
+    }
+
+    public void setDealer(int dealer) {
+        this.dealer = dealer;
+    }
+    
     public ICard[] getCards() {
         return cards;
     }

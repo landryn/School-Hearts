@@ -64,4 +64,32 @@ public class DumbState extends AActionList {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void setDealer(int dealer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int nextDealer() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getDealer() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAtiveUser(int user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean trickEnds() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean dealEnds() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getNumTrick() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

@@ -20,7 +20,7 @@ public class Trick implements ITrick, Serializable, Cloneable {
     private int manyCards=0;
     protected boolean last;
     /**
-     * Kto wyszedł.
+     * Kto wyszedł jako pierwszy. Czyli jaki kolor jest wistujący. Nie mylić z atutem.
      */
     protected int first;
     /**

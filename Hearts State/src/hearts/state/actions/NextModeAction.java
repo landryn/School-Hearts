@@ -43,6 +43,7 @@ public class NextModeAction extends AAction {
          * 3. Dodaje karty
          * 4. Zmieniam mode
          * 5. Zeruje licznik Trick
+         * 6. Ustawiam  nowego rozdającego, i aktywnego usera.
          */
         GameState game= (GameState) old.clone();
 
@@ -65,13 +66,19 @@ public class NextModeAction extends AAction {
 
         game.setNumTrick(0);
 
+        game.nextDealer();
+        game.setAtiveUser(game.getDealer());
+        //ustawiam gracza ktróry teraz będzie wychodził jako pierwszy
+        game.nextUser();
+
          for(int i=0;i<4;i++){
                 tab[i].setListTriks(game.getUserState(i).getPointsList());
                 tab[i].setMode(game.getMode());
+                tab[i].setDealer(game.getDealer());
                 game.addAction(tab[i]);//dadałem akcję do wysłania
             }
-
-            game.nextDealer();
+            //ustawiam nowego rozdającego
+            
         return game;
     }
 
