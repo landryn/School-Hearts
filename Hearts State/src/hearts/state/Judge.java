@@ -9,12 +9,15 @@ import hearts.defs.state.CardColor;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
+import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
+import hearts.defs.state.SFinalPoints;
 import hearts.state.actions.AddCardToTrickAction;
 import hearts.state.actions.NextModeAction;
 import hearts.state.actions.NextTripAction;
 import hearts.state.exceptions.WrongCardValueException;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -239,16 +242,75 @@ public class Judge implements hearts.defs.judge.IJudge {
     }
 
     /**
-     * Funkcja określająca ile punktów zdobył gracz. Chwilowo zwraca random. Do testów.
+     * Funkcja określająca ile punktów zdobył każdy z graczy.
      * @param state
      * @param user
      * @return
      */
-    public static int getPoints(IGameState.Mode mode, IUserState user) {
-        int point = 0;
+    public static SFinalPoints getPoints(IGameState state) {
+        SFinalPoints userPoints=new SFinalPoints();
+        if (state.getMode().equals(IGameState.Mode.BANDIT)){
+            /**
+             * 1. Sumowanie punktów z lew, jaki wzioł gracz.
+             * 2. Okreslenie czy ktos nic nie wzioł
+             * 3. Dodanie odpowiedniech etapów gry.
+             */
+            for(int i=0;i<4;i++){
+                userPoints.points[i]=0;
+                IUserState ust=state.getUserState(i);
+                List<ITrick> list=ust.getTricks();
+                for(int k=0;k<list.size();k++){
+                    //punkty za lewę
+                    userPoints.points[i]-=2;
+                    //karty gracza
+                    ICard []cards=list.get(k).getCards();
+                    for(int l=0;l<cards.length;l++) {
+                        //punkty za pana
+                        if(cards[l].getValue()==Card.KING || cards[l].getValue()==Card.JACK) userPoints.points[i]-=3;
+                        //punkty za dame
+                          if(cards[l].getValue()==Card.QUEEN)  userPoints.points[i]-=5;
+                        //punkty za kiera
+                        if(cards[l].getColor().equals(CardColor.HEART))  userPoints.points[i]-=3;
+                        //punkty za ostatnią lewe
+                        //opis w jest dośc nie jasny
+                        if (list.get(k).isLast()) userPoints.points[i]-=2*9;
+                    }
 
 
-        return new Random(new Date().getTime()).nextInt() % 40;
+                }
+
+            }// gracze mają podliczone punkty
+
+            int zero=0;
+            for(int i=0;i<4;i++){
+                if(userPoints.points[i]==0){
+                    //dodaje rozbójnika
+                    userPoints.mode.add(IGameState.Mode.REAVER);
+                    zero++;
+                }
+            }//wiem ilu graczy nie wieło żadne lewy
+            if(zero==3) {
+                // zero punktów dla gracza który wzioł wszystkie wziątki
+                // -130 dla pozostałych
+                for(int i=0;i<4;i++) {
+                    if(userPoints.points[i]==0 ) userPoints.points[i]= -130;
+                    else userPoints.points[i]=0;
+                }
+            } else {
+                //jeśli każdy coś wziął to pętla się nie wykona
+                for( int i=0;i<zero;i++){
+                    // zmieniamy punkty graczy
+                    //- jeden gracz 0pkt – pozostali pkt ujemne x2
+                    //- dwóch graczy 0pkt – pozostali pkt ujemne x3
+                    userPoints.points[i]= userPoints.points[i]*(zero+1);
+                }
+            }
+        }//mamy punkty policzone dla rozbójnika
+
+        return userPoints;
+
+
+       
     }
     /**
      * Funkcja zwraca głęboką kopję stanu gry.
