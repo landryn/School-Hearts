@@ -18,8 +18,9 @@ public interface IJudge {
     /**
      * <p>Dostaje stan gry i akcję, na podstawie typu akcji ocenia, czy akcja
      * jest w tym momencie dozwolona i wywołuje na akcji perform()
-     * z kopią stanu gry. Dla akcji typu ChatAction wywołuje perform
-     * z dumbState'em</p>
+     * z kopią stanu gry.</p>
+     *
+     * <p>Chatem zajmuje się StateGuard</p>
      *
      * <p>Potem sam podejmuje ew. własne czynności i dodaje swoje komunikaty do kolejki
      * w stanie gry przez state.addAction();</p>

@@ -2,8 +2,6 @@ package hearts.defs.state;
 
 import hearts.defs.protocol.IUserSocket;
 import hearts.defs.actions.IActionListener;
-import hearts.defs.state.IGameState;
-import hearts.defs.state.GameStateException;
 
 /**
  * Klasa opiekująca się stanem gry, odpowiedzialna za:
@@ -14,15 +12,19 @@ import hearts.defs.state.GameStateException;
  * <li>trzymanie obiektu stanu gry</li>
  * <li>nasłuchiwanie na UserSocketach, tzn. dodaje siebie jako ich Listener</li>
  * <li>przetwarzanie otrzymanych akcji przy pomocy Judge'a</li>
+ * <li>Przetwarzenie akcji chatu z DubmState'a</li>
  * <li>każdorazowo po przetworzeniu stanu gry sprawdza listę
+ * ze stanu gry i dumbstate'a
  * obiektów Action do rozesłania i rozsyła do adresatów albo ID usera albo
  * GameConstants.ALL_USER</li>
  * </ol>
- * 
- * <p><b>Ważne:</b>Specjalną troską powinien opatrzyć akcje dziedziczące po ChatAction:
- * podawać jej odrębny stan gry, jakiś DumbState implementujący tylko
- * kolejkę akcji do rozesłania.</p>
  *
+ * <p>Trzyma GameState i DumbState:
+ * <ul>
+ * <li>GameState dla akcji dziedziczących po AServerAction</li>
+ * <li>DumbState dla akcji chatu, dziedziczących po AChatAction</li>
+ * </ul>
+ * </p>
  * @author szymon
  */
 public interface IServerStateGuard extends IActionListener, Runnable {

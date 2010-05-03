@@ -10,7 +10,7 @@ import hearts.state.exceptions.UserExistsException;
 import java.io.Serializable;
 
 /**
- *
+ * Implementacja stanu gry
  * @author szymon
  */
 public class GameState
@@ -29,14 +29,30 @@ public class GameState
     protected boolean auction = false;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
+
+    /**
+     * Klonowanie głębokie stanu gry.
+     * Wszystkie modyfikowalne obiekty są klonowane:
+     * <ul>
+     * <li>stan userów</li>
+     * <li>aktualna wziątka na stole</li>
+     * </ul>
+     * @return
+     */
     @Override
     public IGameState clone() {
         GameState stateClone = (GameState) super.clone();
-        // kopiowanie zmiennych obiektów:
-        for (int i = 0; i < stateClone.userStates.length; ++i) {
-            stateClone.userStates[i] = stateClone.userStates[i].clone();
+        // kopiowanie zmiennych obiektów,
+        // najpierw pusta tablica
+        stateClone.userStates = new IUserState[this.userStates.length];
+
+        // do ktorej kopiuję stany użytkowników:
+        for (int i = 0; i < this.userStates.length; ++i) {
+            stateClone.userStates[i] = this.userStates[i].clone();
         }
-        stateClone.trick = stateClone.trick.clone();
+
+        // klonowanie wziątki:
+        stateClone.trick = this.trick.clone();
         return stateClone;
     }
 
@@ -45,6 +61,14 @@ public class GameState
         return userStates[id];
     }
 
+    /**
+     * Ustawia obiekt state jako stan usera i indeksie id.
+     * Można wykonać tylko raz taką akcję dla id.
+     * @param id
+     * @param state
+     * @throws GameStateException gdy probujemy dwa razy ustawić
+     * stan usera na tym samym indeksie
+     */
     @Override
     public synchronized void setUserState(int id, IUserState state)
             throws GameStateException {
@@ -114,6 +138,10 @@ public class GameState
         return trick;
     }
 
+    /**
+     * Ustawia wziątkę na nowo stoworzony obiekt.
+     * @param last czy wziątka jest jedną z dwóch ostatnich
+     */
     @Override
     public void clearTrick(boolean last) {
         trick = new Trick(last);

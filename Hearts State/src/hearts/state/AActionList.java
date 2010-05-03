@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Klasa zajmująca się gromadzeniem wiadomości.
+ * Klasa zajmująca się agregowaniem wiadomości.
  * @author szymon
  */
 public abstract class AActionList
@@ -31,6 +31,10 @@ public abstract class AActionList
         return a;
     }
 
+    /**
+     * Klon będzie miał nową, pustą listę akcji.
+     * @return
+     */
     @Override
     public IGameState clone() {
         AActionList stateClone = null;
@@ -42,5 +46,4 @@ public abstract class AActionList
         }
         return stateClone;
     }
-
 }

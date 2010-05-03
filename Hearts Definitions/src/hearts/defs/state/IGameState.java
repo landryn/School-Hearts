@@ -85,6 +85,11 @@ public interface IGameState extends Serializable, Cloneable {
 
         
         /**
+         * kiedy już użytkownicy się zbiorą,
+         * wszyscy muszą klinknąć "start"
+         */
+        WAITING_FOR_ACCEPTATIONS,
+        /**
          * zbój (punktowanie ujemne)
          */
         BANDIT,
