@@ -54,6 +54,10 @@ class UserState implements  IUserState,Cloneable, Serializable {
 
             }
             state.setName(this.getName());
+            state.clearPoint();
+            for(int i=0;i<pointList.size();i++){
+                state.addPoints(pointList.get(i));
+            }
 
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(UserState.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,7 +85,7 @@ class UserState implements  IUserState,Cloneable, Serializable {
     }
 
     public List<ITrick> getTricks() {
-       return new ArrayList<ITrick>(this.listTriks);
+       return this.listTriks;
     }
 
     public void clearTricks() {
@@ -89,7 +93,7 @@ class UserState implements  IUserState,Cloneable, Serializable {
     }
 
     public List<Integer> getPointsList() {
-        return new ArrayList<Integer>(this.pointList);
+        return this.pointList;
     }
 
     public void addPoints(int points) {
@@ -116,6 +120,11 @@ class UserState implements  IUserState,Cloneable, Serializable {
        }
 
        return ok;
+    }
+
+    public void clearPoint() {
+        this.pointList=new ArrayList<Integer>();
+        points=0;
     }
 
 }

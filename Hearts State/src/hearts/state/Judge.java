@@ -27,8 +27,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
     /**
      * Lista akcji do wykonania
-     */
-    protected AActionList actionToDo = null;
+
 
     public AActionList getActionTodo() {
         return actionToDo;
@@ -47,6 +46,9 @@ public class Judge implements hearts.defs.judge.IJudge {
      */
     public IGameState judge(IGameState state, AAction action) throws GameStateException {
         IGameState copyState = null;
+
+        copyState=this.cloneState(state);
+
         /**
          * Sprawdzam jaki to typ akcji.
          */
@@ -83,7 +85,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             }
 
             
-            copyState= action.perform(state); 
+           
 
 
         }
@@ -101,7 +103,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             }
 
             ((NextTripAction) action).setWiner(this.findWiner(state));
-            copyState= action.perform(state);
+           
 
 
         }
@@ -130,18 +132,20 @@ public class Judge implements hearts.defs.judge.IJudge {
                 for (int k = 0; k < 13; k++) {
                     tabC[k] = pack[i * 13 + k];
 
-                }//mam tali kart gracza
+                }//mam talię kart gracza
                 
                 ac.setICard(i, tabC);
             }// mam nowe rozdanie kart
-            copyState = action.perform(state);
+            
             //nowy stan gry
 
            
         }
-
-
-        return copyState;
+        /**
+         * Wykonuję akcję na kopi stanu gry.
+         */
+        return action.perform(copyState);
+       
     }
 
     /**
@@ -170,7 +174,7 @@ public class Judge implements hearts.defs.judge.IJudge {
     }
 
     /**
-     * Znajduje zwycięzce
+     * Znajduje zwycięzce, lewie.
      * @param state
      */
     private int findWiner(IGameState state) {
@@ -196,7 +200,10 @@ public class Judge implements hearts.defs.judge.IJudge {
         }
         return 0;//tak dla draki
     }
-
+    /**
+     * Fukcja generyje nową talie, a następnie ją miesza.
+     * @return ICard[]
+     */
     @SuppressWarnings("empty-statement")
     public ICard[] generateNewCardTab() {
         ICard[] tab = new ICard[52];
@@ -242,6 +249,14 @@ public class Judge implements hearts.defs.judge.IJudge {
 
 
         return new Random(new Date().getTime()).nextInt() % 40;
+    }
+    /**
+     * Funkcja zwraca głęboką kopję stanu gry.
+     * @param state
+     * @return
+     */
+    public IGameState cloneState(IGameState state){
+        return state.clone();
     }
 }
 
