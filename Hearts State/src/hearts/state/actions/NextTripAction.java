@@ -59,7 +59,7 @@ public class NextTripAction extends AAction {
                 ac.setSender(this.getSender());
                 game.addAction(ac);
             }
-        game.setAtiveUser(winer);
+        game.setActiveUser(winer);
         return game;
     }
 

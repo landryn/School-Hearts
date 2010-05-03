@@ -67,7 +67,7 @@ public class NextModeAction extends AAction {
         game.setNumTrick(0);
 
         game.nextDealer();
-        game.setAtiveUser(game.getDealer());
+        game.setActiveUser(game.getDealer());
         //ustawiam gracza ktróry teraz będzie wychodził jako pierwszy
         game.nextUser();
 

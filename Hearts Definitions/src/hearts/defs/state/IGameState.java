@@ -69,7 +69,7 @@ public interface IGameState extends Serializable, Cloneable {
      * Ustawia aktywnego usera.
      * @param user
      */
-    public void setAtiveUser(int user);
+    public void setActiveUser(int user);
 
     /**
      * Wyliczenie określające tryb gry.
@@ -114,11 +114,21 @@ public interface IGameState extends Serializable, Cloneable {
     public Mode getMode();
 
     /**
-     * Przejdź do następnego etapu gry
+     * Przejdź do następnego etapu gry.
      * @return nowy tryb
      */
     public Mode nextMode() throws GameStateException;
+    /**
+     * Fukcja usuwa wszystkie rozgrywki.
+     */
+    public void clearMode();
 
+    /**
+     * Fukcja dodająca typ rozgrywki do kolejki. Na początku trzeba dodać odpowiednią liczbę rozbójników i odgrywek.
+     *
+     * @param mode
+     */
+    public void addMode(Mode mode);
     /**
      * Pobierz atu.
      * @return null jeśli tryb jest bezatutowy

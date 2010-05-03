@@ -8,10 +8,11 @@ import hearts.defs.state.IUserState;
 import hearts.state.exceptions.IllegalModeChangeException;
 import hearts.state.exceptions.UserExistsException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Implementacja stanu gry
- * @author szymon
+ * @author szymon / Paweł Trynkiewicz
  */
 public class GameState
         extends AActionList
@@ -28,6 +29,8 @@ public class GameState
     private int menyTricks=0;
     protected boolean auction = false;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
+
+    protected ArrayList<Mode> modeList=new ArrayList<Mode>();
 
 
     /**
@@ -53,6 +56,14 @@ public class GameState
 
         // klonowanie wziątki:
         stateClone.trick = this.trick.clone();
+
+        //klonowanie rozgrywek
+
+        stateClone.clearMode();
+
+        for(int i=0; i< modeList.size(); i++) {
+            stateClone.addMode(modeList.get(i));
+        }
         return stateClone;
     }
 
@@ -97,16 +108,13 @@ public class GameState
 
     @Override
     public synchronized Mode nextMode() throws IllegalModeChangeException {
-        Mode[] modes = Mode.values();
-        try {
-            for (int i = 0; i < modes.length; ++i) {
-                if (mode.equals(modes[i])) {
-                    mode = modes[i + 1];
-                    break;
-                }
-            }
-        } catch (IndexOutOfBoundsException ex) {
-            throw new IllegalModeChangeException(mode);
+        Mode mode = null;
+        if(this.getMode().equals(mode.WAITING_FOR_PLAYERS)) {
+            mode = Mode.WAITING_FOR_PLAYERS;
+        } else if (modeList.size()==0) {
+            mode = Mode.END;
+        } else {
+            mode=modeList.remove(0);
         }
         return mode;
     }
@@ -176,7 +184,7 @@ public class GameState
         this.menyTricks=i;
     }
 
-    public void setAtiveUser(int user) {
+    public void setActiveUser(int user) {
         this.activeUserId=user;
     }
 
@@ -191,6 +199,14 @@ public class GameState
 
     public int getDealer() {
        return this.dealer;
+    }
+
+    public void addMode(Mode mode) {
+        modeList.add(mode);
+    }
+
+    public void clearMode() {
+       modeList=new ArrayList<Mode>();
     }
 
     
