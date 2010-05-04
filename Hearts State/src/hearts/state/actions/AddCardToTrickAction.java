@@ -43,10 +43,12 @@ public class AddCardToTrickAction  extends  AAction{
      */
     @Override
     public IGameState perform(IGameState old) throws GameStateException {
-        System.out.println("public class AddCardToTrickAction  extends  AAction public IGameState perform(IGameState old) throws GameStateException");
+       
       if (old.getTrick().getFirst()==-1) old.getTrick().setFirst(sender);
        //dodaje karte
        old.getTrick().addCard(card, sender);
+       //wyciągam kartę z pilu gracza
+       old.getUserState(sender).withdrawCard(card);
        //ustawiam aktywnego usera
        old.nextUser();
 

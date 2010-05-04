@@ -68,8 +68,9 @@ public class Judge implements hearts.defs.judge.IJudge {
                 throw new GameStateException("You can not put card in this moment");
             }
             // jesli kotś już połorzył karte, i karta ma inny kolor niz wistjący
-            if (state.getTrick().getFirst()!=-1&&state.getTrick().getCards()[state.getTrick().getFirst()]!=null) {
-
+           
+            if (state.getTrick().getFirst()!=-1&&!state.getTrick().getCards()[state.getTrick().getFirst()].getColor().equals((( AddCardToTrickAction)action).getCard().getColor())) {
+                //ale ma w ręce kolor wistujący
                 if (state.getUserState(action.getSender()).userHaveCardInColor(((AddCardToTrickAction) (action)).getCard().getColor())) {
                     throw new GameStateException("You can not put card in this color, because you have card in correct color");
                 }
@@ -77,7 +78,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             }
             if (state.getMode() == state.getMode().BANDIT) {
                 checkBanditRules(state, action);
-                //Tu powinny byc sprawdzone wszystkie warunki i waruneczki.
+          
 
             } else if (state.getMode() == state.getMode().REAVER) {
                 checkReaverRules(state, action);
@@ -85,7 +86,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             } else if (state.getMode() == state.getMode().WIN_BACK) {
                 checkWinBackRules(state, action);
             } else {
-                throw new GameStateException("Unknown error");
+                throw new GameStateException("Unknown state");
             }
 
             
@@ -143,7 +144,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
            
         }else if (action instanceof FirstModeAction) {
-            /* Przygotuwuje pierwsze rozdanie
+            /* Przygotuwuje pierwsze rozdanie.
              *
              */
             FirstModeAction act=(FirstModeAction)action;
@@ -182,7 +183,24 @@ public class Judge implements hearts.defs.judge.IJudge {
      * @param action
      */
     private void checkBanditRules(IGameState state, AAction action) throws GameStateException {
-        //chwilo nie zimplementowana póżnie się w nią w gryzę.
+
+        /* W pierwszej lewie nie wolno odrzucić króla kier,
+         * a kiery są kolorem granym wówczas gdy wistujący nie ma w ręce innego koloru.
+         * Można kiery też wyrzucać wtedy gdy nie posiadamy koloru wistowanego. */
+        AddCardToTrickAction act=(AddCardToTrickAction)action;
+
+        ICard card=act.getCard();
+        if(state.getNumTrick()==1&&card.getColor()==CardColor.HEART&&card.getValue()==ICard.KING)
+            throw new GameStateException("You can not put king heart in first trick");
+        if(state.getTrick().getFirst()==-1) {
+            if(card.getColor()==CardColor.HEART) {
+                IUserState user=state.getUserState(action.getSender());
+                if(user.userHaveCardInColor(CardColor.CLUB)||user.userHaveCardInColor(CardColor.DIAMOND) || user.userHaveCardInColor(CardColor.SPADE))
+                    throw new GameStateException("You can not put heart, you have card in other color");
+            }
+        }
+
+        
     }
 
     /**
@@ -267,7 +285,7 @@ public class Judge implements hearts.defs.judge.IJudge {
     }
 
     /**
-     * Funkcja określająca ile punktów zdobył każdy z graczy.
+     * Funkcja określająca ile punktów zdobył każdy z graczy. A takrze, jak rozgrywki trzeba dodać.
      * @param state
      * @param user
      * @return

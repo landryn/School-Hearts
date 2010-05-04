@@ -46,11 +46,11 @@ public class NextTripAction extends AAction {
 
     @Override
     public IGameState perform(IGameState old) throws GameStateException {
-        System.out.println("NextTripAction public IGameState perform(IGameState old) throws GameStateException");
-        GameState game= (GameState) old.clone();
-        game.getUserState(winer).addTrick(game.getTrick());
-        game.clearTrick(last);
-
+       
+       
+       old.getUserState(winer).addTrick(old.getTrick());
+       old.clearTrick(last);
+       old.setNumTrick(old.getNumTrick()+1) ;
 
       
        NextTripAGUI ac=null;
@@ -58,10 +58,10 @@ public class NextTripAction extends AAction {
                 ac = new NextTripAGUI(i);
                 ac.setWiner(winer);
                 ac.setSender(this.getSender());
-                game.addAction(ac);
+                old.addAction(ac);
             }
-        game.setActiveUser(winer);
-        return game;
+        old.setActiveUser(winer);
+        return old;
     }
 
 

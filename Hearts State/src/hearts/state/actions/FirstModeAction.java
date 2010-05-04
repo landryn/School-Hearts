@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Akcja odpowiedzialna u ustawienie pierwszego rozdania. Wywoływana raz po dołączeniu czwartego
- * gracz, tylko raz. Rozsyła akcję NewDaelForUserAGUI
+ * gracz, tylko raz. Rozsyła akcję NewDaelForUserAGUI.
  * @author Paweł Trynkiewicz
  */
 public class FirstModeAction  extends AAction{

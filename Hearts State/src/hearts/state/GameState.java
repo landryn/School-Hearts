@@ -151,7 +151,7 @@ public class GameState
     @Override
     public void clearTrick(boolean last) {
         trick = new Trick(last);
-        trick.setFirst(activeUserId);
+        trick.setFirst(-1);
     }
     
     public Mode addUser(IUserState user) {

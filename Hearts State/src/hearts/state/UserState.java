@@ -55,7 +55,7 @@ public class UserState implements  IUserState,Cloneable, Serializable {
 
             }
             state.setName(this.getName());
-            state.clearPoint();
+            state.clearPoints();
             for(int i=0;i<pointList.size();i++){
                 state.addPoints(pointList.get(i));
             }
@@ -74,7 +74,12 @@ public class UserState implements  IUserState,Cloneable, Serializable {
     }
 
     public void withdrawCard(ICard c) throws UserStateException {
-       cardList.remove(c);
+        int number=0;
+        while(number<cardList.size()&&(!cardList.get(number).getColor().equals(c.getColor()))&&(cardList.get(number).getValue()!=c.getValue()))
+            ++number;
+
+        if(number<cardList.size() ) cardList.remove(number);
+        else throw new UserStateException("User do not have this card");
     }
 
     public String getName() {
@@ -123,9 +128,18 @@ public class UserState implements  IUserState,Cloneable, Serializable {
        return ok;
     }
 
-    public void clearPoint() {
+    public void clearPoints() {
         this.pointList=new ArrayList<Integer>();
         points=0;
+    }
+
+    public boolean haveThisCard(ICard c) {
+
+        int number=0;
+        while(number<cardList.size()&&(!cardList.get(number).getColor().equals(c.getColor()))&&(cardList.get(number).getValue()!=c.getValue()))
+            ++number;
+        if(number<cardList.size()) return true;
+        else return false;
     }
 
 }

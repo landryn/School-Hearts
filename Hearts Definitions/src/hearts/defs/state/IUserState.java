@@ -27,6 +27,12 @@ public interface IUserState extends Serializable, Cloneable {
      * @throws UserStateException jeśli karty nie ma w puli
      */
     public void withdrawCard(ICard c) throws UserStateException;
+    /**
+     * Sprawdza czy user ma taką kartę w tali.
+     * @param c
+     * @return
+     */
+    public boolean haveThisCard(ICard c);
 
     /**
      * Pobierz nazwę usera przyporządkowanego temu obiektowi
@@ -71,7 +77,7 @@ public interface IUserState extends Serializable, Cloneable {
     /**
      * czyści tablicę punktów gracza.
      */
-    public void clearPoint();
+    public void clearPoints();
     /**
      * Usuwa wszystkie karty gracza.
      */
