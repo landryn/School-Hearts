@@ -11,8 +11,8 @@ import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.SFinalPoints;
-import hearts.state.GameState;
 import hearts.state.Judge;
+import java.util.ArrayList;
 
 /**
  *Klasa podsumowuje rozdanie, ustawia typ następnego, i rozdaje karty graczom.
@@ -38,6 +38,7 @@ public class NextModeAction extends AAction {
 
     @Override
     public IGameState perform(IGameState old) throws GameStateException {
+        System.out.println("NextModeAction public IGameState perform(IGameState old) throws GameStateException");
         /**
          * 1. zliczam punkty
          * 2. czyszcze Trick
@@ -54,6 +55,7 @@ public class NextModeAction extends AAction {
         int point=0;
         //obliczam punkty
         SFinalPoints date=Judge.getPoints(old);
+    
         for(int i=0;i<4;i++){
 
             //dodałem punkty graczowi
@@ -62,7 +64,7 @@ public class NextModeAction extends AAction {
              for(int k=0;k<13;k++){
                   old.getUserState(i).addCard(cards[i][k]);
              }//dodałem graczowi karty
-            tab[i].setCards(cards[i]);
+            
 
         }
 
@@ -75,7 +77,7 @@ public class NextModeAction extends AAction {
         // zmieniam mode
         old.nextMode();
 
-        ((GameState)(old)).setNumTrick(0);
+        old.setNumTrick(0);
 
         old.nextDealer();
         old.setActiveUser(old.getDealer());
@@ -83,9 +85,13 @@ public class NextModeAction extends AAction {
         old.nextUser();
 
          for(int i=0;i<4;i++){
-                tab[i].setListTriks(old.getUserState(i).getPointsList());
+                tab[i]=new NewDaelForUserAGUI(i);
+                tab[i].setCards(cards[i]);
+                tab[i].setListPoints(new ArrayList(old.getUserState(i).getPointsList()));
+               
                 tab[i].setMode(old.getMode());
                 tab[i].setDealer(old.getDealer());
+                tab[i].setActiveUser(old.getActiveUser());
                 old.addAction(tab[i]);//dadałem akcję do wysłania
             }
             //ustawiam nowego rozdającego

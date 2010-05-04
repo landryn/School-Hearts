@@ -95,4 +95,20 @@ public class DumbState extends AActionList {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void setActiveUser(int user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void clearMode() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addMode(Mode mode) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setNumTrick(int i) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

@@ -109,9 +109,7 @@ public class GameState
     @Override
     public synchronized Mode nextMode() throws IllegalModeChangeException {
         Mode mode = null;
-        if(this.getMode().equals(mode.WAITING_FOR_PLAYERS)) {
-            mode = Mode.WAITING_FOR_PLAYERS;
-        } else if (modeList.size()==0) {
+        if (modeList.size()==0) {
             mode = Mode.END;
         } else {
             mode=modeList.remove(0);
@@ -158,10 +156,12 @@ public class GameState
     
     public Mode addUser(IUserState user) {
         int i=0;
-        while(i<userStates.length && userStates[i]==null) i++;
+        while(i<userStates.length && userStates[i]!=null) i++;
+        
         if (i<userStates.length ) {
             userStates[i]=user;
             if(i==3) mode=Mode.BANDIT;
+            
         }
         return mode;
 

@@ -23,7 +23,7 @@ public class Trick implements ITrick, Serializable, Cloneable {
     /**
      * Kto wyszedł jako pierwszy. Czyli jaki kolor jest wistujący. Nie mylić z atutem.
      */
-    protected int first;
+    protected int first=-1;
     /**
      * Tworzy nową wziątkę.
      * @param last jeśli jest jedną z dwóch ostatnich wziątek.

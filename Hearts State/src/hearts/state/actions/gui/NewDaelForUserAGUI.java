@@ -24,6 +24,7 @@ public class NewDaelForUserAGUI extends AGUIAction {
     private List<Integer> listPoints=null;
     private IGameState.Mode mode;
     private int dealer;
+    private int activeUser;
 
     public int getDealer() {
         return dealer;
@@ -31,6 +32,14 @@ public class NewDaelForUserAGUI extends AGUIAction {
 
     public void setDealer(int dealer) {
         this.dealer = dealer;
+    }
+
+    public int getActiveUser() {
+        return activeUser;
+    }
+
+    public void setActiveUser(int activeUser) {
+        this.activeUser = activeUser;
     }
     
     public ICard[] getCards() {
@@ -45,9 +54,13 @@ public class NewDaelForUserAGUI extends AGUIAction {
         return listPoints;
     }
 
-    public void setListTriks(List<Integer> list) {
-        this.listPoints = list;
+    public void setListPoints(List<Integer> listPoints) {
+        this.listPoints = listPoints;
     }
+
+    
+
+    
 
     public Mode getMode() {
         return mode;

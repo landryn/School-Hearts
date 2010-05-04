@@ -46,6 +46,7 @@ public class NextTripAction extends AAction {
 
     @Override
     public IGameState perform(IGameState old) throws GameStateException {
+        System.out.println("NextTripAction public IGameState perform(IGameState old) throws GameStateException");
         GameState game= (GameState) old.clone();
         game.getUserState(winer).addTrick(game.getTrick());
         game.clearTrick(last);

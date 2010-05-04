@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *Klasa przechowyjąca informacje o graczu i jego kartach.
  * @author Paweł Trynkiewicz
  */
-class UserState implements  IUserState,Cloneable, Serializable {
+public class UserState implements  IUserState,Cloneable, Serializable {
     private int id;
     private Vector <ICard> cardList=new Vector();
     private String name;
@@ -44,6 +44,7 @@ class UserState implements  IUserState,Cloneable, Serializable {
         UserState state=null;
         try {
             state = (UserState) super.clone();
+            state.removeAllCard();
             for (int i = 0; i < cardList.size(); i++) {
                     state.addCard(cardList.get(i));
 

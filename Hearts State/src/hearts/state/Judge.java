@@ -13,6 +13,7 @@ import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
 import hearts.defs.state.SFinalPoints;
 import hearts.state.actions.AddCardToTrickAction;
+import hearts.state.actions.FirstModeAction;
 import hearts.state.actions.NextModeAction;
 import hearts.state.actions.NextTripAction;
 import hearts.state.exceptions.WrongCardValueException;
@@ -66,8 +67,8 @@ public class Judge implements hearts.defs.judge.IJudge {
             if (state.getActiveUser() != action.getSender() || state.isAuction()) {
                 throw new GameStateException("You can not put card in this moment");
             }
-
-            if (!state.getTrick().getCards()[0].getColor().equals(((AddCardToTrickAction) (action)).getCard().getColor())) {
+            // jesli kotś już połorzył karte, i karta ma inny kolor niz wistjący
+            if (state.getTrick().getFirst()!=-1&&state.getTrick().getCards()[state.getTrick().getFirst()]!=null) {
 
                 if (state.getUserState(action.getSender()).userHaveCardInColor(((AddCardToTrickAction) (action)).getCard().getColor())) {
                     throw new GameStateException("You can not put card in this color, because you have card in correct color");
@@ -118,10 +119,8 @@ public class Judge implements hearts.defs.judge.IJudge {
              *
              * 1. zliczyć punktu z lew dla każdego gracz xd - to zrobię w judge
              * +2. Wygenerować nową talie kart - to też zrobie w judge
-             * +3. Zamieszczać karty, rozdać graczom - to też to  judge, dodam pola do NextModeException
-             * + 3.b do userów wyślie inną klasa a co, tylko z kartami i punktami chce dobre ...
-             * 4. Narazie robie dla zbója, bez licytacji -
-             * 5. Cieszyć sie możliwością gry w zbója
+             * +3. Zamieszczać karty, rozdać graczom - to też to  judge, dodam pola do NextModeException          
+             
              */
             NextModeAction ac = (NextModeAction) action;
             
@@ -143,7 +142,33 @@ public class Judge implements hearts.defs.judge.IJudge {
             //nowy stan gry
 
            
+        }else if (action instanceof FirstModeAction) {
+            /* Przygotuwuje pierwsze rozdanie
+             *
+             */
+            FirstModeAction act=(FirstModeAction)action;
+            if (act.getModes()%4!=0) throw new GameStateException("Wrong number of mode");
+
+            /*Dodaje kart graczom
+             */
+
+            ICard[] pack = this.generateNewCardTab();
+            for (int i = 0; i < 4; i++) {
+
+
+                ICard[] tabC = new ICard[13];
+
+                for (int k = 0; k < 13; k++) {
+                    tabC[k] = pack[i * 13 + k];
+
+                }//mam talię kart gracza
+
+                act.setCards(tabC, i);
+            }
+
+
         }
+
         /**
          * Wykonuję akcję na kopi stanu gry.
          */

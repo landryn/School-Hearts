@@ -9,7 +9,7 @@ import hearts.defs.actions.AAction;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
-import hearts.state.GameState;
+
 import hearts.state.actions.gui.AddCardToTrickAGUI;
 
 /**
@@ -43,11 +43,12 @@ public class AddCardToTrickAction  extends  AAction{
      */
     @Override
     public IGameState perform(IGameState old) throws GameStateException {
-       GameState game= (GameState) old.clone();
+        System.out.println("public class AddCardToTrickAction  extends  AAction public IGameState perform(IGameState old) throws GameStateException");
+      if (old.getTrick().getFirst()==-1) old.getTrick().setFirst(sender);
        //dodaje karte
-       game.getTrick().addCard(card, sender);
+       old.getTrick().addCard(card, sender);
        //ustawiam aktywnego usera
-       game.nextUser();
+       old.nextUser();
 
        AddCardToTrickAGUI ac = null;
        //Dodaje komunikaty do wysłania
@@ -55,10 +56,10 @@ public class AddCardToTrickAction  extends  AAction{
                 ac = new AddCardToTrickAGUI(i);
                 ac.setCard(this.getCard());
                 ac.setSender(this.getSender());
-                game.addAction(ac);
+                old.addAction(ac);
             }
        
-       return game;
+       return old;
     }
 
 }

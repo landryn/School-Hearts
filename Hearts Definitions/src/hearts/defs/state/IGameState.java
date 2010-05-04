@@ -204,5 +204,8 @@ public interface IGameState extends Serializable, Cloneable {
      * @return
      */
     public int getNumTrick();
+
+    public void setNumTrick(int i);
+    
 }
 
