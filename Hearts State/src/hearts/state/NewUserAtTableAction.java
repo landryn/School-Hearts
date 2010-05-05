@@ -10,8 +10,8 @@ import hearts.defs.state.GUIStateException;
 import hearts.defs.state.IGUIState;
 
 /**
- *
- * @author orbit
+ * Klasa powiadamiająca klientów przy stole o dołączeniu się nowego.
+ * @author Michał Charmas
  */
 public class NewUserAtTableAction extends AGUIAction {
 
