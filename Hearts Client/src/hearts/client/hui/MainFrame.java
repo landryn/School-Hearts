@@ -5,6 +5,7 @@ import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GUIStateException;
 import hearts.defs.state.IGUIState;
+import hearts.defs.state.ILoginPanel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -109,5 +110,9 @@ public class MainFrame
 
     public void showMessage(String title, int type, String message) {
         JOptionPane.showMessageDialog(this, message, title, type);
+    }
+
+    public ILoginPanel getLoginPanel() {
+        return loginPanel;
     }
 }

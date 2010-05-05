@@ -23,4 +23,6 @@ public interface IGUIState extends IActionListener {
     public IServerSocket getSocket();
 
     public void showMessage(String title, int type, String message);
+
+    public ILoginPanel getLoginPanel();
 }

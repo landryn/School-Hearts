@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.maintenance.answers;
 
 import hearts.defs.state.GUIStateException;
@@ -33,6 +32,9 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
     public void perform(IGUIState gui) throws GUIStateException {
         gui.getSocket().setLoggedIn(success);
         gui.showMessage("YEAH!", JOptionPane.INFORMATION_MESSAGE, success.toString());
+        if (!success) {
+            gui.getLoginPanel().setEnabled(true);
+        }
     }
 
     /**
@@ -50,5 +52,4 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
     public Boolean getSuccess() {
         return success;
     }
-
 }

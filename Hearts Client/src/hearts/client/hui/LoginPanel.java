@@ -10,9 +10,11 @@
  */
 package hearts.client.hui;
 
+import hearts.defs.state.ILoginPanel;
 import hearts.client.NetClient;
 import hearts.defs.state.IGUIState;
 import hearts.maintenance.LoginMaintenance;
+import java.awt.Component;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -25,7 +27,7 @@ import javax.swing.JOptionPane;
  *
  * @author szymon
  */
-public class LoginPanel extends javax.swing.JPanel {
+public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
 
     static Preferences prefs = Preferences.userNodeForPackage(LoginPanel.class).node("loginData");
     static final String SERVER_PREFS_KEY = "server";
@@ -40,6 +42,19 @@ public class LoginPanel extends javax.swing.JPanel {
         initComponents();
         loadPrefs();
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        for(Component c :this.getComponents()) {
+            if(c != loginButton) {
+                c.setEnabled(enabled);
+            }
+        }
+        loginButton.setText(enabled ? "Zaloguj" : "Anuluj łączenie");
+    }
+
+
 
     protected void loadPrefs() {
 
@@ -196,6 +211,7 @@ public class LoginPanel extends javax.swing.JPanel {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         savePrefs();
+        setEnabled(false);
         try {
             gui.setSocket(new NetClient(serverField.getText(), (Integer) portSpinner.getValue()));
             gui.getSocket().maintenanceReceived(
@@ -206,9 +222,12 @@ public class LoginPanel extends javax.swing.JPanel {
         } catch (UnknownHostException ex) {
             Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
             gui.showMessage("Błąd połączenia", JOptionPane.ERROR_MESSAGE, ex.getLocalizedMessage());
+            setEnabled(true);
         } catch (IOException ex) {
             Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
             gui.showMessage("Błąd połączenia", JOptionPane.ERROR_MESSAGE, ex.getLocalizedMessage());
+
+            setEnabled(true);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
