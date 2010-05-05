@@ -5,8 +5,6 @@
 
 package hearts.defs.state;
 
-import hearts.defs.state.IGUIState;
-
 /**
  *
  * @author szymon
@@ -19,4 +17,5 @@ public interface ILoginPanel {
 
     void setGui(IGUIState gui);
 
+    void setCreateAccountSelected(boolean selected);
 }

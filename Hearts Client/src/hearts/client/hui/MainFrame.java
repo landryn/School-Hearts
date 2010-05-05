@@ -44,6 +44,9 @@ public class MainFrame
         helpMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hearts Client");
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setMinimumSize(new java.awt.Dimension(700, 600));
         getContentPane().add(loginPanel, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Gra");

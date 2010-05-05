@@ -13,10 +13,14 @@ package hearts.client.hui;
 import hearts.defs.state.ILoginPanel;
 import hearts.client.NetClient;
 import hearts.defs.state.IGUIState;
+import hearts.maintenance.CreateAccountMaintenance;
 import hearts.maintenance.LoginMaintenance;
 import java.awt.Component;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
@@ -29,32 +33,41 @@ import javax.swing.JOptionPane;
  */
 public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
 
-    static Preferences prefs = Preferences.userNodeForPackage(LoginPanel.class).node("loginData");
+    protected Preferences prefs = Preferences.userNodeForPackage(LoginPanel.class).node("loginData");
     static final String SERVER_PREFS_KEY = "server";
     static final String PORT_PREFS_KEY = "port";
     static final String LOGIN_PREFS_KEY = "login";
     static final String PASSWORD_PREFS_KEY = "password";
     static final String SAVE_PASSWORD_PREFS_KEY = "savePassword";
+    static final String CREATE_ACCOUNT_TEXT = "Utwórz konto";
+    static final String LOGIN_TEXT = "Zaloguj";
+    static final String CANCEL_CONNECTION_TEXT = "Anuluj połączenie";
     IGUIState gui = null;
+    List<Component> createAccountForm;
 
     /** Creates new form loginPanel */
     public LoginPanel() {
         initComponents();
         loadPrefs();
+
+        this.createAccountForm = new ArrayList<Component>(2);
+        this.createAccountForm.add(passwordRepeatField);
+        this.createAccountForm.add(passwordRepeatLabel);
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        for(Component c :this.getComponents()) {
-            if(c != loginButton) {
+        boolean creatingNewAccount = createAccountCheck.isSelected();
+        for (Component c : this.getComponents()) {
+            if (c != loginButton && (creatingNewAccount || !createAccountForm.contains(c))) {
                 c.setEnabled(enabled);
             }
         }
-        loginButton.setText(enabled ? "Zaloguj" : "Anuluj łączenie");
+        loginButton.setText(
+                enabled ? (creatingNewAccount ? CREATE_ACCOUNT_TEXT : LOGIN_TEXT)
+                : CANCEL_CONNECTION_TEXT);
     }
-
-
 
     protected void loadPrefs() {
 
@@ -64,7 +77,7 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         loginField.setText(prefs.get(LOGIN_PREFS_KEY, ""));
         boolean savePassword = prefs.getBoolean(SAVE_PASSWORD_PREFS_KEY, false);
         savePasswordCheck.setSelected(savePassword);
-        if(savePassword) {
+        if (savePassword) {
             passwordField.setText(prefs.get(PASSWORD_PREFS_KEY, ""));
         } else {
             prefs.putBoolean(PASSWORD_PREFS_KEY, false);
@@ -113,13 +126,17 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         loginButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
+        createAccountCheck = new javax.swing.JCheckBox();
+        passwordRepeatField = new javax.swing.JPasswordField();
+        passwordRepeatLabel = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
 
         setLayout(new java.awt.GridBagLayout());
 
         serverField.setText("localhost");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         add(serverField, gridBagConstraints);
@@ -127,13 +144,13 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         serverLabel.setText("Serwer:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 8);
         add(serverLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         add(loginField, gridBagConstraints);
@@ -141,7 +158,7 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         portSpinner.setModel(new javax.swing.SpinnerNumberModel(9999, 1, 65535, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         add(portSpinner, gridBagConstraints);
@@ -149,7 +166,7 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         loginLabel.setText("Login:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 8);
         add(loginLabel, gridBagConstraints);
@@ -157,7 +174,7 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         passwordLabel.setText("Hasło:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 8);
         add(passwordLabel, gridBagConstraints);
@@ -165,7 +182,7 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         portLabel.setText("Port:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 8);
         add(portLabel, gridBagConstraints);
@@ -173,12 +190,18 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         savePasswordCheck.setText("Zapisz hasło");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(savePasswordCheck, gridBagConstraints);
+
+        passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                passwordFieldKeyReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         add(passwordField, gridBagConstraints);
@@ -191,34 +214,96 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(loginButton, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(jSeparator1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(jSeparator2, gridBagConstraints);
+
+        createAccountCheck.setText("Utwórz nowe konto");
+        createAccountCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createAccountCheckActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(createAccountCheck, gridBagConstraints);
+
+        passwordRepeatField.setEnabled(false);
+        passwordRepeatField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                passwordRepeatFieldKeyReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(passwordRepeatField, gridBagConstraints);
+
+        passwordRepeatLabel.setText("Powtórz hasło:");
+        passwordRepeatLabel.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        add(passwordRepeatLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jSeparator3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void login() throws UnknownHostException, IOException {
+        gui.setSocket(new NetClient(serverField.getText(), (Integer) portSpinner.getValue()));
+        gui.getSocket().maintenanceReceived(
+                new LoginMaintenance(
+                loginField.getText(),
+                new String(passwordField.getPassword())));
+    }
+
+    private void createAccount() throws UnknownHostException, IOException {
+        gui.setSocket(new NetClient(serverField.getText(), (Integer) portSpinner.getValue()));
+        gui.getSocket().maintenanceReceived(
+                new CreateAccountMaintenance(loginField.getText(), new String(passwordField.getPassword())));
+    }
+
+    public void setCreateAccountSelected(boolean selected) {
+        createAccountCheck.setSelected(selected);
+        for (Component c : createAccountForm) {
+            c.setEnabled(selected);
+        }
+        passwordRepeatField.setText("");
+        loginButton.setEnabled(!selected);
+        loginButton.setText(selected ? CREATE_ACCOUNT_TEXT : LOGIN_TEXT);
+    }
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         savePrefs();
         setEnabled(false);
+        boolean creatingNewAccount = createAccountCheck.isSelected();
         try {
-            gui.setSocket(new NetClient(serverField.getText(), (Integer) portSpinner.getValue()));
-            gui.getSocket().maintenanceReceived(
-                    new LoginMaintenance(
-                    loginField.getText(),
-                    new String(passwordField.getPassword())));
-
+            if (creatingNewAccount) {
+                createAccount();
+            } else {
+                login();
+            }
         } catch (UnknownHostException ex) {
             Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
             gui.showMessage("Błąd połączenia", JOptionPane.ERROR_MESSAGE, ex.getLocalizedMessage());
@@ -230,14 +315,32 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
             setEnabled(true);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void createAccountCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountCheckActionPerformed
+        setCreateAccountSelected(createAccountCheck.isSelected());
+    }//GEN-LAST:event_createAccountCheckActionPerformed
+
+    private void passwordRepeatFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordRepeatFieldKeyReleased
+        loginButton.setEnabled(Arrays.equals(passwordField.getPassword(), passwordRepeatField.getPassword()));
+    }//GEN-LAST:event_passwordRepeatFieldKeyReleased
+
+    private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyReleased
+        if (createAccountCheck.isSelected()) {
+            loginButton.setEnabled(Arrays.equals(passwordField.getPassword(), passwordRepeatField.getPassword()));
+        }
+    }//GEN-LAST:event_passwordFieldKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox createAccountCheck;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JButton loginButton;
     private javax.swing.JTextField loginField;
     private javax.swing.JLabel loginLabel;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
+    private javax.swing.JPasswordField passwordRepeatField;
+    private javax.swing.JLabel passwordRepeatLabel;
     private javax.swing.JLabel portLabel;
     private javax.swing.JSpinner portSpinner;
     private javax.swing.JCheckBox savePasswordCheck;
@@ -258,5 +361,4 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
         super.finalize();
         savePrefs();
     }
-
 }
