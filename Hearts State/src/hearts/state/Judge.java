@@ -68,14 +68,11 @@ public class Judge implements hearts.defs.judge.IJudge {
                 throw new GameStateException("You can not put card in this moment");
             }
             // jesli kotś już połorzył karte, i karta ma inny kolor niz wistjący
-           
-            if (state.getTrick().getFirst()!=-1&&!state.getTrick().getCards()[state.getTrick().getFirst()].getColor().equals((( AddCardToTrickAction)action).getCard().getColor())) {
-                //ale ma w ręce kolor wistujący
-                if (state.getUserState(action.getSender()).userHaveCardInColor(((AddCardToTrickAction) (action)).getCard().getColor())) {
-                    throw new GameStateException("You can not put card in this color, because you have card in correct color");
-                }
 
-            }
+            if(!state.getUserState(action.getSender()).haveThisCard(((AddCardToTrickAction)action).getCard()))
+
+                    throw new GameStateException("Error: Yuo don't have this card!");
+            
             if (state.getMode() == state.getMode().BANDIT) {
                 checkBanditRules(state, action);
           
@@ -192,12 +189,21 @@ public class Judge implements hearts.defs.judge.IJudge {
         ICard card=act.getCard();
         if(state.getNumTrick()==1&&card.getColor()==CardColor.HEART&&card.getValue()==ICard.KING)
             throw new GameStateException("You can not put king heart in first trick");
+
         if(state.getTrick().getFirst()==-1) {
             if(card.getColor()==CardColor.HEART) {
                 IUserState user=state.getUserState(action.getSender());
                 if(user.userHaveCardInColor(CardColor.CLUB)||user.userHaveCardInColor(CardColor.DIAMOND) || user.userHaveCardInColor(CardColor.SPADE))
                     throw new GameStateException("You can not put heart, you have card in other color");
-            }
+            } else return;
+        } else {
+            int first=state.getTrick().getFirst();
+            CardColor firstColor=state.getTrick().getCards()[first].getColor();
+            CardColor userColor=act.getCard().getColor();
+            if (firstColor==userColor) return;
+            if(state.getUserState(action.getSender()).userHaveCardInColor(firstColor)) throw new GameStateException("You must put card in correct color");
+            
+
         }
 
         
@@ -209,6 +215,59 @@ public class Judge implements hearts.defs.judge.IJudge {
      * @param action
      */
     private void checkWinBackRules(IGameState state, AAction action) throws GameStateException {
+        /*
+         * W kolorowych, gdy nie mamy do koloru to przymus rzucenia atutu.
+            W atu wyżej
+         */
+
+        /*
+         * Możliwe przypadki
+         * 1. Jest to pierwsza karta w lewie: ok
+         * 2. Karta jest w kolorze wistującym: ok
+         *  else gracz ma kartę w kolorze wistującym error
+         * 3. Karta jest w atucie i najwyższa kart jest atutem
+         *  a. Bije inne kart ok
+         *  b. Nie bije, ale gracz nie ma karty wyższej ok
+         *      else błąd
+         * 4 . inna karta, ale gracz nie ma ani atutu ani karty wyższej ok
+         */
+
+        //1
+        int first=state.getTrick().getFirst();
+
+        if(first==-1) return;
+        AddCardToTrickAction act=(AddCardToTrickAction) action;
+        CardColor firstColor=state.getTrick().getCards()[first].getColor();
+        CardColor trump=state.getTrump();
+        CardColor userColor=act.getCard().getColor();
+
+        int sender=act.getSender();
+        //2.
+        if(firstColor==act.getCard().getColor()) return;
+        else {
+            if(state.getUserState(sender).userHaveCardInColor(firstColor))
+                throw new GameStateException("You must put card in correct color");
+        }
+    
+        //najwyższa karta w lewie
+        ICard higerCard=null;
+        ICard []cards=state.getTrick().getCards();
+        int win = this.findWiner(state);
+        higerCard=cards[win];
+        //znam najwyższą kartę
+        if(userColor==trump && higerCard.getColor()==trump) {
+            if(act.getCard().getValue()> higerCard.getValue()) return;
+            else {
+                if(!state.getUserState(sender).uHHigerCardIColor(higerCard)) return;
+                else {
+                    throw new GameStateException("You have card in trump");
+                }
+            }
+        }
+
+        
+
+
     }
 
     /**
@@ -217,6 +276,41 @@ public class Judge implements hearts.defs.judge.IJudge {
      * @param action
      */
     private void checkReaverRules(IGameState state, AAction action) throws GameStateException {
+        
+        /* Jest przymus bicia
+         * 1.Karta jest w kolorze wistującym
+         * a.gracz nie ma wyższej od najwyzszej w rozdaniu ok
+         * else bład
+         * 2. Gracz ma karte w kolorze wistującym bład
+         * 3. gracz nie ma karty w kolorze wistującym.
+         */
+
+        int first=state.getTrick().getFirst();
+
+        if(first==-1) return;
+        AddCardToTrickAction act=(AddCardToTrickAction) action;
+        CardColor firstColor=state.getTrick().getCards()[first].getColor();
+        CardColor userColor=act.getCard().getColor();
+        int sender=act.getSender();
+
+        ICard higerCard=null;
+        ICard []cards=state.getTrick().getCards();
+        int win = this.findWiner(state);
+        higerCard=cards[win];
+   
+        if(firstColor==act.getCard().getColor()){
+            if(act.getCard().getValue()>higerCard.getValue())  return;
+            else {
+                if(state.getUserState(sender).uHHigerCardIColor(higerCard))
+                    throw new GameStateException("You have higher card");
+                else return;
+
+            }
+
+
+        }
+        if(state.getUserState(sender).userHaveCardInColor(firstColor))
+            throw new GameStateException("You have card in "+firstColor);
     }
 
     /**
@@ -224,13 +318,15 @@ public class Judge implements hearts.defs.judge.IJudge {
      * @param state
      */
     private int findWiner(IGameState state) {
-        //znajduje zwyciężce dla rozbójnika
-        if (state.getMode() == state.getMode().BANDIT) {
+        //karty w lewie
+        ICard[] cards = state.getTrick().getCards();
+        int first = state.getTrick().getFirst();
+        int win = first;
+        //znajduje zwyciężce dla zbója lub rozbójnika
+        if (state.getMode() == state.getMode().BANDIT || state.getMode() == state.getMode().REAVER ) {
             //nie ma atutu, sprawdzam czy kto połorzył najwyższą karte w wistującym kolorze
 
-            ICard[] cards = state.getTrick().getCards();
-            int first = state.getTrick().getFirst();
-            int win = first;
+            
             for (int i = 0; i < cards.length; i++) {
                 if (i == first) {
                     continue;
@@ -242,9 +338,34 @@ public class Judge implements hearts.defs.judge.IJudge {
                 }
 
             }
-            return win;
+            //zwycięzca w odgrywce, tu jest atut
+        } if (state.getMode() == state.getMode().WIN_BACK) {
+            //stut bije wszystko, albo najwyższa karta w kolorze wistującym
+            CardColor trump=state.getTrump();
+
+            for (int i = 0; i < cards.length; i++) {
+                if (i == first||cards[i]==null) {
+                    continue;
+                }
+                //najpierw sprawdzam czy karta nie jest w atutem
+                if (cards[i].getColor() == trump) {
+                    //najlepszy ma kartę w kolorze wistującym
+                    if(cards[win].getColor() == trump){
+                        if(cards[win].getValue()<cards[i].getValue())
+                            win=i;
+                    } else win=i;
+                    //nasz i gracz nia ma atuta, ale ma kartę w kolorze zwycięzcy
+                } else if(cards[win].getColor()== cards[i].getColor() ) {
+                    if(cards[win].getValue()<cards[i].getValue())
+                            win=i;
+                }
+
+
+            }
+
+            
         }
-        return 0;//tak dla draki
+        return win;
     }
     /**
      * Fukcja generyje nową talie, a następnie ją miesza.
@@ -270,7 +391,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         Random ran = new Random(new Date().getTime()); //zamieszałem random
         ICard tmp;
-        for (int i = 0; i < tab.length; i++) {
+        for (int i = 0; i < tab.length/2; i++) {
             int r = ran.nextInt(52);
             int q = 0;
             while ((q = ran.nextInt(52)) == r);
@@ -328,7 +449,10 @@ public class Judge implements hearts.defs.judge.IJudge {
             for(int i=0;i<4;i++){
                 if(userPoints.points[i]==0){
                     //dodaje rozbójnika
-                    userPoints.mode.add(IGameState.Mode.REAVER);
+
+                    userPoints.addMode(IGameState.Mode.REAVER,i);
+                   
+              
                     zero++;
                 }
             }//wiem ilu graczy nie wieło żadne lewy
@@ -340,7 +464,7 @@ public class Judge implements hearts.defs.judge.IJudge {
                     else userPoints.points[i]=0;
                 }
             } else {
-                //jeśli każdy coś wziął to pętla się nie wykona
+                //jeśli każdy coś wziął to pętla się nie wykona zero=1 lub 2
                 for( int i=0;i<zero;i++){
                     // zmieniamy punkty graczy
                     //- jeden gracz 0pkt – pozostali pkt ujemne x2
@@ -348,8 +472,60 @@ public class Judge implements hearts.defs.judge.IJudge {
                     userPoints.points[i]= userPoints.points[i]*(zero+1);
                 }
             }
-        }//mamy punkty policzone dla rozbójnika
+        }//mamy punkty policzone dla zbója
+        if(state.getMode().equals(IGameState.Mode.REAVER) || state.getMode().equals(IGameState.Mode.WIN_BACK)) {
+            for(int i=0;i<4;i++){
+                userPoints.points[i]=0;
+                 IUserState ust=state.getUserState(i);
+                 List<ITrick> list=ust.getTricks();
+                for(int k=0;k<list.size();k++){
+                    userPoints.points[i]+=10;
+                }
+            }//mamy z sumowane punkty
 
+            int zero=0;
+            for(int i=0;i<4;i++){
+                if(userPoints.points[i]==0){
+                    //dodaje rozgrywkę i wychodzącego
+                    userPoints.addMode(IGameState.Mode.BANDIT, i);
+             
+                   
+                    zero++;
+                }
+
+            }
+
+            //zwraca lewy za deklarowane w licytacji
+            //jak nie ma, tyly lew co trzeba to sprzedający
+            // dosataje tyle co ma, dłużni -130, reszta zostaje z tym co ma
+            //i gramy rozbójnika gdzie zaczyna dłuznik
+            for(int i=0;i<4;i++){
+                if(state.getUserState(i).getDebet()>0) {
+                    //wiem kto ma dług
+                    if(state.getUserState(i).getDebet()*10<=userPoints.points[i]) {
+                    //gitara ma tyle co trzeba
+                        userPoints.points[state.getUserState(i).getBanker()]+=10*state.getUserState(i).getDebet();
+                        userPoints.points[i]-=10*state.getUserState(i).getDebet();
+                    } else {
+                        //biedakowi brakuje kart
+                        userPoints.points[state.getUserState(i).getBanker()]+=userPoints.points[i];
+                        userPoints.points[i]= -130;
+                        userPoints.addMode(IGameState.Mode.REAVER,i);
+                      
+                    }
+                    break;
+                }
+
+            }
+               //zwiększa punkty w wypdaku slizgu bądź naksa
+            for(int i=0;i<4&&zero!=0;i++){
+                if(userPoints.points[i]>0) {
+                    userPoints.points[i]*=(zero+1);
+                }
+            }
+
+
+        }
         return userPoints;
 
 

@@ -204,8 +204,24 @@ public interface IGameState extends Serializable, Cloneable {
      * @return
      */
     public int getNumTrick();
-
+    /**
+     * Ustawiam numer lewy.
+     * @param i
+     */
     public void setNumTrick(int i);
-    
+    /**
+     * Dodaje który będzie, rozpoczynał dane rozdanie.
+     * @param user
+     */
+
+    public void addCommence(int user);
+
+    /**
+     * Zwraca gracza który bedzie rozpoczynał rozdanie. Usuwając do z listy.
+     * @return
+     */
+    public int removeCommence();
+
+
 }
 

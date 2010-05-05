@@ -27,6 +27,12 @@ public class UserState implements  IUserState,Cloneable, Serializable {
     private String name;
     private List<ITrick> listTriks=new ArrayList<ITrick>();
     private int points;
+
+      //osoba której gracz ma oddać lewy
+    protected int banker;
+    //ilość lew do oddania
+    protected int debet;
+
     
     ArrayList<Integer> pointList=new ArrayList<Integer>();
 
@@ -141,5 +147,32 @@ public class UserState implements  IUserState,Cloneable, Serializable {
         if(number<cardList.size()) return true;
         else return false;
     }
+
+    public void setDebet(int debet) {
+        this.debet=debet;
+    }
+
+    public int getDebet() {
+        return this.debet;
+    }
+
+    public void setBanker(int banker) {
+        this.banker=banker;
+    }
+
+    public int getBanker() {
+        return this.banker;
+    }
+
+    public boolean uHHigerCardIColor(ICard card) {
+
+        for(int i=0;i<cardList.size();i++){
+            if (cardList.get(i).getColor()==card.getColor() && cardList.get(i).getValue() >=card.getValue())
+                return true;
+        }
+        return false;
+    }
+
+
 
 }

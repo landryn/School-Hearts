@@ -55,27 +55,33 @@ public class FirstModeAction  extends AAction{
 
 
         for(int i=0;i<4;i++){
-            System.out.println("Karty gracza"+clone.getUserState(i).getName());
+           
             for(int k=0;k<13;k++){
                 clone.getUserState(i).addCard(cards[i][k]);
-                System.out.println("kolor "+cards[i][k].getColor()+" wartosc "+cards[i][k].getValue());
+               
             }
             clone.getUserState(i).addPoints(0);
             //dodałem karty dla urzytkowników.
 
 
         }
+        int commence=1;
         for(int i=0;i<modes;i++){
             clone.addMode(IGameState.Mode.BANDIT);
+            clone.addCommence(commence%4);
+            ++commence;
+
         }
         for(int i=0;i<modes;i++){
             clone.addMode(IGameState.Mode.REAVER);
+            clone.addCommence(commence%4);
+            ++commence;
 
         }
         //ustawiłem nowy typ rozgrywki.
         clone.nextMode();
         clone.setDealer(0);
-        clone.setActiveUser((clone.getDealer()+1)%4);
+        clone.setActiveUser(clone.removeCommence());
         //ustawiłem numer lewy
         clone.setNumTrick(0);
         //ustawiam akcje urzytkowników

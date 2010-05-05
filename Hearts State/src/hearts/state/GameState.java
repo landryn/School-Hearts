@@ -30,9 +30,11 @@ public class GameState
     protected boolean auction = false;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
+
     protected ArrayList<Mode> modeList=new ArrayList<Mode>();
-
-
+    
+    protected ArrayList<Integer> commence=new ArrayList<Integer>();
+  
     /**
      * Klonowanie głębokie stanu gry.
      * Wszystkie modyfikowalne obiekty są klonowane:
@@ -56,6 +58,10 @@ public class GameState
 
         // klonowanie wziątki:
         stateClone.trick = this.trick.clone();
+        //klonowanie Mode
+        stateClone.modeList=new ArrayList(this.modeList);
+        //klonowanie wychdzących
+        stateClone.commence=new ArrayList<Integer>(this.commence);
 
         //klonowanie rozgrywek
 
@@ -108,13 +114,13 @@ public class GameState
 
     @Override
     public synchronized Mode nextMode() throws IllegalModeChangeException {
-        Mode mode = null;
+        Mode modee = null;
         if (modeList.size()==0) {
-            mode = Mode.END;
+            modee = Mode.END;
         } else {
-            mode=modeList.remove(0);
+            modee=modeList.remove(0);
         }
-        return mode;
+        return modee;
     }
 
     @Override
@@ -207,6 +213,14 @@ public class GameState
 
     public void clearMode() {
        modeList=new ArrayList<Mode>();
+    }
+
+    public void addCommence(int user) {
+        commence.add(user);
+    }
+
+    public int removeCommence() {
+        return commence.remove(0);
     }
 
     

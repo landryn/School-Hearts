@@ -111,4 +111,12 @@ public class DumbState extends AActionList {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void addCommence(int user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int removeCommence() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

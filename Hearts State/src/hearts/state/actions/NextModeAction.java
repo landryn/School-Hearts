@@ -69,20 +69,26 @@ public class NextModeAction extends AAction {
         }
 
 
-        //dodaję rozgrywkę
+        //dodaję rozgrywkę i rozgrywającego
 
         for(int i=0;i<date.mode.size();i++){
             old.addMode(date.mode.get(i));
+            old.addCommence(date.user.get(i));
         }
         // zmieniam mode
-        old.nextMode();
+
+        if(old.nextMode().equals(IGameState.Mode.REAVER)|| old.getMode().equals(IGameState.Mode.WAITING_FOR_PLAYERS)){
+            old.setAuction(true);
+        } else {
+            old.setAuction(false);
+        }
 
         old.setNumTrick(0);
 
         old.nextDealer();
-        old.setActiveUser(old.getDealer());
-        //ustawiam gracza ktróry teraz będzie wychodził jako pierwszy
-        old.nextUser();
+      //nowy wychodzący do nie bedzie należała decyzja co dalej
+        old.setActiveUser(old.removeCommence());
+        
 
          for(int i=0;i<4;i++){
                 tab[i]=new NewDaelForUserAGUI(i);
