@@ -17,19 +17,63 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author szymon
  */
-public class loginPanel extends javax.swing.JPanel {
+public class LoginPanel extends javax.swing.JPanel {
 
+    static Preferences prefs = Preferences.userNodeForPackage(LoginPanel.class).node("loginData");
+    static final String SERVER_PREFS_KEY = "server";
+    static final String PORT_PREFS_KEY = "port";
+    static final String LOGIN_PREFS_KEY = "login";
+    static final String PASSWORD_PREFS_KEY = "password";
+    static final String SAVE_PASSWORD_PREFS_KEY = "savePassword";
     IGUIState gui = null;
 
     /** Creates new form loginPanel */
-    public loginPanel() {
+    public LoginPanel() {
         initComponents();
+        loadPrefs();
+    }
+
+    protected void loadPrefs() {
+
+        serverField.setText(prefs.get(SERVER_PREFS_KEY, "localhost"));
+        portSpinner.setValue(prefs.getInt(PORT_PREFS_KEY, 9999));
+
+        loginField.setText(prefs.get(LOGIN_PREFS_KEY, ""));
+        boolean savePassword = prefs.getBoolean(SAVE_PASSWORD_PREFS_KEY, false);
+        savePasswordCheck.setSelected(savePassword);
+        if(savePassword) {
+            passwordField.setText(prefs.get(PASSWORD_PREFS_KEY, ""));
+        } else {
+            prefs.putBoolean(PASSWORD_PREFS_KEY, false);
+        }
+    }
+
+    protected void savePrefs() {
+        prefs.put(SERVER_PREFS_KEY, serverField.getText());
+        prefs.putInt(PORT_PREFS_KEY, (Integer) portSpinner.getValue());
+
+        prefs.put(LOGIN_PREFS_KEY, loginField.getText());
+        boolean savePassword = savePasswordCheck.isSelected();
+        prefs.putBoolean(SAVE_PASSWORD_PREFS_KEY, savePassword);
+        if (savePassword) {
+            prefs.put(PASSWORD_PREFS_KEY, new String(passwordField.getPassword()));
+        } else {
+            prefs.put(PASSWORD_PREFS_KEY, "");
+        }
+
+        try {
+            prefs.flush();
+        } catch (BackingStoreException ex) {
+            Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -49,7 +93,7 @@ public class loginPanel extends javax.swing.JPanel {
         loginLabel = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
         portLabel = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        savePasswordCheck = new javax.swing.JCheckBox();
         passwordField = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -58,7 +102,6 @@ public class loginPanel extends javax.swing.JPanel {
         setLayout(new java.awt.GridBagLayout());
 
         serverField.setText("localhost");
-        serverField.setPreferredSize(new java.awt.Dimension(170, 35));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -73,8 +116,6 @@ public class loginPanel extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 8);
         add(serverLabel, gridBagConstraints);
-
-        loginField.setPreferredSize(new java.awt.Dimension(170, 35));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -83,7 +124,6 @@ public class loginPanel extends javax.swing.JPanel {
         add(loginField, gridBagConstraints);
 
         portSpinner.setModel(new javax.swing.SpinnerNumberModel(9999, 1, 65535, 1));
-        portSpinner.setPreferredSize(new java.awt.Dimension(170, 35));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -115,14 +155,12 @@ public class loginPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 8);
         add(portLabel, gridBagConstraints);
 
-        jCheckBox1.setText("Zapisz hasło");
+        savePasswordCheck.setText("Zapisz hasło");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(jCheckBox1, gridBagConstraints);
-
-        passwordField.setPreferredSize(new java.awt.Dimension(170, 35));
+        add(savePasswordCheck, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -157,6 +195,7 @@ public class loginPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        savePrefs();
         try {
             gui.setSocket(new NetClient(serverField.getText(), (Integer) portSpinner.getValue()));
             gui.getSocket().maintenanceReceived(
@@ -165,15 +204,14 @@ public class loginPanel extends javax.swing.JPanel {
                     new String(passwordField.getPassword())));
 
         } catch (UnknownHostException ex) {
-            Logger.getLogger(loginPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
             gui.showMessage("Błąd połączenia", JOptionPane.ERROR_MESSAGE, ex.getLocalizedMessage());
         } catch (IOException ex) {
-            Logger.getLogger(loginPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
             gui.showMessage("Błąd połączenia", JOptionPane.ERROR_MESSAGE, ex.getLocalizedMessage());
         }
     }//GEN-LAST:event_loginButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton loginButton;
@@ -183,6 +221,7 @@ public class loginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JLabel portLabel;
     private javax.swing.JSpinner portSpinner;
+    private javax.swing.JCheckBox savePasswordCheck;
     private javax.swing.JTextField serverField;
     private javax.swing.JLabel serverLabel;
     // End of variables declaration//GEN-END:variables
@@ -194,4 +233,11 @@ public class loginPanel extends javax.swing.JPanel {
     public IGUIState getGui() {
         return gui;
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        savePrefs();
+    }
+
 }

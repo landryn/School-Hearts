@@ -8,6 +8,7 @@ import hearts.defs.state.IGUIState;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -19,7 +20,7 @@ public class MainFrame
 
     protected IServerSocket socket;
     protected Thread socketThread;
-    
+
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
@@ -35,7 +36,7 @@ public class MainFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loginPanel = new hearts.client.hui.loginPanel();
+        loginPanel = new hearts.client.hui.LoginPanel();
         mainMenuBar = new javax.swing.JMenuBar();
         gameMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -60,21 +61,26 @@ public class MainFrame
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            // nvm, zostanie przy std. LAFie
+        }
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new MainFrame().setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu gameMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
-    private hearts.client.hui.loginPanel loginPanel;
+    private hearts.client.hui.LoginPanel loginPanel;
     private javax.swing.JMenuBar mainMenuBar;
     // End of variables declaration//GEN-END:variables
 
@@ -88,7 +94,6 @@ public class MainFrame
     public IServerSocket getSocket() {
         return socket;
     }
-
 
     public void actionReceived(AAction a) {
         if (a instanceof AGUIAction) {
@@ -105,6 +110,4 @@ public class MainFrame
     public void showMessage(String title, int type, String message) {
         JOptionPane.showMessageDialog(this, message, title, type);
     }
-
-
 }
