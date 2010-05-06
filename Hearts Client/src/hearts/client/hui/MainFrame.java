@@ -6,10 +6,12 @@ import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GUIStateException;
 import hearts.defs.state.IGUIState;
 import hearts.defs.state.ILoginPanel;
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  *
@@ -42,6 +44,7 @@ public class MainFrame
         gameMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+        showDeck = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hearts Client");
@@ -57,6 +60,15 @@ public class MainFrame
         mainMenuBar.add(gameMenu);
 
         helpMenu.setText("Pomoc");
+
+        showDeck.setText("Zaprezentuj talię kart");
+        showDeck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showDeckActionPerformed(evt);
+            }
+        });
+        helpMenu.add(showDeck);
+
         mainMenuBar.add(helpMenu);
 
         setJMenuBar(mainMenuBar);
@@ -64,15 +76,34 @@ public class MainFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void showDeckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDeckActionPerformed
+        new DeckTester().setVisible(true);
+    }//GEN-LAST:event_showDeckActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            UIManager.put("control", new Color(183, 215, 143));
+            UIManager.put("nimbusBase", new Color(16, 96, 12));
+            UIManager.put("nimbusSelectionBackground", new Color(16, 96, 12));
+
+            UIManager.put("nimbusLightBackground", new Color(245, 245, 229));
+            UIManager.put("text", new Color(10, 78, 42));
+            UIManager.put("nimbusDisabledText", new Color(120, 150, 100));
+            UIManager.put("nimbusFocus", new Color(236, 241, 162));
+            
+            for (LookAndFeelInfo laf :
+                    UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
+                    UIManager.setLookAndFeel(laf.getClassName());
+                }
+            }
         } catch (Exception e) {
-            // nvm, zostanie przy std. LAFie
+            e.printStackTrace();
         }
+
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
@@ -86,6 +117,7 @@ public class MainFrame
     private javax.swing.JMenuItem jMenuItem1;
     private hearts.client.hui.LoginPanel loginPanel;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JMenuItem showDeck;
     // End of variables declaration//GEN-END:variables
 
     public void setSocket(IServerSocket socket) {
