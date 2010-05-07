@@ -52,8 +52,8 @@ public class CardIcon extends CardBack implements ICard {
             g.setColor(Color.black);
         }
         g.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
-        g.drawString(CARD_SYMBOLS.get(card.getColor()), 20, 35);
-        g.drawString(CARD_CHARACTERS[card.getValue()], 15, 63);
+        g.drawString(CARD_SYMBOLS.get(card.getColor()), 21, 35);
+        g.drawString(CARD_CHARACTERS[card.getValue()], 16, 63);
     }
 
     public int getValue() {

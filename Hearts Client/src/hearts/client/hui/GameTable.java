@@ -47,11 +47,11 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentCardsStack1.setLayout(opponentCardsStack1Layout);
         opponentCardsStack1Layout.setHorizontalGroup(
             opponentCardsStack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 563, Short.MAX_VALUE)
+            .addGap(0, 238, Short.MAX_VALUE)
         );
         opponentCardsStack1Layout.setVerticalGroup(
             opponentCardsStack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 80, Short.MAX_VALUE)
+            .addGap(0, 81, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -67,11 +67,11 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentCardsStack2.setLayout(opponentCardsStack2Layout);
         opponentCardsStack2Layout.setHorizontalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 80, Short.MAX_VALUE)
+            .addGap(0, 81, Short.MAX_VALUE)
         );
         opponentCardsStack2Layout.setVerticalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 467, Short.MAX_VALUE)
+            .addGap(0, 219, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -85,11 +85,11 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentCardsStack3.setLayout(opponentCardsStack3Layout);
         opponentCardsStack3Layout.setHorizontalGroup(
             opponentCardsStack3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 80, Short.MAX_VALUE)
+            .addGap(0, 81, Short.MAX_VALUE)
         );
         opponentCardsStack3Layout.setVerticalGroup(
             opponentCardsStack3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 467, Short.MAX_VALUE)
+            .addGap(0, 219, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();

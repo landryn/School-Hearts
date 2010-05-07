@@ -32,7 +32,7 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
         gui.getSocket().setLoggedIn(success);
-        
+
         gui.getLoginPanel().setEnabled(!success);
 
         if (success) {

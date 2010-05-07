@@ -17,8 +17,8 @@ import javax.swing.JComponent;
 public class CardBack extends JComponent {
 
     public final static int ROUNDNESS = 10;
-    public final static int CARD_WIDTH = 60;
-    public final static int CARD_HEIGHT = 80;
+    public final static int CARD_WIDTH = 61;
+    public final static int CARD_HEIGHT = 81;
     protected final static int SPECIFIC_WIDTH = CARD_WIDTH - 1 - 2 * ROUNDNESS;
     protected final static int SPECIFIC_HEIGHT = CARD_HEIGHT - 1 - 2 * ROUNDNESS;
     protected final static int[] xs = {0, 10, 10, 20, 20, 0};

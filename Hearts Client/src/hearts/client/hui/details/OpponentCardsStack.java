@@ -54,9 +54,9 @@ public class OpponentCardsStack extends JComponent {
             gg.translate(-moveX, 0);
         }
 
-        if(inverted) {
+        if (inverted) {
             gg.rotate(-Math.PI);
-            gg.translate(- width + 1, -CardBack.CARD_HEIGHT + 1);
+            gg.translate(-width + 1, -CardBack.CARD_HEIGHT + 1);
         }
 
         if (vertical) {
