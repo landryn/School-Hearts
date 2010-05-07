@@ -15,19 +15,21 @@ abstract class  AAuction {
     /*
      * Gracze biorący udział w licytacji.
      */
-    ArrayList<Integer> bidders=new ArrayList();
+   protected ArrayList<Integer> bidders=new ArrayList();
     /**
      * Sprzedający, albo jak to woli wychodzący.
      */
-    int Commence;
+
+
+    protected int Commence;
     /**
      * Stawka
      */
-    int quotation;
+    protected int quotation;
     /**
      * Aktualny lider
      */
-    int lider;
+    protected int lider;
     /**
      * Konstruktor wymuszający przypisanie wychodzącego gracza.
      * @param Commence
@@ -41,6 +43,22 @@ abstract class  AAuction {
 
     abstract  void addOffer(int user,int quotation);
 
-    
+    public int getLider() {
+        return lider;
+    }
+
+    public int getQuotation() {
+        return quotation;
+    }
+
+    public int getCommence() {
+        return Commence;
+    }
+
+    abstract int getNextUser();
+
+
+
+
 
 }
