@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.maintenance.answers;
 
 import hearts.defs.state.GUIStateException;
+import hearts.defs.state.IGUIPanel.Panel;
 import hearts.defs.state.IGUIState;
 import java.io.Serializable;
 import javax.swing.JOptionPane;
@@ -32,7 +32,14 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
         gui.getSocket().setLoggedIn(success);
-        gui.showMessage("YEAH!", JOptionPane.INFORMATION_MESSAGE, success.toString());
+
+        gui.getLoginPanel().setEnabled(!success);
+
+        if (success) {
+            gui.setPanel(Panel.GAME);
+        } else {
+            gui.showMessage("Błąd", JOptionPane.ERROR_MESSAGE, message);
+        }
     }
 
     /**
@@ -50,5 +57,4 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
     public Boolean getSuccess() {
         return success;
     }
-
 }

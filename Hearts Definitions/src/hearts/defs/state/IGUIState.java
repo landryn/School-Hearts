@@ -7,7 +7,7 @@ import hearts.defs.protocol.IServerSocket;
  * Interfejs stanu gui, na którym operować mają akcje gui.
  * @author szymon
  */
-public interface IGUIState extends IActionListener {
+public interface IGUIState extends IActionListener, IGUIPanel {
 
     /**
      * ustaw socket jako tenże tutaj dany
@@ -22,5 +22,9 @@ public interface IGUIState extends IActionListener {
      */
     public IServerSocket getSocket();
 
+    public void setPanel(Panel p);
+
     public void showMessage(String title, int type, String message);
+
+    public ILoginPanel getLoginPanel();
 }
