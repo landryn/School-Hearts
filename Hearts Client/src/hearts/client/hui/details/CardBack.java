@@ -17,12 +17,12 @@ import javax.swing.JComponent;
 public class CardBack extends JComponent {
 
     public final static int ROUNDNESS = 10;
-    public final static int CARD_WIDTH = 100;
-    public final static int CARD_HEIGHT = 140;
+    public final static int CARD_WIDTH = 60;
+    public final static int CARD_HEIGHT = 80;
     protected final static int SPECIFIC_WIDTH = CARD_WIDTH - 1 - 2 * ROUNDNESS;
     protected final static int SPECIFIC_HEIGHT = CARD_HEIGHT - 1 - 2 * ROUNDNESS;
-    protected final static int[] xs = {0, 20, 20, 40, 40, 0};
-    protected final static int[] ys = {0, 0, 40, 40, 20, 20};
+    protected final static int[] xs = {0, 10, 10, 20, 20, 0};
+    protected final static int[] ys = {0, 0, 20, 20, 10, 10};
 
     public CardBack() {
         Dimension size = new Dimension(CARD_WIDTH, CARD_HEIGHT);
@@ -52,9 +52,9 @@ public class CardBack extends JComponent {
         p.translate(10, 10);
         for (int i = 0; i < 3; ++i) {
             g.fillPolygon(p);
-            p.translate(40, 0);
+            p.translate(20, 0);
             g.fillPolygon(p);
-            p.translate(-40, 40);
+            p.translate(-20, 20);
         }
     }
 }

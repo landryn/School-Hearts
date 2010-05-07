@@ -7,6 +7,7 @@ package hearts.client.hui.details;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.ICard;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Hashtable;
 import java.util.Map;
@@ -50,9 +51,9 @@ public class CardIcon extends CardBack implements ICard {
         } else {
             g.setColor(Color.black);
         }
-        g.setFont(g.getFont().deriveFont(32.0f));
-        g.drawString(CARD_SYMBOLS.get(card.getColor()), 37, 50);
-        g.drawString(CARD_CHARACTERS[card.getValue()], 37, 110);
+        g.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
+        g.drawString(CARD_SYMBOLS.get(card.getColor()), 20, 35);
+        g.drawString(CARD_CHARACTERS[card.getValue()], 15, 63);
     }
 
     public int getValue() {

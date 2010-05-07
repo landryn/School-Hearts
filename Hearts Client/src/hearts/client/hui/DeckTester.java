@@ -52,10 +52,8 @@ public class DeckTester extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Deck Tester");
-        setMinimumSize(new java.awt.Dimension(900, 700));
 
-        jScrollPane1.setMinimumSize(null);
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(900, 700));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(900, 500));
 
         jPanel1.setLayout(new java.awt.GridLayout(4, 13, 5, 5));
         jScrollPane1.setViewportView(jPanel1);
