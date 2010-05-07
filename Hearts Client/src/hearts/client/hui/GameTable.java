@@ -11,11 +11,14 @@
 
 package hearts.client.hui;
 
+import hearts.defs.state.IGUIGameTable;
+import hearts.defs.state.IGUIPanel.Panel;
+
 /**
  *
  * @author szymon
  */
-public class GameTable extends javax.swing.JPanel {
+public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     /** Creates new form gameTable */
     public GameTable() {
@@ -30,43 +33,82 @@ public class GameTable extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         opponentCardsStack1 = new hearts.client.hui.details.OpponentCardsStack();
+        opponentCardsStack2 = new hearts.client.hui.details.OpponentCardsStack();
+        opponentCardsStack3 = new hearts.client.hui.details.OpponentCardsStack();
 
-        opponentCardsStack1.setInverted(true);
+        setLayout(new java.awt.GridBagLayout());
+
+        opponentCardsStack1.setVertical(false);
 
         javax.swing.GroupLayout opponentCardsStack1Layout = new javax.swing.GroupLayout(opponentCardsStack1);
         opponentCardsStack1.setLayout(opponentCardsStack1Layout);
         opponentCardsStack1Layout.setHorizontalGroup(
             opponentCardsStack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 563, Short.MAX_VALUE)
         );
         opponentCardsStack1Layout.setVerticalGroup(
             opponentCardsStack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 80, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(234, 234, 234)
-                .addComponent(opponentCardsStack1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(231, Short.MAX_VALUE))
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        add(opponentCardsStack1, gridBagConstraints);
+
+        opponentCardsStack2.setInverted(true);
+
+        javax.swing.GroupLayout opponentCardsStack2Layout = new javax.swing.GroupLayout(opponentCardsStack2);
+        opponentCardsStack2.setLayout(opponentCardsStack2Layout);
+        opponentCardsStack2Layout.setHorizontalGroup(
+            opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 80, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(97, 97, 97)
-                .addComponent(opponentCardsStack1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+        opponentCardsStack2Layout.setVerticalGroup(
+            opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 467, Short.MAX_VALUE)
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        add(opponentCardsStack2, gridBagConstraints);
+
+        javax.swing.GroupLayout opponentCardsStack3Layout = new javax.swing.GroupLayout(opponentCardsStack3);
+        opponentCardsStack3.setLayout(opponentCardsStack3Layout);
+        opponentCardsStack3Layout.setHorizontalGroup(
+            opponentCardsStack3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 80, Short.MAX_VALUE)
+        );
+        opponentCardsStack3Layout.setVerticalGroup(
+            opponentCardsStack3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 467, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        add(opponentCardsStack3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private hearts.client.hui.details.OpponentCardsStack opponentCardsStack1;
+    private hearts.client.hui.details.OpponentCardsStack opponentCardsStack2;
+    private hearts.client.hui.details.OpponentCardsStack opponentCardsStack3;
     // End of variables declaration//GEN-END:variables
+
+    public Panel getPanelType() {
+        return Panel.GAME;
+    }
 
 }

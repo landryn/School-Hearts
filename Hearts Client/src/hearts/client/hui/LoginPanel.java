@@ -10,6 +10,7 @@
  */
 package hearts.client.hui;
 
+import hearts.defs.state.IGUIPanel.Panel;
 import hearts.defs.state.ILoginPanel;
 import hearts.client.NetClient;
 import hearts.defs.state.IGUIState;
@@ -360,5 +361,9 @@ public class LoginPanel extends javax.swing.JPanel implements ILoginPanel {
     protected void finalize() throws Throwable {
         super.finalize();
         savePrefs();
+    }
+
+    public Panel getPanelType() {
+        return Panel.LOGIN;
     }
 }

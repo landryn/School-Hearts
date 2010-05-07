@@ -9,7 +9,7 @@ package hearts.defs.state;
  *
  * @author szymon
  */
-public interface ILoginPanel {
+public interface ILoginPanel extends IGUIPanel {
 
     IGUIState getGui();
 

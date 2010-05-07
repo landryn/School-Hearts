@@ -4,12 +4,18 @@ import hearts.defs.actions.AAction;
 import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GUIStateException;
+import hearts.defs.state.IGUIPanel;
 import hearts.defs.state.IGUIState;
 import hearts.defs.state.ILoginPanel;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -21,6 +27,8 @@ public class MainFrame
         extends javax.swing.JFrame
         implements IGUIState {
 
+    protected Map<IGUIPanel.Panel, JPanel> panels =
+            new EnumMap<IGUIPanel.Panel, JPanel>(IGUIPanel.Panel.class);
     protected IServerSocket socket;
     protected Thread socketThread;
 
@@ -28,6 +36,14 @@ public class MainFrame
     public MainFrame() {
         initComponents();
         loginPanel.setGui(this);
+
+        IGUIPanel[] panelsToAdd = {loginPanel, gameTable};
+        for(IGUIPanel p: panelsToAdd) {
+            panels.put(p.getPanelType(), (JPanel) p);
+        }
+        //System.out.println(panels);
+        //System.out.println(((IGUIPanel)getCentralPanel()).getPanelType());
+        //this.setPanel(Panel.GAME);
     }
 
     /** This method is called from within the constructor to
@@ -39,6 +55,7 @@ public class MainFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        gameTable = new hearts.client.hui.GameTable();
         loginPanel = new hearts.client.hui.LoginPanel();
         mainMenuBar = new javax.swing.JMenuBar();
         gameMenu = new javax.swing.JMenu();
@@ -113,6 +130,7 @@ public class MainFrame
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu gameMenu;
+    private hearts.client.hui.GameTable gameTable;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
     private hearts.client.hui.LoginPanel loginPanel;
@@ -150,4 +168,24 @@ public class MainFrame
     public ILoginPanel getLoginPanel() {
         return loginPanel;
     }
+
+    public Panel getPanelType() {
+        Component c = getCentralPanel();
+        if(c instanceof IGUIPanel) {
+            return ((IGUIPanel) c).getPanelType();
+        } else {
+            return null;
+        }
+    }
+
+    private Component getCentralPanel() {
+        return ((BorderLayout)this.getContentPane().getLayout()).getLayoutComponent(BorderLayout.CENTER);
+    }
+
+    public synchronized void setPanel(Panel p) {
+        this.getContentPane().remove(getCentralPanel());
+        this.getContentPane().add(panels.get(p), BorderLayout.CENTER);
+        this.validate();
+    }
+
 }
