@@ -25,7 +25,18 @@ public class NewDaelForUserAGUI extends AGUIAction {
     private IGameState.Mode mode;
     private int dealer;
     private int activeUser;
+    private boolean  auction;
 
+    public boolean isAuction() {
+        return auction;
+    }
+
+    public void setAuction(boolean auction) {
+        this.auction = auction;
+    }
+
+
+    
     public int getDealer() {
         return dealer;
     }

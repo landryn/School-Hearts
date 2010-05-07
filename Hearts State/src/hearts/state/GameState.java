@@ -7,6 +7,7 @@ import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
 import hearts.state.exceptions.IllegalModeChangeException;
 import hearts.state.exceptions.UserExistsException;
+import hearts.defs.state.GameConstants;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class GameState
     protected boolean dealEnd=false;
     private int menyTricks=0;
     protected boolean auction = false;
+    protected int actualCommence;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
 
@@ -157,7 +159,7 @@ public class GameState
     @Override
     public void clearTrick(boolean last) {
         trick = new Trick(last);
-        trick.setFirst(-1);
+        trick.setFirst(GameConstants.NO_CARD_IN_TRIP);
     }
     
     public Mode addUser(IUserState user) {
@@ -220,7 +222,13 @@ public class GameState
     }
 
     public int removeCommence() {
-        return commence.remove(0);
+
+        actualCommence=commence.remove(0);
+        return actualCommence;
+    }
+
+    public int getCommence() {
+        return actualCommence;
     }
 
     

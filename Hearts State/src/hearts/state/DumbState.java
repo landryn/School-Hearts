@@ -119,4 +119,8 @@ public class DumbState extends AActionList {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public int getCommence() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

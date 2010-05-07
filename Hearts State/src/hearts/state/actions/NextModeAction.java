@@ -98,6 +98,7 @@ public class NextModeAction extends AAction {
                 tab[i].setMode(old.getMode());
                 tab[i].setDealer(old.getDealer());
                 tab[i].setActiveUser(old.getActiveUser());
+                tab[i].setAuction(old.isAuction());
                 old.addAction(tab[i]);//dadałem akcję do wysłania
             }
             //ustawiam nowego rozdającego

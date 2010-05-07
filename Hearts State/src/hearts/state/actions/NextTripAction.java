@@ -6,14 +6,14 @@
 package hearts.state.actions;
 
 import hearts.defs.actions.AAction;
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 import hearts.state.GameState;
 import hearts.state.actions.gui.NextTripAGUI;
 
 /**
- * Zdarzenie rozpoczynającą klejnę lewe. Serwer po każdym pozytywnym zdarzeni powinien sprawdzić czy lewe się zakończyła
- * i wywołać netodę z Judge.judge z new NextTripAction(-1);
+ * Zdarzenie rozpoczynającą klejnę lewe.
  * @author Paweł Trynkiewicz
  */
 public class NextTripAction extends AAction {
@@ -61,6 +61,8 @@ public class NextTripAction extends AAction {
                 old.addAction(ac);
             }
         old.setActiveUser(winer);
+        //koniec rozdania, dodaje akcję o nowym rozdaniu.
+        if(old.getNumTrick()==13) old.addAction(new NextModeAction(GameConstants.SERVER));
         return old;
     }
 

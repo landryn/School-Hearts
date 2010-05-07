@@ -6,6 +6,7 @@ package hearts.state;
 
 import hearts.defs.actions.AAction;
 import hearts.defs.state.CardColor;
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
@@ -190,7 +191,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         if(state.getNumTrick()==1&&card.getColor()==CardColor.HEART&&card.getValue()==ICard.KING)
             throw new GameStateException("You can not put king heart in first trick");
 
-        if(state.getTrick().getFirst()==-1) {
+        if(state.getTrick().getFirst()==GameConstants.NO_CARD_IN_TRIP) {
             if(card.getColor()==CardColor.HEART) {
                 IUserState user=state.getUserState(action.getSender());
                 if(user.userHaveCardInColor(CardColor.CLUB)||user.userHaveCardInColor(CardColor.DIAMOND) || user.userHaveCardInColor(CardColor.SPADE))
@@ -235,7 +236,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         //1
         int first=state.getTrick().getFirst();
 
-        if(first==-1) return;
+        if(first==GameConstants.NO_CARD_IN_TRIP) return;
         AddCardToTrickAction act=(AddCardToTrickAction) action;
         CardColor firstColor=state.getTrick().getCards()[first].getColor();
         CardColor trump=state.getTrump();
@@ -287,7 +288,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         int first=state.getTrick().getFirst();
 
-        if(first==-1) return;
+        if(first==GameConstants.NO_CARD_IN_TRIP) return;
         AddCardToTrickAction act=(AddCardToTrickAction) action;
         CardColor firstColor=state.getTrick().getCards()[first].getColor();
         CardColor userColor=act.getCard().getColor();

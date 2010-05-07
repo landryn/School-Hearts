@@ -217,11 +217,14 @@ public interface IGameState extends Serializable, Cloneable {
     public void addCommence(int user);
 
     /**
-     * Zwraca gracza który bedzie rozpoczynał rozdanie. Usuwając do z listy.
+     * Zwraca gracza który bedzie rozpoczynał rozdanie. Usuwając go z listy.
      * @return
      */
     public int removeCommence();
-
-
+    /**
+     * Zwraca gracza który ma prawo rozpocząć rozdanie
+     * @return
+     */
+     public int getCommence();
 }
 
