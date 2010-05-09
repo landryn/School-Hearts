@@ -6,6 +6,7 @@
 package hearts.state.actions;
 
 import hearts.defs.actions.AAction;
+import hearts.defs.state.CardColor;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 
@@ -19,10 +20,21 @@ public class ChooseTrumpAction  extends AAction{
         super(receiver);
     }
 
+CardColor turmp;
+
+    public CardColor getTurmp() {
+        return turmp;
+    }
+
+    public void setTurmp(CardColor turmp) {
+        this.turmp = turmp;
+    }
 
     @Override
     public IGameState perform(IGameState clone) throws GameStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        clone.setTrump(this.getTurmp());
+        clone.setAuction(false);
+        return clone;
     }
 
 }

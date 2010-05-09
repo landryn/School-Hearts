@@ -226,5 +226,16 @@ public interface IGameState extends Serializable, Cloneable {
      * @return
      */
      public int getCommence();
+     /**
+      * Ustania aukcje.
+      * @param auction
+      */
+     public void setAuction(AAuction auction);
+     /**
+      * Zwraca aukcje.
+      * @return
+      */
+     public AAuction getAuction();
+     
 }
 

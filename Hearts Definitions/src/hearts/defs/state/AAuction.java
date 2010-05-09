@@ -5,13 +5,14 @@
 
 package hearts.defs.state;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Klasa odpowiedzialna przechowywanie  stanu aukcji.
  * @author pawel
  */
-abstract class  AAuction {
+public abstract class  AAuction implements Serializable, Cloneable {
     /*
      * Gracze biorący udział w licytacji.
      */
@@ -21,44 +22,67 @@ abstract class  AAuction {
      */
 
 
-    protected int Commence;
+    protected int commence;
     /**
      * Stawka
      */
-    protected int quotation;
+    protected int quotation=0;
     /**
-     * Aktualny lider
+     * Gracz który zaoferował najwięcej w licytacji.
      */
     protected int lider;
     /**
      * Konstruktor wymuszający przypisanie wychodzącego gracza.
      * @param Commence
      */
-    public AAuction(int Commence) {
-        this.Commence = Commence;
+    public AAuction(int commence) {
+        this.commence = commence;
         for(int i=1;i<=3;i++){
-            bidders.add((Commence+1)%4);
+            bidders.add((commence+i)%4);
         }
+
+        lider=(commence+1)%4;
     }
 
-    abstract  void addOffer(int user,int quotation);
-
+    public abstract  void addOffer(int user,int quotation);
+    /**
+     * Zwraca gracza który w danym momecie zaoferaował najwięcej.
+     * @return
+     */
     public int getLider() {
         return lider;
     }
-
+    /**
+     * Zwraca aktulana stawkę w licytacji.
+     * @return
+     */
     public int getQuotation() {
         return quotation;
     }
-
+    /**
+     * Zwraca wycodzącego gracza.
+     * @return
+     */
     public int getCommence() {
-        return Commence;
+        return commence;
     }
+    /**
+     * Zwraca następnego gracza który ma prawo licytować.
+     * @return
+     */
+   public abstract int getActivetUser();
 
-    abstract int getNextUser();
+   /**
+    * Zwraca status licytacji.
+    * @return
+    */
+   public abstract boolean isEnd();
 
 
-
+    @Override
+    public  AAuction clone() throws CloneNotSupportedException{
+        return (AAuction) super.clone();
+    }
 
 
 }

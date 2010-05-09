@@ -7,6 +7,7 @@ package hearts.state.actions;
 
 import hearts.state.actions.gui.NewDaelForUserAGUI;
 import hearts.defs.actions.AAction;
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
@@ -101,8 +102,8 @@ public class NextModeAction extends AAction {
                 tab[i].setAuction(old.isAuction());
                 old.addAction(tab[i]);//dadałem akcję do wysłania
             }
-            //ustawiam nowego rozdającego
-            
+        //dodaję aukcje rozpoczynającą licytację.
+            if(old.isAuction()) old.addAction(new AuctionBeginAction(GameConstants.SERVER));
         return old;
     }
 
