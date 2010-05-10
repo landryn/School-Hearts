@@ -185,7 +185,14 @@ public class MainFrame
     public synchronized void setPanel(Panel p) {
         this.getContentPane().remove(getCentralPanel());
         this.getContentPane().add(panels.get(p), BorderLayout.CENTER);
-        this.validate();
+
+        // obejscie deadlocka:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                validate();
+            }
+        });
     }
 
 }
