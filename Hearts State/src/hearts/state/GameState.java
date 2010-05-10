@@ -1,5 +1,6 @@
 package hearts.state;
 
+import hearts.defs.state.AAuction;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
@@ -7,8 +8,11 @@ import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
 import hearts.state.exceptions.IllegalModeChangeException;
 import hearts.state.exceptions.UserExistsException;
+import hearts.defs.state.GameConstants;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementacja stanu gry
@@ -28,7 +32,10 @@ public class GameState
     protected boolean dealEnd=false;
     private int menyTricks=0;
     protected boolean auction = false;
+    protected int actualCommence;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
+
+    protected AAuction autcionUser=null;
 
 
     protected ArrayList<Mode> modeList=new ArrayList<Mode>();
@@ -66,7 +73,11 @@ public class GameState
         //klonowanie rozgrywek
 
         stateClone.clearMode();
-
+        try {
+            stateClone.autcionUser = this.autcionUser.clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(int i=0; i< modeList.size(); i++) {
             stateClone.addMode(modeList.get(i));
         }
@@ -157,7 +168,7 @@ public class GameState
     @Override
     public void clearTrick(boolean last) {
         trick = new Trick(last);
-        trick.setFirst(-1);
+        trick.setFirst(GameConstants.NO_CARD_IN_TRIP);
     }
     
     public Mode addUser(IUserState user) {
@@ -220,7 +231,22 @@ public class GameState
     }
 
     public int removeCommence() {
-        return commence.remove(0);
+
+        actualCommence=commence.remove(0);
+        return actualCommence;
+    }
+
+    public int getCommence() {
+        return actualCommence;
+    }
+
+    public void setAuction(AAuction auction) {
+        this.autcionUser=auction;
+    }
+
+    public AAuction getAuction() {
+        return this.autcionUser;
+
     }
 
     

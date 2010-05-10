@@ -1,5 +1,6 @@
 package hearts.state;
 
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.ICard;
 import hearts.defs.state.ITrick;
 import hearts.defs.state.TrickException;
@@ -23,7 +24,7 @@ public class Trick implements ITrick, Serializable, Cloneable {
     /**
      * Kto wyszedł jako pierwszy. Czyli jaki kolor jest wistujący. Nie mylić z atutem.
      */
-    protected int first=-1;
+    protected int first=GameConstants.NO_CARD_IN_TRIP;
     /**
      * Tworzy nową wziątkę.
      * @param last jeśli jest jedną z dwóch ostatnich wziątek.

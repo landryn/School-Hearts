@@ -102,6 +102,8 @@ public class UserState implements  IUserState,Cloneable, Serializable {
 
     public void clearTricks() {
         this.listTriks=new ArrayList<ITrick>();
+        this.banker=id;
+        this.debet=0;
     }
 
     public List<Integer> getPointsList() {

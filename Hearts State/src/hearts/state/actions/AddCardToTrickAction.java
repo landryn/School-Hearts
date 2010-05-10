@@ -6,6 +6,7 @@
 package hearts.state.actions;
 
 import hearts.defs.actions.AAction;
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
@@ -13,7 +14,7 @@ import hearts.defs.state.IGameState;
 import hearts.state.actions.gui.AddCardToTrickAGUI;
 
 /**
- * Akcja próbuje połorzyć kartę na stole.
+ * Akcja próbuje połorzyć kartę na stole. Jeśli lewa się zakończyła dodaje NextTripAction.
  * @author Paweł Trynkiewicz
  */
 public class AddCardToTrickAction  extends  AAction{
@@ -44,7 +45,7 @@ public class AddCardToTrickAction  extends  AAction{
     @Override
     public IGameState perform(IGameState old) throws GameStateException {
        
-      if (old.getTrick().getFirst()==-1) old.getTrick().setFirst(sender);
+      if (old.getTrick().getFirst()==GameConstants.NO_CARD_IN_TRIP) old.getTrick().setFirst(sender);
        //dodaje karte
        old.getTrick().addCard(card, sender);
        //wyciągam kartę z pilu gracza
@@ -60,6 +61,7 @@ public class AddCardToTrickAction  extends  AAction{
                 ac.setSender(this.getSender());
                 old.addAction(ac);
             }
+       if(old.getTrick().ends()) old.addAction(new NextTripAction(GameConstants.SERVER));
        
        return old;
     }

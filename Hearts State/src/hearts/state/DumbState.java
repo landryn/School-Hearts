@@ -1,5 +1,6 @@
 package hearts.state;
 
+import hearts.defs.state.AAuction;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState.Mode;
@@ -116,6 +117,18 @@ public class DumbState extends AActionList {
     }
 
     public int removeCommence() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getCommence() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAuction(AAuction auction) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public AAuction getAuction() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

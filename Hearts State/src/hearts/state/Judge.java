@@ -6,6 +6,7 @@ package hearts.state;
 
 import hearts.defs.actions.AAction;
 import hearts.defs.state.CardColor;
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
@@ -13,6 +14,10 @@ import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
 import hearts.defs.state.SFinalPoints;
 import hearts.state.actions.AddCardToTrickAction;
+import hearts.state.actions.AuctionBeginAction;
+import hearts.state.actions.AuctionDecisionAction;
+import hearts.state.actions.AuctionOfferAction;
+import hearts.state.actions.ChooseTrumpAction;
 import hearts.state.actions.FirstModeAction;
 import hearts.state.actions.NextModeAction;
 import hearts.state.actions.NextTripAction;
@@ -57,6 +62,7 @@ public class Judge implements hearts.defs.judge.IJudge {
          * Sprawdzam jaki to typ akcji.
          */
         if (action instanceof AddCardToTrickAction) {
+            if(copyState.isAuction()) throw new GameStateException("Auction is active");
             if (state.getMode() == state.getMode().WAITING_FOR_PLAYERS) {
                 throw new GameStateException("WAITING_FOR_PLAYERS");
             }
@@ -92,6 +98,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         }
         if (action instanceof NextTripAction) {
+            if(copyState.isAuction()) throw new GameStateException("Auction is active");
             if (!state.trickEnds()) {
                 throw new GameStateException("Trick not end");
             }
@@ -110,6 +117,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         }
         if (action instanceof NextModeAction) {
+            if(copyState.isAuction()) throw new GameStateException("Auction is active");
             if (!state.dealEnds()) {
                 throw new GameStateException("Deal not end");
             }
@@ -165,6 +173,26 @@ public class Judge implements hearts.defs.judge.IJudge {
             }
 
 
+        } else if(action instanceof AuctionBeginAction) {
+            if(!copyState.isAuction()) throw new GameStateException("Auction is not active");
+
+        } else if (action instanceof AuctionOfferAction) {
+            
+            if(!copyState.isAuction()) throw new GameStateException("Auction is not active");
+            if(state.getAuction().getActivetUser()!=action.getSender()) throw new GameStateException("You can not do it");
+
+        } else if(action instanceof AuctionDecisionAction) {
+
+            if(!copyState.isAuction()) throw new GameStateException("Auction is not active");
+            if(copyState.getActiveUser()!=action.getSender()|| (!copyState.getAuction().isEnd()))
+                throw new GameStateException("You can not take decision");
+        }else if(action instanceof ChooseTrumpAction){
+            if(!copyState.isAuction()) throw new GameStateException("You can not change trump");
+             if(copyState.getActiveUser()!=action.getSender()|| (!copyState.getAuction().isEnd()))
+                 throw new GameStateException("You are not active user");
+
+        }else {
+            throw new GameStateException("Unknown action");
         }
 
         /**
@@ -190,7 +218,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         if(state.getNumTrick()==1&&card.getColor()==CardColor.HEART&&card.getValue()==ICard.KING)
             throw new GameStateException("You can not put king heart in first trick");
 
-        if(state.getTrick().getFirst()==-1) {
+        if(state.getTrick().getFirst()==GameConstants.NO_CARD_IN_TRIP) {
             if(card.getColor()==CardColor.HEART) {
                 IUserState user=state.getUserState(action.getSender());
                 if(user.userHaveCardInColor(CardColor.CLUB)||user.userHaveCardInColor(CardColor.DIAMOND) || user.userHaveCardInColor(CardColor.SPADE))
@@ -235,7 +263,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         //1
         int first=state.getTrick().getFirst();
 
-        if(first==-1) return;
+        if(first==GameConstants.NO_CARD_IN_TRIP) return;
         AddCardToTrickAction act=(AddCardToTrickAction) action;
         CardColor firstColor=state.getTrick().getCards()[first].getColor();
         CardColor trump=state.getTrump();
@@ -287,7 +315,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         int first=state.getTrick().getFirst();
 
-        if(first==-1) return;
+        if(first==GameConstants.NO_CARD_IN_TRIP) return;
         AddCardToTrickAction act=(AddCardToTrickAction) action;
         CardColor firstColor=state.getTrick().getCards()[first].getColor();
         CardColor userColor=act.getCard().getColor();
