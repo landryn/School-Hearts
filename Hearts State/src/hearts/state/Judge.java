@@ -56,13 +56,13 @@ public class Judge implements hearts.defs.judge.IJudge {
     public IGameState judge(IGameState state, AAction action) throws GameStateException {
         IGameState copyState = null;
 
-        copyState=this.cloneState(state);
+        
 
         /**
          * Sprawdzam jaki to typ akcji.
          */
         if (action instanceof AddCardToTrickAction) {
-            if(copyState.isAuction()) throw new GameStateException("Auction is active");
+            if(state.isAuction()) throw new GameStateException("Auction is active");
             if (state.getMode() == state.getMode().WAITING_FOR_PLAYERS) {
                 throw new GameStateException("WAITING_FOR_PLAYERS");
             }
@@ -98,7 +98,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         }
         if (action instanceof NextTripAction) {
-            if(copyState.isAuction()) throw new GameStateException("Auction is active");
+            if(state.isAuction()) throw new GameStateException("Auction is active");
             if (!state.trickEnds()) {
                 throw new GameStateException("Trick not end");
             }
@@ -117,7 +117,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         }
         if (action instanceof NextModeAction) {
-            if(copyState.isAuction()) throw new GameStateException("Auction is active");
+            if(state.isAuction()) throw new GameStateException("Auction is active");
             if (!state.dealEnds()) {
                 throw new GameStateException("Deal not end");
             }
@@ -174,23 +174,23 @@ public class Judge implements hearts.defs.judge.IJudge {
 
 
         } else if(action instanceof AuctionBeginAction) {
-            if(!copyState.isAuction()) throw new GameStateException("Auction is not active");
+            if(!state.isAuction()) throw new GameStateException("Auction is not active");
 
         } else if (action instanceof AuctionOfferAction) {
             
-            if(!copyState.isAuction()) throw new GameStateException("Auction is not active");
+            if(!state.isAuction()) throw new GameStateException("Auction is not active");
             if(state.getAuction().getActivetUser()!=action.getSender()) throw new GameStateException("You can not do it");
 
         } else if(action instanceof AuctionDecisionAction) {
 
-            if(!copyState.isAuction()) throw new GameStateException("Auction is not active");
-            if(copyState.getActiveUser()!=action.getSender()|| (!copyState.getAuction().isEnd()))
+            if(!state.isAuction()) throw new GameStateException("Auction is not active");
+            if(state.getActiveUser()!=action.getSender()|| (!state.getAuction().isEnd()))
                 throw new GameStateException("You can not take decision");
 
 
         }else if(action instanceof ChooseTrumpAction){
-            if(!copyState.isAuction()) throw new GameStateException("You can not change trump");
-             if(copyState.getActiveUser()!=action.getSender()|| (!copyState.getAuction().isEnd()) || copyState.getMode()!=IGameState.Mode.WIN_BACK )
+            if(!state.isAuction()) throw new GameStateException("You can not change trump");
+             if(state.getActiveUser()!=action.getSender()|| (!state.getAuction().isEnd()) || state.getMode()!=IGameState.Mode.WIN_BACK )
                  throw new GameStateException("You are not active user");
 
         }else {
@@ -200,6 +200,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         /**
          * Wykonuję akcję na kopi stanu gry.
          */
+        copyState=this.cloneState(state);
         return action.perform(copyState);
        
     }

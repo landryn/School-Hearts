@@ -35,12 +35,12 @@ public class Card implements ICard, Serializable, Cloneable {
 
     @Override
     public Card clone() {
-        Card card=null;
+        Card ob = null;
         try {
-            card= new Card(color, value);
-        } catch (WrongCardValueException ex) {
+            ob = (Card) super.clone();
+        } catch (CloneNotSupportedException ex) {
             Logger.getLogger(Card.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return card;
+        return ob;
     }
 }

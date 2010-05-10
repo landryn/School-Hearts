@@ -47,10 +47,7 @@ public class Auction extends AAuction {
         Auction stateClone = null;
         try {
             stateClone = (Auction) super.clone();
-            stateClone.bidders=new ArrayList<Integer>();
-            for(int i=0;i<this.bidders.size();i++){
-              stateClone.bidders.add(this.bidders.get(i));
-            }
+           
 
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(AActionList.class.getName()).log(Level.SEVERE, null, ex);

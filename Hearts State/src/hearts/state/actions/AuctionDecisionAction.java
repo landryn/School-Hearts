@@ -8,8 +8,8 @@ import hearts.defs.actions.AAction;
 import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
-import hearts.state.actions.gui.AuctionFinnalAGUI;
-import hearts.state.actions.gui.ChosseTrumpAGUI;
+import hearts.state.actions.gui.AuctionFinnalGUIAction;
+import hearts.state.actions.gui.ChosseTrumpGUIAction;
 
 /**
  *  Aktualny wychodzący wysyła informacje o tym, czy akceptyję wyniki licytacj. Czy nie.
@@ -36,10 +36,10 @@ public class AuctionDecisionAction extends AAction {
         if (isAccep()) {
             clone.setActiveUser(sender);
 
-            AuctionFinnalAGUI act = null;
+            AuctionFinnalGUIAction act = null;
             for (int i = 0; i < 4; i++) {
                 //nowa akcja
-                act = new AuctionFinnalAGUI(i);
+                act = new AuctionFinnalGUIAction(i);
                 act.setCommece(clone.getAuction().getCommence());
                 act.setQuotion(0);
                 act.setLider(clone.getAuction().getCommence());
@@ -50,7 +50,7 @@ public class AuctionDecisionAction extends AAction {
             }
 
             if (clone.getMode() == IGameState.Mode.WIN_BACK) {
-                ChosseTrumpAGUI actt = new ChosseTrumpAGUI(clone.getAuction().getCommence());
+                ChosseTrumpGUIAction actt = new ChosseTrumpGUIAction(clone.getAuction().getCommence());
                 actt.setSender(GameConstants.SERVER);
                 clone.addAction(actt);
                 clone.setAuction(true);
@@ -66,10 +66,10 @@ public class AuctionDecisionAction extends AAction {
 
 
             clone.setActiveUser(clone.getAuction().getLider());
-            AuctionFinnalAGUI act = null;
+            AuctionFinnalGUIAction act = null;
             for (int i = 0; i < 4; i++) {
                 //nowa akcja
-                act = new AuctionFinnalAGUI(i);
+                act = new AuctionFinnalGUIAction(i);
                 act.setCommece(clone.getAuction().getCommence());
                 act.setQuotion(0);
                 act.setLider(clone.getAuction().getLider());
@@ -81,7 +81,7 @@ public class AuctionDecisionAction extends AAction {
             }
 
             if (clone.getMode() == IGameState.Mode.WIN_BACK) {
-                ChosseTrumpAGUI actt = new ChosseTrumpAGUI(clone.getAuction().getLider());
+                ChosseTrumpGUIAction actt = new ChosseTrumpGUIAction(clone.getAuction().getLider());
                 actt.setSender(GameConstants.SERVER);
                 clone.addAction(actt);
                 clone.setAuction(true);

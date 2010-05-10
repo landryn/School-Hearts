@@ -11,7 +11,7 @@ import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
 
-import hearts.state.actions.gui.AddCardToTrickAGUI;
+import hearts.state.actions.gui.AddCardToTrickGUIAction;
 
 /**
  * Akcja próbuje połorzyć kartę na stole. Jeśli lewa się zakończyła dodaje NextTripAction.
@@ -53,10 +53,10 @@ public class AddCardToTrickAction  extends  AAction{
        //ustawiam aktywnego usera
        old.nextUser();
 
-       AddCardToTrickAGUI ac = null;
+       AddCardToTrickGUIAction ac = null;
        //Dodaje komunikaty do wysłania
             for (int i = 0; i < 4; i++) {
-                ac = new AddCardToTrickAGUI(i);
+                ac = new AddCardToTrickGUIAction(i);
                 ac.setCard(this.getCard());
                 ac.setSender(this.getSender());
                 old.addAction(ac);

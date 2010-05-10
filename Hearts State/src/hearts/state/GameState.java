@@ -37,9 +37,15 @@ public class GameState
 
     protected AAuction autcionUser;
 
-
+    /**
+     * Lista typów rozgrywek. Na początku zbóje, póżniej odgrywki. A potem wzalerzności
+     * od przebiegu gry. Gra kónczy się gdy, lista jest pusta.
+     */
     protected ArrayList<Mode> modeList=new ArrayList<Mode>();
-    
+    /**
+     * Lista graczy, którzy maja prawo wychodzić w danym rozdaniu. Silnie skojarzona z modeList.
+     * Na poczatku kolejni gracze, potem w zalorzności od przebiegu rozgrywki, tzn. pojawienia się ślizgów i maksów.
+     */
     protected ArrayList<Integer> commence=new ArrayList<Integer>();
   
     /**

@@ -9,8 +9,7 @@ import hearts.defs.actions.AAction;
 import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
-import hearts.state.GameState;
-import hearts.state.actions.gui.NextTripAGUI;
+import hearts.state.actions.gui.NextTripGUIAction;
 
 /**
  * Zdarzenie rozpoczynającą klejnę lewe.
@@ -53,9 +52,9 @@ public class NextTripAction extends AAction {
        old.setNumTrick(old.getNumTrick()+1) ;
 
       
-       NextTripAGUI ac=null;
+       NextTripGUIAction ac=null;
        for (int i = 0; i < 4; i++) {
-                ac = new NextTripAGUI(i);
+                ac = new NextTripGUIAction(i);
                 ac.setWiner(winer);
                 ac.setSender(this.getSender());
                 old.addAction(ac);

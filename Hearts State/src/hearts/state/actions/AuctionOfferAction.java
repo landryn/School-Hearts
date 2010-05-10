@@ -8,8 +8,8 @@ import hearts.defs.actions.AAction;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 import hearts.state.Auction;
-import hearts.state.actions.gui.AuctionAGUI;
-import hearts.state.actions.gui.AuctionEndAGUI;
+import hearts.state.actions.gui.AuctionGUIAction;
+import hearts.state.actions.gui.AuctionEndGUIAction;
 
 /**
  * Akcja odpowiedzialna, za przesłanie oferty gracza w licytacji.
@@ -46,10 +46,10 @@ public class AuctionOfferAction extends AAction {
             clone.setActiveUser(auction.getActivetUser());
             //aukcja zkończona wysyłam do wszystkich informacje o tym
 
-            AuctionEndAGUI act = null;
+            AuctionEndGUIAction act = null;
             for (int i = 0; i < 4; i++) {
                 //nowa akcja
-                act = new AuctionEndAGUI(i);
+                act = new AuctionEndGUIAction(i);
                 act.setCommece(clone.getAuction().getCommence());
                 act.setQuotion(clone.getAuction().getQuotation());
                 act.setLider(clone.getAuction().getLider());
@@ -65,10 +65,10 @@ public class AuctionOfferAction extends AAction {
             clone.setActiveUser(clone.getAuction().getActivetUser());
 
 
-            AuctionAGUI act = null;
+            AuctionGUIAction act = null;
             for (int i = 0; i < 4; i++) {
                 //nowa akcja
-                act = new AuctionAGUI(i);
+                act = new AuctionGUIAction(i);
                 act.setCommece(clone.getAuction().getCommence());
                 act.setQuotion(clone.getAuction().getQuotation());
                 act.setLider(clone.getAuction().getLider());
@@ -86,10 +86,10 @@ public class AuctionOfferAction extends AAction {
             clone.setActiveUser(auction.getActivetUser());
             //aukcja zkończona wysyłam do wszystkich informacje o tym
 
-            AuctionEndAGUI act = null;
+            AuctionEndGUIAction act = null;
             for (int i = 0; i < 4; i++) {
                 //nowa akcja
-                act = new AuctionEndAGUI(i);
+                act = new AuctionEndGUIAction(i);
                 act.setCommece(clone.getAuction().getCommence());
                 act.setQuotion(clone.getAuction().getQuotation());
                 act.setLider(clone.getAuction().getLider());

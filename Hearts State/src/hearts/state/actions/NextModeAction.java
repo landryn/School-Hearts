@@ -5,7 +5,7 @@
 
 package hearts.state.actions;
 
-import hearts.state.actions.gui.NewDaelForUserAGUI;
+import hearts.state.actions.gui.NewDealForUserGUIAction;
 import hearts.defs.actions.AAction;
 import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
@@ -51,7 +51,7 @@ public class NextModeAction extends AAction {
         
 
 
-        NewDaelForUserAGUI[] tab = new NewDaelForUserAGUI[4];
+        NewDealForUserGUIAction[] tab = new NewDealForUserGUIAction[4];
 
         int point=0;
         //obliczam punkty
@@ -92,7 +92,7 @@ public class NextModeAction extends AAction {
         
 
          for(int i=0;i<4;i++){
-                tab[i]=new NewDaelForUserAGUI(i);
+                tab[i]=new NewDealForUserGUIAction(i);
                 tab[i].setCards(cards[i]);
                 tab[i].setListPoints(new ArrayList(old.getUserState(i).getPointsList()));
                

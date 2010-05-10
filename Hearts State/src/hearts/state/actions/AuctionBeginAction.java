@@ -9,7 +9,7 @@ import hearts.defs.actions.AAction;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 import hearts.state.Auction;
-import hearts.state.actions.gui.AuctionAGUI;
+import hearts.state.actions.gui.AuctionGUIAction;
 
 /**
  * Akcja rozpoczynająca licytacje. Przygotowuje gameState. Akcja dodawana do wysłania przez NextModeAction.
@@ -29,10 +29,10 @@ public class AuctionBeginAction extends AAction{
          */
         clone.setAuction(new Auction(clone.getActiveUser()));
         clone.setActiveUser(clone.getAuction().getActivetUser());
-        AuctionAGUI auction=null;
+        AuctionGUIAction auction=null;
         for(int i=0;i<4;i++){
             //nowa akcja
-            auction=new AuctionAGUI(i);
+            auction=new AuctionGUIAction(i);
             auction.setCommece(clone.getAuction().getCommence());
             auction.setQuotion(clone.getAuction().getQuotation());
             auction.setLider(clone.getAuction().getLider());
