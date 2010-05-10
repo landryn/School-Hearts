@@ -8,7 +8,7 @@ import hearts.defs.actions.AAction;
 import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
-import hearts.state.actions.gui.AuctionFinnalGUIAction;
+import hearts.state.actions.gui.AuctionFinnallGUIAction;
 import hearts.state.actions.gui.ChosseTrumpGUIAction;
 
 /**
@@ -36,10 +36,10 @@ public class AuctionDecisionAction extends AAction {
         if (isAccep()) {
             clone.setActiveUser(sender);
 
-            AuctionFinnalGUIAction act = null;
+            AuctionFinnallGUIAction act = null;
             for (int i = 0; i < 4; i++) {
                 //nowa akcja
-                act = new AuctionFinnalGUIAction(i);
+                act = new AuctionFinnallGUIAction(i);
                 act.setCommece(clone.getAuction().getCommence());
                 act.setQuotion(0);
                 act.setLider(clone.getAuction().getCommence());
@@ -66,10 +66,10 @@ public class AuctionDecisionAction extends AAction {
 
 
             clone.setActiveUser(clone.getAuction().getLider());
-            AuctionFinnalGUIAction act = null;
+            AuctionFinnallGUIAction act = null;
             for (int i = 0; i < 4; i++) {
                 //nowa akcja
-                act = new AuctionFinnalGUIAction(i);
+                act = new AuctionFinnallGUIAction(i);
                 act.setCommece(clone.getAuction().getCommence());
                 act.setQuotion(0);
                 act.setLider(clone.getAuction().getLider());
