@@ -78,6 +78,7 @@ public class FirstModeAction  extends AAction{
             ++commence;
 
         }
+  
         //ustawiłem nowy typ rozgrywki.
         clone.nextMode();
         clone.setDealer(0);

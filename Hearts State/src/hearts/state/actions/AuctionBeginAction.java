@@ -41,6 +41,7 @@ public class AuctionBeginAction extends AAction{
 
         }
 
+       
         return clone;
     }
 

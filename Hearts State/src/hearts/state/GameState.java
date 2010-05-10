@@ -35,7 +35,7 @@ public class GameState
     protected int actualCommence;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
-    protected AAuction autcionUser=null;
+    protected AAuction autcionUser;
 
 
     protected ArrayList<Mode> modeList=new ArrayList<Mode>();
@@ -74,7 +74,8 @@ public class GameState
 
         stateClone.clearMode();
         try {
-            stateClone.autcionUser = this.autcionUser.clone();
+            
+            if(this.autcionUser!=null)  stateClone.autcionUser = this.autcionUser.clone();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -228,10 +229,11 @@ public class GameState
 
     public void addCommence(int user) {
         commence.add(user);
+        System.out.println("size "+ commence.size());
     }
 
     public int removeCommence() {
-
+       
         actualCommence=commence.remove(0);
         return actualCommence;
     }
@@ -249,5 +251,18 @@ public class GameState
 
     }
 
+    /** haks 1
+     * Fukcja zrobiona tylko do testów ustawia stan gry na początek licytacji niezaleznie od tego co się dzieje na stole
+     */
+     public void haks1(){
+         this.autcionUser=new Auction(2);
+         this.dealEnd=true;
+         this.auction=true;
+         this.actualCommence=2;
+         this.menyTricks=13;
+         
+
+
+     }
     
 }

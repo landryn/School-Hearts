@@ -525,7 +525,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
             //zwraca lewy za deklarowane w licytacji
             //jak nie ma, tyly lew co trzeba to sprzedający
-            // dosataje tyle co ma, dłużni -130, reszta zostaje z tym co ma
+            // dosataje tyle co ma, dłużnik -130, reszta zostaje z tym co ma
             //i gramy rozbójnika gdzie zaczyna dłuznik
             for(int i=0;i<4;i++){
                 if(state.getUserState(i).getDebet()>0) {
