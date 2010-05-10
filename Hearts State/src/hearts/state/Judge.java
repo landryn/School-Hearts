@@ -186,9 +186,11 @@ public class Judge implements hearts.defs.judge.IJudge {
             if(!copyState.isAuction()) throw new GameStateException("Auction is not active");
             if(copyState.getActiveUser()!=action.getSender()|| (!copyState.getAuction().isEnd()))
                 throw new GameStateException("You can not take decision");
+
+
         }else if(action instanceof ChooseTrumpAction){
             if(!copyState.isAuction()) throw new GameStateException("You can not change trump");
-             if(copyState.getActiveUser()!=action.getSender()|| (!copyState.getAuction().isEnd()))
+             if(copyState.getActiveUser()!=action.getSender()|| (!copyState.getAuction().isEnd()) || copyState.getMode()!=IGameState.Mode.WIN_BACK )
                  throw new GameStateException("You are not active user");
 
         }else {

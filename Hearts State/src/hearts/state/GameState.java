@@ -260,6 +260,7 @@ public class GameState
          this.auction=true;
          this.actualCommence=2;
          this.menyTricks=13;
+         this.mode=GameState.Mode.WIN_BACK;
          
 
 

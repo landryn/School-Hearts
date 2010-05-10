@@ -12,7 +12,7 @@ import hearts.state.Auction;
 import hearts.state.actions.gui.AuctionAGUI;
 
 /**
- * Akcja rozpoczynająca licytacje. Przygotowuje gameState.
+ * Akcja rozpoczynająca licytacje. Przygotowuje gameState. Akcja dodawana do wysłania przez NextModeAction.
  * @author pawel
  */
 public class AuctionBeginAction extends AAction{
@@ -41,7 +41,7 @@ public class AuctionBeginAction extends AAction{
 
         }
 
-       
+      
         return clone;
     }
 

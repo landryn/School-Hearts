@@ -87,7 +87,7 @@ public class NextModeAction extends AAction {
         old.setNumTrick(0);
 
         old.nextDealer();
-      //nowy wychodzący do nie bedzie należała decyzja co dalej
+      //nowy wychodzący do niego bedzie należała decyzja co dalej
         old.setActiveUser(old.removeCommence());
         
 

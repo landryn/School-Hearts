@@ -39,6 +39,7 @@ public abstract class  AAuction implements Serializable, Cloneable {
         this.commence = commence;
         for(int i=1;i<=3;i++){
             bidders.add((commence+i)%4);
+            
         }
 
         lider=(commence+1)%4;
