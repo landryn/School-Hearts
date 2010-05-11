@@ -54,7 +54,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
             opponentLabel2, opponentLabel3};
         playerLabels = playerLabelsTMP;
 
-        //uglyTest();
+        uglyTest();
     }
 
     /** This method is called from within the constructor to
@@ -88,7 +88,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentCardsStack2.setLayout(opponentCardsStack2Layout);
         opponentCardsStack2Layout.setHorizontalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 448, Short.MAX_VALUE)
+            .addGap(0, 391, Short.MAX_VALUE)
         );
         opponentCardsStack2Layout.setVerticalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,6 +185,9 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(10, 2, 2, 2);
         add(userLabel, gridBagConstraints);
+
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 27));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 87));
 
         chatArea.setColumns(10);
         chatArea.setEditable(false);
