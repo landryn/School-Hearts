@@ -12,8 +12,9 @@ import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.IServerStateGuard;
+import hearts.maintenance.answers.JoinTableAnswer;
+import hearts.maintenance.answers.TableUpdate;
 import hearts.state.DumbState;
-import hearts.state.NewUserAtTableAction;
 
 /**
  * Klasa implementująca StateGuarda
@@ -25,8 +26,12 @@ public class StateGuard implements IServerStateGuard {
     IGameState gameState = null;
     IUserSocket[] users = new IUserSocket[4];
     int userCount = 0;
+    String name = "Dupa słonia.";
 
-    public StateGuard() {        
+    Server server;
+
+    public StateGuard(Server server) {
+        this.server = server;
     }
 
     /**
@@ -45,28 +50,27 @@ public class StateGuard implements IServerStateGuard {
         }
         users[userCount] = socket;
         socket.setId(userCount);
-        notifyAboutNewUser(userCount);
+        socket.actionReceived(new JoinTableAnswer(name, Boolean.TRUE));
+        notifyAboutTableChange();
         socket.addActionListener(this);
         userCount++;
         return userCount - 1;
     }
 
     /**
-     * Powiadamia użytkowników o przybyciu nowego.
-     * Podłączonemu użytkownikowi wysyła powiadomienia o wszystkich użytkownikach przy stole.
-     * Robi to przez chatState ktory jest tylko kolejką do wysyłania powiadomień.
      * @param id
      */
-    private void notifyAboutNewUser(int id) {
-        //AAction action = new (GameConstants.ALL_USERS, users[id].getName(), id);
-        //chatState.addAction(action);
-
-        for (int i = 0; i < userCount; i++) {
-            if (i != id) {
-                chatState.addAction(new NewUserAtTableAction(id, users[i].getName(), users[i].getId()));
-            }
+    private void notifyAboutTableChange() {
+        TableUpdate update = new TableUpdate(name, users[0].getName());
+        for (int i = 0; i < users.length; i++) {
+            IUserSocket iUserSocket = users[i];
+            if(iUserSocket!=null) {
+                update.setPlayer(i, iUserSocket.getName());            
+            } else {
+                update.setPlayer(i, null);
+            }            
         }
-        sendQueue(chatState);
+        server.notifyListeners(update);
     }
 
     /**
@@ -112,4 +116,9 @@ public class StateGuard implements IServerStateGuard {
     public void run() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public String getName() {
+        return name;
+    }
+
 }
