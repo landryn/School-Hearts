@@ -41,7 +41,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         // dodanie jednego placeholdera na koniec:
         cardsPanel.add(new CardPlaceHolder());
 
-        //uglyTest();
+        uglyTest();
     }
 
     /** This method is called from within the constructor to
@@ -64,8 +64,8 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentLabel1 = new javax.swing.JLabel();
         userLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
+        chatArea = new javax.swing.JTextArea();
+        chatInput = new javax.swing.JTextField();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -75,7 +75,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentCardsStack2.setLayout(opponentCardsStack2Layout);
         opponentCardsStack2Layout.setHorizontalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 421, Short.MAX_VALUE)
+            .addGap(0, 429, Short.MAX_VALUE)
         );
         opponentCardsStack2Layout.setVerticalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,9 +173,9 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         gridBagConstraints.insets = new java.awt.Insets(10, 2, 2, 2);
         add(userLabel, gridBagConstraints);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        chatArea.setColumns(10);
+        chatArea.setRows(5);
+        jScrollPane1.setViewportView(chatArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
@@ -184,22 +184,21 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(jScrollPane1, gridBagConstraints);
 
-        jTextField1.setText("jTextField1");
-        jTextField1.setMinimumSize(new java.awt.Dimension(140, 29));
-        jTextField1.setPreferredSize(new java.awt.Dimension(120, 29));
+        chatInput.setMinimumSize(new java.awt.Dimension(140, 29));
+        chatInput.setPreferredSize(new java.awt.Dimension(120, 29));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(jTextField1, gridBagConstraints);
+        add(chatInput, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardsPanel;
+    private javax.swing.JTextArea chatArea;
+    private javax.swing.JTextField chatInput;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private hearts.client.hui.details.OpponentCardsStack opponentCardsStack1;
     private hearts.client.hui.details.OpponentCardsStack opponentCardsStack2;
     private hearts.client.hui.details.OpponentCardsStack opponentCardsStack3;
@@ -243,7 +242,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
             }
         }
         this.setCards(cards);
-        //this.setFlipped(false);
+        this.setFlipped(false);
     }
 
     public ITrick getTrick() {

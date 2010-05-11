@@ -23,6 +23,9 @@
             <BevelBorder bevelType="1"/>
           </Border>
         </Property>
+        <Property name="arrowOrientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Arrow.DOWN" type="code"/>
+        </Property>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -49,6 +52,9 @@
           <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
             <BevelBorder bevelType="1"/>
           </Border>
+        </Property>
+        <Property name="arrowOrientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Arrow.LEFT" type="code"/>
         </Property>
       </Properties>
       <Constraints>
@@ -77,6 +83,9 @@
             <BevelBorder bevelType="1"/>
           </Border>
         </Property>
+        <Property name="arrowOrientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Arrow.UP" type="code"/>
+        </Property>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -103,6 +112,9 @@
           <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
             <BevelBorder bevelType="1"/>
           </Border>
+        </Property>
+        <Property name="arrowOrientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Arrow.RIGHT" type="code"/>
         </Property>
       </Properties>
       <Constraints>

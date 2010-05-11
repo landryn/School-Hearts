@@ -25,12 +25,36 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
         initComponents();
     }
 
+    /**
+     * Id lokalnego gracza
+     * @return
+     */
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * Id lokalnego gracza
+     * @param userId
+     */
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    /**
+     * Aktywny gracz
+     * @return
+     */
+    public int getActiveUser() {
+        return activeUser;
+    }
+
+    /**
+     * Aktywny gracz
+     * @param activeUser
+     */
+    public void setActiveUser(int activeUser) {
+        this.activeUser = activeUser;
     }
 
     public void addCard(ICard c, int userId) throws TrickException {
@@ -89,6 +113,7 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
         setLayout(new java.awt.GridBagLayout());
 
         cardPlaceHolder1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        cardPlaceHolder1.setArrowOrientation(Arrow.DOWN);
 
         javax.swing.GroupLayout cardPlaceHolder1Layout = new javax.swing.GroupLayout(cardPlaceHolder1);
         cardPlaceHolder1.setLayout(cardPlaceHolder1Layout);
@@ -108,6 +133,7 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
         add(cardPlaceHolder1, gridBagConstraints);
 
         cardPlaceHolder2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        cardPlaceHolder2.setArrowOrientation(Arrow.LEFT);
 
         javax.swing.GroupLayout cardPlaceHolder2Layout = new javax.swing.GroupLayout(cardPlaceHolder2);
         cardPlaceHolder2.setLayout(cardPlaceHolder2Layout);
@@ -128,6 +154,7 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
         add(cardPlaceHolder2, gridBagConstraints);
 
         cardPlaceHolder3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        cardPlaceHolder3.setArrowOrientation(Arrow.UP);
 
         javax.swing.GroupLayout cardPlaceHolder3Layout = new javax.swing.GroupLayout(cardPlaceHolder3);
         cardPlaceHolder3.setLayout(cardPlaceHolder3Layout);
@@ -147,6 +174,7 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
         add(cardPlaceHolder3, gridBagConstraints);
 
         cardPlaceHolder4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        cardPlaceHolder4.setArrowOrientation(Arrow.RIGHT);
 
         javax.swing.GroupLayout cardPlaceHolder4Layout = new javax.swing.GroupLayout(cardPlaceHolder4);
         cardPlaceHolder4.setLayout(cardPlaceHolder4Layout);
@@ -175,4 +203,5 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
     protected CardPlaceHolder[] placeHolders = {cardPlaceHolder1,
         cardPlaceHolder2, cardPlaceHolder3, cardPlaceHolder4};
     protected int userId = 0;
+    protected int activeUser = 0;
 }

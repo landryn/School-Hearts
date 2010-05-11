@@ -6,6 +6,7 @@ package hearts.client.hui.details;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import javax.swing.JComponent;
 
 /**
@@ -16,6 +17,8 @@ public class CardPlaceHolder extends JComponent {
 
     protected CardIcon cardIcon = null;
     protected static CardBack CARD_BACK = new CardBack();
+    protected boolean arrow = false;
+    protected int arrowOrientation = Arrow.DOWN;
 
     public CardIcon getCardIcon() {
         return cardIcon;
@@ -42,6 +45,24 @@ public class CardPlaceHolder extends JComponent {
         this.setPreferredSize(size);
     }
 
+    public boolean isArrow() {
+        return arrow;
+    }
+
+    public void setArrow(boolean arrow) {
+        this.arrow = arrow;
+        this.repaint();
+    }
+
+    public int getArrowOrientation() {
+        return arrowOrientation;
+    }
+
+    public void setArrowOrientation(int arrowOrientation) {
+        this.arrowOrientation = arrowOrientation;
+        this.repaint();
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -51,6 +72,9 @@ public class CardPlaceHolder extends JComponent {
             } else {
                 CARD_BACK.paint(g);
             }
+        }
+        if (arrow) {
+            Arrow.paint((Graphics2D) g, arrowOrientation);
         }
     }
 }
