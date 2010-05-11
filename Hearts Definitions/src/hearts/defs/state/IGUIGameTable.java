@@ -41,6 +41,8 @@ public interface IGUIGameTable extends IGUIPanel {
      */
     public void setUser(int place, String name);
 
+    public void setLocalUserId(int id);
+
     /**
      * Ustaw tryb gry
      * @param mode

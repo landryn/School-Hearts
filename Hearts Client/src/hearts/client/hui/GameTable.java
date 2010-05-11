@@ -23,6 +23,7 @@ import hearts.state.Card;
 import hearts.state.exceptions.WrongCardValueException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 
 /**
  *
@@ -34,6 +35,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     protected IGUIState gui;
     protected Mode mode = null;
     protected String tableName = null;
+    protected JLabel[] playerLabels;
 
     /** Creates new form gameTable */
     public GameTable() {
@@ -46,7 +48,11 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         // dodanie jednego placeholdera na koniec:
         cardsPanel.add(new CardPlaceHolder());
 
-        uglyTest();
+        JLabel[] playerLabelsTMP = {userLabel, opponentLabel1,
+            opponentLabel2, opponentLabel3};
+        playerLabels = playerLabelsTMP;
+
+        //uglyTest();
     }
 
     /** This method is called from within the constructor to
@@ -263,7 +269,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     }
 
     public void setUser(int place, String name) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        playerLabels[place].setText(name);
     }
 
     public void setMode(Mode mode) {
@@ -280,5 +286,10 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     public void setTableName(String name) {
         this.tableName = name;
+    }
+
+    public void setLocalUserId(int id) {
+        // TODO gdzies jeszcze ustawic?
+        trick.setUserId(id);
     }
 }

@@ -32,6 +32,7 @@ public class JoinTableAnswer extends AMaintenaceAction {
             IGUIGameTable table = gui.getGameTable();
             if (table.getTableName() == null) {
                 table.setTableName(tableName);
+                table.setLocalUserId(place);
                 gui.setPanel(Panel.GAME);
             } else {
                 gui.showMessage("Błąd", JOptionPane.ERROR_MESSAGE, "Serwer chciał Cię wrzucić na stół " + tableName + " ale już grasz na innym");

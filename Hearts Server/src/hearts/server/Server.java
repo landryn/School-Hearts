@@ -136,7 +136,7 @@ public class Server
                     table.addUser(sc);
                 } catch (GameStateException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.INFO, "Stół jest pełny.");
-                    sc.actionReceived(new JoinTableAnswer(table.getName(), Boolean.FALSE));
+                    sc.actionReceived(new JoinTableAnswer(table.getName(), Boolean.FALSE, GameConstants.NOT_IMPORTANT));
                 }
             } else {
                 sc.actionReceived(new LoginAnswer(false, "Bad username or password."));
