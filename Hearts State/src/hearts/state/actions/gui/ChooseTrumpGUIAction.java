@@ -13,9 +13,9 @@ import hearts.defs.state.IGUIState;
  *  Acja informująca gracza że ma tybrać atuat
  * @author Paweł Trynkiewicz
  */
-public class ChosseTrumpGUIAction extends AGUIAction{
+public class ChooseTrumpGUIAction extends AGUIAction{
 
-    public ChosseTrumpGUIAction(int receiver) {
+    public ChooseTrumpGUIAction(int receiver) {
         super(receiver);
     }
 

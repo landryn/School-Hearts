@@ -82,31 +82,6 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
         }
     }
 
-    /**
-     * Nieuzywane
-     * @return
-     */
-    public ICard[] getCards() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * Nieuzywane
-     * @return
-     */
-    public boolean isLast() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * Nieuzywane
-     * @return
-     */
-    @Override
-    public ITrick clone() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -212,4 +187,53 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
     private hearts.client.hui.details.CardPlaceHolder cardPlaceHolder3;
     private hearts.client.hui.details.CardPlaceHolder cardPlaceHolder4;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Nieuzywane
+     * @return
+     */
+    public ICard[] getCards() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Nieuzywane
+     * @return
+     */
+    public boolean isLast() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Nieuzywane
+     * @return
+     */
+    @Override
+    public ITrick clone() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Nieuzywane
+     * @return
+     */
+    public int getFirst() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Nieuzywane
+     * @return
+     */
+    public void setFirst(int user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Nieuzywane
+     * @return
+     */
+    public boolean ends() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -14,9 +14,9 @@ import hearts.defs.state.IGUIState;
  * pierwszy wychodził.
  * @author Paweł Trynkiewicz
  */
-public class AuctionFinnallGUIAction extends AGUIAction{
+public class AuctionFinalGUIAction extends AGUIAction{
 
-    public AuctionFinnallGUIAction(int receiver) {
+    public AuctionFinalGUIAction(int receiver) {
         super(receiver);
     }
     int lider;
