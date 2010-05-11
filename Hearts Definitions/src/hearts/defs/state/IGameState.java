@@ -48,15 +48,42 @@ public interface IGameState extends Serializable, Cloneable {
      * @return
      */
     public int nextUser();
+  /**
+   * Ustawia rozdającego;
+   * @param dealer
+   */
+
+    public void setDealer(int dealer);
+    /**
+     *Wyznacza nastepnego rozdającego.
+     * @return
+     */
+    public int nextDealer();
+    /**
+     * Zwraca aktualnego rozdającego.
+     * @return
+     */
+    public int getDealer();
+
+    /**
+     * Ustawia aktywnego usera.
+     * @param user
+     */
+    public void setActiveUser(int user);
+
     /**
      * Wyliczenie określające tryb gry.
      */
+
+
     public enum Mode {
 
         /**
          * czekanie na użytkowników
          */
         WAITING_FOR_PLAYERS,
+
+        
         /**
          * kiedy już użytkownicy się zbiorą,
          * wszyscy muszą klinknąć "start"
@@ -87,11 +114,21 @@ public interface IGameState extends Serializable, Cloneable {
     public Mode getMode();
 
     /**
-     * Przejdź do następnego etapu gry
+     * Przejdź do następnego etapu gry.
      * @return nowy tryb
      */
     public Mode nextMode() throws GameStateException;
+    /**
+     * Fukcja usuwa wszystkie rozgrywki.
+     */
+    public void clearMode();
 
+    /**
+     * Fukcja dodająca typ rozgrywki do kolejki. Na początku trzeba dodać odpowiednią liczbę rozbójników i odgrywek.
+     *
+     * @param mode
+     */
+    public void addMode(Mode mode);
     /**
      * Pobierz atu.
      * @return null jeśli tryb jest bezatutowy
@@ -144,4 +181,61 @@ public interface IGameState extends Serializable, Cloneable {
      * @return akcja albo null, jeśli lista pusta.
      */
     public AAction nextAction();
+    /**
+     * Dodaje urzytkownika do stanu gry.
+     * @param user
+     * @return zwraca stan zorgrywki.
+     */
+    public Mode addUser(IUserState user) ;
+
+    /**
+     * Zwraca czy lew została zakończona
+     * @return
+     */
+    public boolean trickEnds();
+
+    /**
+     * Sprawdza czy rozdanie zostało zakończone
+     * @return
+     */
+    public boolean dealEnds();
+    /**
+     * Zwraca ile, było lew
+     * @return
+     */
+    public int getNumTrick();
+    /**
+     * Ustawiam numer lewy.
+     * @param i
+     */
+    public void setNumTrick(int i);
+    /**
+     * Dodaje który będzie, rozpoczynał dane rozdanie.
+     * @param user
+     */
+
+    public void addCommence(int user);
+
+    /**
+     * Zwraca gracza który bedzie rozpoczynał rozdanie. Usuwając go z listy.
+     * @return
+     */
+    public int removeCommence();
+    /**
+     * Zwraca gracza który ma prawo rozpocząć rozdanie
+     * @return
+     */
+     public int getCommence();
+     /**
+      * Ustania aukcje.
+      * @param auction
+      */
+     public void setAuction(AAuction auction);
+     /**
+      * Zwraca aukcje.
+      * @return
+      */
+     public AAuction getAuction();
+     
 }
+

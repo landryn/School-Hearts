@@ -1,5 +1,6 @@
 package hearts.state;
 
+import hearts.defs.state.AAuction;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState.Mode;
@@ -60,6 +61,74 @@ public class DumbState extends AActionList {
     }
 
     public void clearTrick(boolean last) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Mode addUser(IUserState user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setDealer(int dealer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int nextDealer() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getDealer() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAtiveUser(int user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean trickEnds() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean dealEnds() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getNumTrick() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setActiveUser(int user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void clearMode() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addMode(Mode mode) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setNumTrick(int i) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addCommence(int user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int removeCommence() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getCommence() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAuction(AAuction auction) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public AAuction getAuction() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
