@@ -217,7 +217,6 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
             chatInput.setText("");
         }
     }//GEN-LAST:event_chatInputKeyReleased
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardsPanel;
     private javax.swing.JTextArea chatArea;
@@ -284,7 +283,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     }
 
     public void setUser(int place, String name) {
-        playerLabels[place].setText(name);
+        playerLabels[trick.getPlace(place)].setText(name);
     }
 
     public void setMode(Mode mode) {

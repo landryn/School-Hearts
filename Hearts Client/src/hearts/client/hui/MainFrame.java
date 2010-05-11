@@ -30,6 +30,7 @@ public class MainFrame
         extends javax.swing.JFrame
         implements IGUIState {
 
+    public static final String TITLE = "Hearts Client";
     protected Map<IGUIPanel.Panel, JPanel> panels =
             new EnumMap<IGUIPanel.Panel, JPanel>(IGUIPanel.Panel.class);
     protected IServerSocket socket;
@@ -66,7 +67,7 @@ public class MainFrame
         showDeck = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Hearts Client");
+        setTitle(TITLE);
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setMinimumSize(new java.awt.Dimension(700, 600));
 
@@ -209,5 +210,10 @@ public class MainFrame
 
     public IGUIGameTable getGameTable() {
         return gameTable;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        super.setTitle(TITLE + " : " + title);
     }
 }

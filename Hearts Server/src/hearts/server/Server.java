@@ -126,11 +126,11 @@ public class Server
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             LoginMaintenance m = (LoginMaintenance) maintenance;
             if(sc.isLoggedIn()) {
-                sc.actionReceived(new LoginAnswer(true, ""));
+                sc.actionReceived(new LoginAnswer(true, "", m.getLogin()));
             } else if(authenticator.checkUser(m.getLogin(), m.getPassword())) {
                 sc.setName(m.getLogin());
                 sc.setLoggedIn(true);
-                sc.actionReceived(new LoginAnswer(true, ""));
+                sc.actionReceived(new LoginAnswer(true, "", m.getLogin()));
 
                 //dosadzanie pierwszego lepszego usera do stołu.
                 //to jest tymczasowe dla tego milestone'a
@@ -141,7 +141,7 @@ public class Server
                     sc.actionReceived(new JoinTableAnswer(table.getName(), Boolean.FALSE, GameConstants.NOT_IMPORTANT));
                 }
             } else {
-                sc.actionReceived(new LoginAnswer(false, "Bad username or password."));
+                sc.actionReceived(new LoginAnswer(false, "Bad username or password.", m.getLogin()));
             }
         }
 

@@ -40,6 +40,10 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
         return userId;
     }
 
+    public int getPlace(int forreignId) {
+        return (4 - this.userId + forreignId) % 4;
+    }
+
     /**
      * Id lokalnego gracza
      * @param userId
@@ -66,7 +70,7 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
             placeHolder.setArrow(false);
         }
         // ustawia strzałkę na aktywnego usera względem id lokalnego
-        placeHolders[(userId + activeUser) % 4].setArrow(true);
+        placeHolders[getPlace(activeUser)].setArrow(true);
     }
 
     public void addCard(ICard c, int userId) throws TrickException {

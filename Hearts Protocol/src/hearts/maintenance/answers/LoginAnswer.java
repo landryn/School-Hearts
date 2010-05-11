@@ -18,15 +18,17 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
 
     protected Boolean success;
     protected String message;
+    protected String userName;
 
     /**
      * Opowiedź serwera na logowanie
      * @param success czy udało się zalogować
      * @param message ew. wiadomość mówiąca o przyczynie.
      */
-    public LoginAnswer(boolean success, String message) {
+    public LoginAnswer(boolean success, String message, String userName) {
         this.success = success;
         this.message = message;
+        this.userName = userName;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
 
         if (success) {
             //gui.setPanel(Panel.GAME);
-            gui.showMessage("Succ", JOptionPane.INFORMATION_MESSAGE, message);
+            gui.setTitle(userName);
         } else {
             gui.showMessage("Błąd", JOptionPane.ERROR_MESSAGE, message);
         }
@@ -58,4 +60,9 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
     public Boolean getSuccess() {
         return success;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
 }
