@@ -81,11 +81,17 @@ public class UserState implements  IUserState,Cloneable, Serializable {
 
     public void withdrawCard(ICard c) throws UserStateException {
         int number=0;
-        while(number<cardList.size()&&(!cardList.get(number).getColor().equals(c.getColor()))&&(cardList.get(number).getValue()!=c.getValue()))
-            ++number;
+        while(number<cardList.size()){
 
-        if(number<cardList.size() ) cardList.remove(number);
-        else throw new UserStateException("User do not have this card");
+            Card card=(Card) cardList.get(number);
+            if(card.getColor()==c.getColor()&&card.getValue()==c.getValue()){
+                Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
+                this.cardList.remove(number);
+                return;
+            }
+            ++number;
+        }
+       throw new UserStateException("User do not have this card "+c.getColor()+" "+c.getValue());
     }
 
     public String getName() {
@@ -144,8 +150,16 @@ public class UserState implements  IUserState,Cloneable, Serializable {
     public boolean haveThisCard(ICard c) {
 
         int number=0;
-        while(number<cardList.size()&&(!cardList.get(number).getColor().equals(c.getColor()))&&(cardList.get(number).getValue()!=c.getValue()))
+        while(number<cardList.size()){
+
+            Card card=(Card) cardList.get(number);
+            if(card.getColor()==c.getColor()&&card.getValue()==c.getValue()){
+                Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
+                break;
+            }
             ++number;
+        }
+
         if(number<cardList.size()) return true;
         else return false;
     }
@@ -169,7 +183,7 @@ public class UserState implements  IUserState,Cloneable, Serializable {
     public boolean uHHigerCardIColor(ICard card) {
 
         for(int i=0;i<cardList.size();i++){
-            if (cardList.get(i).getColor()==card.getColor() && cardList.get(i).getValue() >=card.getValue())
+            if (cardList.get(i).getColor()==card.getColor() && cardList.get(i).getValue() > card.getValue())
                 return true;
         }
         return false;

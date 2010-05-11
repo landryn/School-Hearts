@@ -10,6 +10,8 @@ import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 import hearts.state.actions.gui.NextTripGUIAction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Zdarzenie rozpoczynającą klejnę lewe.
@@ -50,7 +52,7 @@ public class NextTripAction extends AAction {
        old.getUserState(winer).addTrick(old.getTrick());
        old.clearTrick(last);
        old.setNumTrick(old.getNumTrick()+1) ;
-
+       
       
        NextTripGUIAction ac=null;
        for (int i = 0; i < 4; i++) {
@@ -61,6 +63,7 @@ public class NextTripAction extends AAction {
             }
         old.setActiveUser(winer);
         //koniec rozdania, dodaje akcję o nowym rozdaniu.
+        Logger.getLogger(NextTripAction.class.getName()).log(Level.INFO, "Aktywny gracz: "+old.getActiveUser());
         if(old.getNumTrick()==13) old.addAction(new NextModeAction(GameConstants.SERVER));
         return old;
     }

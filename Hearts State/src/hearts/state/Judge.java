@@ -61,7 +61,8 @@ public class Judge implements hearts.defs.judge.IJudge {
         /**
          * Sprawdzam jaki to typ akcji.
          */
-        if (action instanceof AddCardToTrickAction) {
+        
+        if (action instanceof  AddCardToTrickAction) {
             if(state.isAuction()) throw new GameStateException("Auction is active");
             if (state.getMode() == state.getMode().WAITING_FOR_PLAYERS) {
                 throw new GameStateException("WAITING_FOR_PLAYERS");
@@ -70,14 +71,14 @@ public class Judge implements hearts.defs.judge.IJudge {
                 throw new GameStateException("End");
             }
 
-            if (state.getActiveUser() != action.getSender() || state.isAuction()) {
+            if (state.getActiveUser() != action.getSender()) {
                 throw new GameStateException("You can not put card in this moment");
             }
             // jesli kotś już połorzył karte, i karta ma inny kolor niz wistjący
 
             if(!state.getUserState(action.getSender()).haveThisCard(((AddCardToTrickAction)action).getCard()))
 
-                    throw new GameStateException("Error: Yuo don't have this card!");
+                    throw new GameStateException("Error: You don't have this card!");
             
             if (state.getMode() == state.getMode().BANDIT) {
                 checkBanditRules(state, action);
@@ -90,14 +91,11 @@ public class Judge implements hearts.defs.judge.IJudge {
                 checkWinBackRules(state, action);
             } else {
                 throw new GameStateException("Unknown state");
-            }
-
-            
+            }     
            
 
 
-        }
-        if (action instanceof NextTripAction) {
+        }else if (action instanceof NextTripAction) {
             if(state.isAuction()) throw new GameStateException("Auction is active");
             if (!state.trickEnds()) {
                 throw new GameStateException("Trick not end");
@@ -115,8 +113,7 @@ public class Judge implements hearts.defs.judge.IJudge {
            
 
 
-        }
-        if (action instanceof NextModeAction) {
+        } else if (action instanceof NextModeAction) {
             if(state.isAuction()) throw new GameStateException("Auction is active");
             if (!state.dealEnds()) {
                 throw new GameStateException("Deal not end");
@@ -422,7 +419,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         Random ran = new Random(new Date().getTime()); //zamieszałem random
         ICard tmp;
-        for (int i = 0; i < tab.length/2; i++) {
+      /*  for (int i = 0; i < tab.length/2; i++) {
             int r = ran.nextInt(52);
             int q = 0;
             while ((q = ran.nextInt(52)) == r);
@@ -431,7 +428,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             tab[q] = tab[r];
 
 
-        }//zamieszałem talię kart, cheja!!!
+        }//zamieszałem talię kart, cheja!!!*/
 
         return tab;
     }
