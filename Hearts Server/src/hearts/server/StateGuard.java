@@ -50,7 +50,7 @@ public class StateGuard implements IServerStateGuard {
         }
         users[userCount] = socket;
         socket.setId(userCount);
-        socket.actionReceived(new JoinTableAnswer(name, Boolean.TRUE));
+        socket.actionReceived(new JoinTableAnswer(name, Boolean.TRUE, userCount));
         notifyAboutTableChange();
         socket.addActionListener(this);
         userCount++;
