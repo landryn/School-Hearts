@@ -6,6 +6,7 @@
 package hearts.state;
 
 import hearts.defs.state.CardColor;
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.ICard;
 import hearts.defs.state.ITrick;
 import hearts.defs.state.IUserState;
@@ -67,7 +68,7 @@ public class UserState implements  IUserState,Cloneable, Serializable {
             }
 
         } catch (CloneNotSupportedException ex) {
-            Logger.getLogger(UserState.class.getName()).log(Level.SEVERE, null, ex);
+            if(GameConstants.GET_LOGGER) Logger.getLogger(UserState.class.getName()).log(Level.SEVERE, null, ex);
         }
         return state;
     }
@@ -85,7 +86,7 @@ public class UserState implements  IUserState,Cloneable, Serializable {
 
             Card card=(Card) cardList.get(number);
             if(card.getColor()==c.getColor()&&card.getValue()==c.getValue()){
-                Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
+                 if(GameConstants.GET_LOGGER) Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
                 this.cardList.remove(number);
                 return;
             }
@@ -154,7 +155,7 @@ public class UserState implements  IUserState,Cloneable, Serializable {
 
             Card card=(Card) cardList.get(number);
             if(card.getColor()==c.getColor()&&card.getValue()==c.getValue()){
-                Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
+                if(GameConstants.GET_LOGGER) Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
                 break;
             }
             ++number;

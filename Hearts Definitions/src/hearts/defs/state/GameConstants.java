@@ -33,4 +33,10 @@ public class GameConstants {
 
     public static final int NO_CARD_IN_TRIP=-1;
 
+    /**
+     * pokazywac logi czy nie.
+     */
+
+    public static final boolean GET_LOGGER=true;
+
 }

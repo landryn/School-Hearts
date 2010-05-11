@@ -118,6 +118,7 @@ public class Main {
                 if (c instanceof NextModeAction) {
                     try {
                         g = (GameState) j.judge(g, c);
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Nowe rozdanie");
                     } catch (GameStateException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -129,8 +130,41 @@ public class Main {
         }
 
 
-       List<Integer> l= g.getUserState(3).getPointsList();
-       Logger.getLogger(Main.class.getName()).log(Level.SEVERE,""+l.size());
+        AAction c = null;
+
+            while (true) {
+                c = g.nextAction();
+                if (c instanceof NextTripAction) {
+                    try {
+                        g = (GameState) j.judge(g, c);
+                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "kolejna wziątka");
+                    } catch (GameStateException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    break;
+                }
+
+
+
+                if (c instanceof NextModeAction) {
+                    try {
+                        g = (GameState) j.judge(g, c);
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Nowe rozdanie");
+                    } catch (GameStateException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    break;
+                }
+            }
+
+
+
+
+
+       List<Integer> l= g.getUserState(1).getPointsList();
+       Logger.getLogger(Main.class.getName()).log(Level.SEVERE,"Punkty "+g.getUserState(1).getPointsList().get(0));
 
 
 
