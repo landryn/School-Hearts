@@ -17,4 +17,6 @@ public interface IGUIPanel {
     }
 
     public Panel getPanelType();
+
+    void setGui(IGUIState gui);
 }

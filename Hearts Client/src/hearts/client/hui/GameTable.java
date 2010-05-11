@@ -17,6 +17,7 @@ import hearts.defs.state.CardColor;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIPanel.Panel;
+import hearts.defs.state.IGUIState;
 import hearts.defs.state.ITrick;
 import hearts.state.Card;
 import hearts.state.exceptions.WrongCardValueException;
@@ -30,6 +31,8 @@ import java.util.logging.Logger;
 public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     private CardPlaceHolder[] placeHolders = new CardPlaceHolder[13];
+    protected IGUIState gui;
+
     /** Creates new form gameTable */
     public GameTable() {
         initComponents();
@@ -75,7 +78,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentCardsStack2.setLayout(opponentCardsStack2Layout);
         opponentCardsStack2Layout.setHorizontalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+            .addGap(0, 448, Short.MAX_VALUE)
         );
         opponentCardsStack2Layout.setVerticalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,6 +256,10 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     public void clearTrick() {
         this.trick.clear();
+    }
+
+    public void setGui(IGUIState gui) {
+        this.gui = gui;
     }
 
 }
