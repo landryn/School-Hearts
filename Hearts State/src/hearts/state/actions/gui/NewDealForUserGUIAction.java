@@ -18,7 +18,7 @@ import java.util.List;
  * oraz, nowy Typ rozgrywki.
  * @author Paweł Trynkiewicz
  */
-public class NewDaelForUserAGUI extends AGUIAction {
+public class NewDealForUserGUIAction extends AGUIAction {
 
     private ICard []cards=null;
     private List<Integer> listPoints=null;
@@ -86,7 +86,7 @@ public class NewDaelForUserAGUI extends AGUIAction {
 
 
     
-    public NewDaelForUserAGUI(int receiver) {
+    public NewDealForUserGUIAction(int receiver) {
         super(receiver);
     }
     

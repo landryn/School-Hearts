@@ -34,6 +34,7 @@ CardColor turmp;
     public IGameState perform(IGameState clone) throws GameStateException {
         clone.setTrump(this.getTurmp());
         clone.setAuction(false);
+        System.out.println(clone.getTrump());
         return clone;
     }
 

@@ -35,7 +35,6 @@ public class MainFrame
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
-        loginPanel.setGui(this);
 
         IGUIPanel[] panelsToAdd = {loginPanel, gameTable};
         for(IGUIPanel p: panelsToAdd) {
@@ -67,6 +66,8 @@ public class MainFrame
         setTitle("Hearts Client");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setMinimumSize(new java.awt.Dimension(700, 600));
+
+        loginPanel.setGui(this);
         getContentPane().add(loginPanel, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Gra");
@@ -185,7 +186,22 @@ public class MainFrame
     public synchronized void setPanel(Panel p) {
         this.getContentPane().remove(getCentralPanel());
         this.getContentPane().add(panels.get(p), BorderLayout.CENTER);
-        this.validate();
+
+        // obejscie deadlocka:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                validate();
+            }
+        });
+    }
+
+    /**
+     * Nie nie robi
+     * @param gui
+     */
+    public void setGui(IGUIState gui) {
+        //
     }
 
 }

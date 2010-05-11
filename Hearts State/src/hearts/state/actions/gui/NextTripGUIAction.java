@@ -10,21 +10,28 @@ import hearts.defs.state.GUIStateException;
 import hearts.defs.state.IGUIState;
 
 /**
- *  Akcja kończąca rozgrywkę.
+ *  Odświerżająca stól, zawierająca informacje kto wygrał lewę.
  * @author Paweł Trynkiewicz
  */
-public class GameEndAGUIAuction extends AGUIAction {
+public class NextTripGUIAction  extends AGUIAction{
+    private int winer;
 
-    public GameEndAGUIAuction(int receiver) {
+    public NextTripGUIAction(int receiver) {
         super(receiver);
     }
 
+    public int getWiner() {
+        return winer;
+    }
 
+    public void setWiner(int winer) {
+        this.winer = winer;
+    }
+    
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
+    
 
 }

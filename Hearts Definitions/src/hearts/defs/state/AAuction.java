@@ -9,7 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Klasa odpowiedzialna przechowywanie  stanu aukcji.
+ * Klasa odpowiedzialna przechowywanie  stanu licytacji. Zbierna informacje o stanie licytacji,
+ * przecowuje informacje o graczy wychodzącym, graczu który dał najwięcej i pozostałych biorących udział w licytacji.
  * @author pawel
  */
 public abstract class  AAuction implements Serializable, Cloneable {
@@ -20,8 +21,6 @@ public abstract class  AAuction implements Serializable, Cloneable {
     /**
      * Sprzedający, albo jak to woli wychodzący.
      */
-
-
     protected int commence;
     /**
      * Stawka
@@ -39,11 +38,16 @@ public abstract class  AAuction implements Serializable, Cloneable {
         this.commence = commence;
         for(int i=1;i<=3;i++){
             bidders.add((commence+i)%4);
+            
         }
 
         lider=(commence+1)%4;
     }
-
+/**
+ * Dodaje ofertę gracza do puli. Jeśli gracz nic nie dorzuca, zakładam że pasuje i uswam go z kolejki licytujących.
+ * @param user gracz
+ * @param quotation stawka
+ */
     public abstract  void addOffer(int user,int quotation);
     /**
      * Zwraca gracza który w danym momecie zaoferaował najwięcej.
@@ -78,10 +82,19 @@ public abstract class  AAuction implements Serializable, Cloneable {
     */
    public abstract boolean isEnd();
 
-
+/**
+ * Fukcja zwracająca klon obiektu.
+ * @return
+ * @throws CloneNotSupportedException
+ */
     @Override
     public  AAuction clone() throws CloneNotSupportedException{
-        return (AAuction) super.clone();
+        AAuction ob=(AAuction) super.clone();
+        ob.bidders=new ArrayList();
+        for(int i=0;i<this.bidders.size();i++ ){
+            ob.bidders.add(this.bidders.get(i));
+        }
+        return ob;
     }
 
 

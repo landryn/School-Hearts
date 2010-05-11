@@ -15,7 +15,7 @@ import hearts.defs.state.IGUIState;
  * z jego ofertą. Aukcja kończy się w momęcie gdy, w licytacji zostanie jeden gracz.
  * @author Paweł Trynkiewicz
  */
-public class AuctionAGUI extends AGUIAction{
+public class AuctionGUIAction extends AGUIAction{
 
     int lider;
     int commece;
@@ -58,7 +58,7 @@ public class AuctionAGUI extends AGUIAction{
     
     
 
-    public AuctionAGUI(int receiver) {
+    public AuctionGUIAction(int receiver) {
         super(receiver);
     }
 

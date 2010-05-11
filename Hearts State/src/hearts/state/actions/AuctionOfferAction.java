@@ -2,21 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.state.actions;
 
 import hearts.defs.actions.AAction;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 import hearts.state.Auction;
-import hearts.state.actions.gui.AuctionAGUI;
-import hearts.state.actions.gui.AuctionEndAGUI;
+import hearts.state.actions.gui.AuctionGUIAction;
+import hearts.state.actions.gui.AuctionEndGUIAction;
 
 /**
  * Akcja odpowiedzialna, za przesłanie oferty gracza w licytacji.
  * @author Paweł Trynkiewicz
  */
 public class AuctionOfferAction extends AAction {
+
     int quotation;
 
     public int getQuotation() {
@@ -27,11 +27,9 @@ public class AuctionOfferAction extends AAction {
         this.quotation = quotation;
     }
 
-    
     public AuctionOfferAction(int receiver) {
         super(receiver);
     }
-
 
     @Override
     public IGameState perform(IGameState clone) throws GameStateException {
@@ -40,43 +38,68 @@ public class AuctionOfferAction extends AAction {
          * 2. sprawdzam stan licytacji
          * 3. rozsyłam odpowiednie akcje
          */
-        Auction auction=(Auction) clone.getAuction();
+        Auction auction = (Auction) clone.getAuction();
 
-       auction.addOffer(sender, quotation);
-      clone.setActiveUser(auction.getActivetUser());
-       if(auction.isEnd()) {
-           //aukcja zkończona wysyłam do wszystkich informacje o tym
 
-           AuctionEndAGUI act=null;
-        for(int i=0;i<4;i++){
-            //nowa akcja
-            act=new AuctionEndAGUI(i);
-            act.setCommece(clone.getAuction().getCommence());
-            act.setQuotion(clone.getAuction().getQuotation());
-            act.setLider(clone.getAuction().getLider());
-            act.setActiveUser(clone.getAuction().getActivetUser());
-            clone.addAction(act);
+        if (auction.isEnd()) {
+
+            clone.setActiveUser(auction.getActivetUser());
+            //aukcja zkończona wysyłam do wszystkich informacje o tym
+
+            AuctionEndGUIAction act = null;
+            for (int i = 0; i < 4; i++) {
+                //nowa akcja
+                act = new AuctionEndGUIAction(i);
+                act.setCommece(clone.getAuction().getCommence());
+                act.setQuotion(clone.getAuction().getQuotation());
+                act.setLider(clone.getAuction().getLider());
+                act.setActiveUser(clone.getAuction().getActivetUser());
+                clone.addAction(act);
+
+            }
+
+
+        } else {
+
+            clone.getAuction().addOffer(sender, quotation);
+            clone.setActiveUser(clone.getAuction().getActivetUser());
+
+
+            AuctionGUIAction act = null;
+            for (int i = 0; i < 4; i++) {
+                //nowa akcja
+                act = new AuctionGUIAction(i);
+                act.setCommece(clone.getAuction().getCommence());
+                act.setQuotion(clone.getAuction().getQuotation());
+                act.setLider(clone.getAuction().getLider());
+                act.setActiveUser(clone.getAuction().getActivetUser());
+                clone.addAction(act);
+            }
+
+
+
+
+        }
+        //Sprawdzam jeszcze raz, czy aukcja się nie skończyła.
+        if (auction.isEnd()) {
+
+            clone.setActiveUser(auction.getActivetUser());
+            //aukcja zkończona wysyłam do wszystkich informacje o tym
+
+            AuctionEndGUIAction act = null;
+            for (int i = 0; i < 4; i++) {
+                //nowa akcja
+                act = new AuctionEndGUIAction(i);
+                act.setCommece(clone.getAuction().getCommence());
+                act.setQuotion(clone.getAuction().getQuotation());
+                act.setLider(clone.getAuction().getLider());
+                act.setActiveUser(clone.getAuction().getActivetUser());
+                clone.addAction(act);
+
+            }
 
         }
 
-
-       } else {
-
-
-           AuctionAGUI act=null;
-        for(int i=0;i<4;i++){
-            //nowa akcja
-            act=new AuctionAGUI(i);
-            act.setCommece(clone.getAuction().getCommence());
-            act.setQuotion(clone.getAuction().getQuotation());
-            act.setLider(clone.getAuction().getLider());
-            act.setActiveUser(clone.getAuction().getActivetUser());
-            clone.addAction(act);
-       }
-
-        
+        return clone;
     }
-       return clone;
-    }
-
 }

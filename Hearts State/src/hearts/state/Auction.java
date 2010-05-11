@@ -23,20 +23,23 @@ public class Auction extends AAuction {
 
     @Override
     public void addOffer(int user, int quotation) {
-        if(quotation> this.quotation) this.lider=user;
-        else {
-            int index=this.bidders.indexOf(user);
-            //nastepny gracz
-            activeUser=this.bidders.get((index+1)%this.bidders.size());
-            //usuwam gracza z licytacji
-            if(!this.bidders.remove((Integer)index)){
-                end=true;
-            }
+        int indexs=bidders.indexOf(user);
+        activeUser=bidders.get((indexs+1)%bidders.size());
+       
+        if(quotation> this.quotation) {
+            this.quotation=quotation;
+            this.lider=user;
+
+        } else {
+
+            int index=bidders.indexOf(user);
+            bidders.remove(index);
         }
         if(this.bidders.size()==1||this.quotation==13) {
             activeUser=commence;
             end=true;
-        }
+        } 
+        
     }
 
     @Override
@@ -44,10 +47,7 @@ public class Auction extends AAuction {
         Auction stateClone = null;
         try {
             stateClone = (Auction) super.clone();
-            stateClone.bidders=new ArrayList<Integer>();
-            for(int i=0;i<this.bidders.size();i++){
-              stateClone.bidders.add(this.bidders.get(i));
-            }
+           
 
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(AActionList.class.getName()).log(Level.SEVERE, null, ex);

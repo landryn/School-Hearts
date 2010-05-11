@@ -13,9 +13,9 @@ import hearts.defs.state.IGUIState;
  * Akcja wysyłana do wychodzącego informacje kto wygrał licytację i jego ofertę.
  * @author Paweł Trynkiewicz
  */
-public class AuctionEndAGUI  extends AGUIAction{
+public class AuctionEndGUIAction  extends AGUIAction{
 
-    public AuctionEndAGUI(int receiver) {
+    public AuctionEndGUIAction(int receiver) {
         super(receiver);
     }
 

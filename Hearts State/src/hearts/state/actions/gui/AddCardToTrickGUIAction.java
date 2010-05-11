@@ -7,31 +7,32 @@ package hearts.state.actions.gui;
 
 import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.state.GUIStateException;
+import hearts.defs.state.ICard;
 import hearts.defs.state.IGUIState;
 
 /**
- *  Odświerżająca stól, zawierająca informacje kto wygrał lewę.
+ * Klasa dodaje kartę na stół. 
  * @author Paweł Trynkiewicz
  */
-public class NextTripAGUI  extends AGUIAction{
-    private int winer;
+public class AddCardToTrickGUIAction extends AGUIAction {
 
-    public NextTripAGUI(int receiver) {
+    public AddCardToTrickGUIAction(int receiver) {
         super(receiver);
     }
+    protected ICard card=null;
 
-    public int getWiner() {
-        return winer;
+    public ICard getCard() {
+        return card;
     }
 
-    public void setWiner(int winer) {
-        this.winer = winer;
+    public void setCard(ICard card) {
+        this.card = card;
     }
-    
+
+
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 
 }

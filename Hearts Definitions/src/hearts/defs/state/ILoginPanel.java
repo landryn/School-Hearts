@@ -15,7 +15,6 @@ public interface ILoginPanel extends IGUIPanel {
 
     void setEnabled(boolean enabled);
 
-    void setGui(IGUIState gui);
 
     void setCreateAccountSelected(boolean selected);
 }

@@ -35,11 +35,17 @@ public class GameState
     protected int actualCommence;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
 
-    protected AAuction autcionUser=null;
+    protected AAuction autcionUser;
 
-
+    /**
+     * Lista typów rozgrywek. Na początku zbóje, póżniej odgrywki. A potem wzalerzności
+     * od przebiegu gry. Gra kónczy się gdy, lista jest pusta.
+     */
     protected ArrayList<Mode> modeList=new ArrayList<Mode>();
-    
+    /**
+     * Lista graczy, którzy maja prawo wychodzić w danym rozdaniu. Silnie skojarzona z modeList.
+     * Na poczatku kolejni gracze, potem w zalorzności od przebiegu rozgrywki, tzn. pojawienia się ślizgów i maksów.
+     */
     protected ArrayList<Integer> commence=new ArrayList<Integer>();
   
     /**
@@ -74,7 +80,8 @@ public class GameState
 
         stateClone.clearMode();
         try {
-            stateClone.autcionUser = this.autcionUser.clone();
+            
+            if(this.autcionUser!=null)  stateClone.autcionUser = this.autcionUser.clone();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -228,10 +235,11 @@ public class GameState
 
     public void addCommence(int user) {
         commence.add(user);
+        System.out.println("size "+ commence.size());
     }
 
     public int removeCommence() {
-
+       
         actualCommence=commence.remove(0);
         return actualCommence;
     }
@@ -249,5 +257,18 @@ public class GameState
 
     }
 
+    /** haks 1
+     * Fukcja zrobiona tylko do testów ustawia stan gry na początek licytacji niezaleznie od tego co się dzieje na stole
+     */
+     public void haks1(){
+         this.autcionUser=new Auction(2);
+         this.dealEnd=true;
+         this.auction=true;
+         this.actualCommence=2;
+         this.menyTricks=13;
+         this.mode=GameState.Mode.WIN_BACK;      
+
+
+     }
     
 }
