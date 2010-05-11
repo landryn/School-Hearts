@@ -58,8 +58,8 @@ public class StateGuard implements IServerStateGuard {
      * @param id
      */
     private void notifyAboutNewUser(int id) {
-        AAction action = new NewUserAtTableAction(GameConstants.ALL_USERS, users[id].getName(), id);
-        chatState.addAction(action);
+        //AAction action = new (GameConstants.ALL_USERS, users[id].getName(), id);
+        //chatState.addAction(action);
 
         for (int i = 0; i < userCount; i++) {
             if (i != id) {
