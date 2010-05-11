@@ -13,6 +13,7 @@ package hearts.client.hui;
 import hearts.client.hui.details.CardIcon;
 import hearts.client.hui.details.CardPlaceHolder;
 import hearts.defs.state.CardColor;
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIPanel.Panel;
@@ -186,7 +187,10 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         add(userLabel, gridBagConstraints);
 
         chatArea.setColumns(10);
+        chatArea.setEditable(false);
+        chatArea.setLineWrap(true);
         chatArea.setRows(5);
+        chatArea.setTabSize(4);
         jScrollPane1.setViewportView(chatArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -199,8 +203,8 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         chatInput.setMinimumSize(new java.awt.Dimension(140, 29));
         chatInput.setPreferredSize(new java.awt.Dimension(120, 29));
         chatInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                chatInputKeyReleased(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                chatInputKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -210,13 +214,18 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         add(chatInput, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void chatInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chatInputKeyReleased
+    private void chatInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chatInputKeyTyped
         if (evt.getKeyChar() == '\n') {
-            chatInput.getText();
-            //gui.getSocket().actionReceived(new ChatAction())
+            if(gui.getSocket() == null) {
+                System.out.println("Nie ma socketa!");
+                return;
+            }
+            gui.getSocket().actionReceived(
+                    new ChatAction(GameConstants.ALL_USERS,
+                    chatInput.getText()));
             chatInput.setText("");
         }
-    }//GEN-LAST:event_chatInputKeyReleased
+    }//GEN-LAST:event_chatInputKeyTyped
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardsPanel;
     private javax.swing.JTextArea chatArea;
@@ -305,5 +314,10 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     public void setLocalUserId(int id) {
         // TODO gdzies jeszcze ustawic?
         trick.setUserId(id);
+    }
+
+    public void appendToChatArea(String line) {
+        chatArea.append('\n' + line);
+        chatArea.setCaretPosition(chatArea.getText().length() - 1);
     }
 }

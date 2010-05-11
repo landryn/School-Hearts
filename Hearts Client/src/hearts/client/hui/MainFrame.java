@@ -66,6 +66,8 @@ public class MainFrame
         helpMenu = new javax.swing.JMenu();
         showDeck = new javax.swing.JMenuItem();
 
+        gameTable.setGui(this);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(TITLE);
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));

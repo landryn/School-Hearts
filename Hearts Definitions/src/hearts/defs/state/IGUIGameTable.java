@@ -54,4 +54,6 @@ public interface IGUIGameTable extends IGUIPanel {
     public String getTableName();
 
     public void setTableName(String name);
+
+    public void appendToChatArea(String line);
 }
