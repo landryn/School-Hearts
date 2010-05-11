@@ -4,8 +4,11 @@ import hearts.defs.actions.AAction;
 import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GUIStateException;
+import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIPanel;
 import hearts.defs.state.IGUIState;
+import hearts.defs.state.IGameState;
+import hearts.defs.state.IGameState.Mode;
 import hearts.defs.state.ILoginPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,7 +40,7 @@ public class MainFrame
         initComponents();
 
         IGUIPanel[] panelsToAdd = {loginPanel, gameTable};
-        for(IGUIPanel p: panelsToAdd) {
+        for (IGUIPanel p : panelsToAdd) {
             panels.put(p.getPanelType(), (JPanel) p);
         }
         //System.out.println(panels);
@@ -111,7 +114,7 @@ public class MainFrame
             UIManager.put("text", new Color(10, 78, 42));
             UIManager.put("nimbusDisabledText", new Color(120, 150, 100));
             UIManager.put("nimbusFocus", new Color(236, 241, 162));
-            
+
             for (LookAndFeelInfo laf :
                     UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(laf.getName())) {
@@ -172,7 +175,7 @@ public class MainFrame
 
     public Panel getPanelType() {
         Component c = getCentralPanel();
-        if(c instanceof IGUIPanel) {
+        if (c instanceof IGUIPanel) {
             return ((IGUIPanel) c).getPanelType();
         } else {
             return null;
@@ -180,7 +183,7 @@ public class MainFrame
     }
 
     private Component getCentralPanel() {
-        return ((BorderLayout)this.getContentPane().getLayout()).getLayoutComponent(BorderLayout.CENTER);
+        return ((BorderLayout) this.getContentPane().getLayout()).getLayoutComponent(BorderLayout.CENTER);
     }
 
     public synchronized void setPanel(Panel p) {
@@ -204,4 +207,7 @@ public class MainFrame
         //
     }
 
+    public IGUIGameTable getGameTable() {
+        return gameTable;
+    }
 }

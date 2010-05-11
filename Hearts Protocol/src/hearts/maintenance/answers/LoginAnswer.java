@@ -36,7 +36,8 @@ public class LoginAnswer extends AMaintenaceAction implements Serializable {
         gui.getLoginPanel().setEnabled(!success);
 
         if (success) {
-            gui.setPanel(Panel.GAME);
+            //gui.setPanel(Panel.GAME);
+            gui.showMessage("Succ", JOptionPane.INFORMATION_MESSAGE, message);
         } else {
             gui.showMessage("Błąd", JOptionPane.ERROR_MESSAGE, message);
         }

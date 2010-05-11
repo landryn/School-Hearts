@@ -33,4 +33,23 @@ public interface IGUIGameTable extends IGUIPanel {
      * Wyczyść wziątkę na stole
      */
     public void clearTrick();
+
+    /**
+     * Ustawia usera na stole
+     * @param place
+     * @param name
+     */
+    public void setUser(int place, String name);
+
+    /**
+     * Ustaw tryb gry
+     * @param mode
+     */
+    public void setMode(IGameState.Mode mode);
+
+    public IGameState.Mode getMode();
+
+    public String getTableName();
+
+    public void setTableName(String name);
 }

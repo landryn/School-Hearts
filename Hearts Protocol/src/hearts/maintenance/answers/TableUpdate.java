@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.maintenance.answers;
 
 import hearts.defs.state.GUIStateException;
@@ -13,11 +12,11 @@ import hearts.defs.state.IGameState;
  *
  * @author orbit
  */
-public class TableUpdate extends AMaintenaceAction{
+public class TableUpdate extends AMaintenaceAction {
 
     private String tableName;
     private String owner;
-    private String []players = null;
+    private String[] players = null;
     private IGameState.Mode gameMode = IGameState.Mode.WAITING_FOR_PLAYERS;
     private Boolean removed = Boolean.FALSE;
 
@@ -27,7 +26,7 @@ public class TableUpdate extends AMaintenaceAction{
     }
 
     public void setPlayer(int place, String name) {
-        if(players == null) {
+        if (players == null) {
             players = new String[4];
         }
         players[place] = name;
@@ -35,7 +34,12 @@ public class TableUpdate extends AMaintenaceAction{
 
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String guiTableName = gui.getGameTable().getTableName();
+        if (guiTableName != null && guiTableName.equals(tableName)) {
+            for (int i = 0; i < players.length; ++i) {
+                gui.getGameTable().setUser(i, players[i]);
+            }
+            gui.getGameTable().setMode(gameMode);
+        }
     }
-
 }
