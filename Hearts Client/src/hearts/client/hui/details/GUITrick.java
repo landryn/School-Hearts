@@ -20,9 +20,16 @@ import hearts.defs.state.TrickException;
  */
 public class GUITrick extends javax.swing.JPanel implements ITrick {
 
+    protected CardPlaceHolder[] placeHolders;
+    protected int userId = 0;
+    protected int activeUser = 0;
+
     /** Creates new form GUITrick */
     public GUITrick() {
         initComponents();
+        CardPlaceHolder[] tmp = {cardPlaceHolder1,
+            cardPlaceHolder2, cardPlaceHolder3, cardPlaceHolder4};
+        this.placeHolders = tmp;
     }
 
     /**
@@ -55,6 +62,11 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
      */
     public void setActiveUser(int activeUser) {
         this.activeUser = activeUser;
+        for (CardPlaceHolder placeHolder : placeHolders) {
+            placeHolder.setArrow(false);
+        }
+        // ustawia strzałkę na aktywnego usera względem id lokalnego
+        placeHolders[(userId + activeUser) % 4].setArrow(true);
     }
 
     public void addCard(ICard c, int userId) throws TrickException {
@@ -200,8 +212,4 @@ public class GUITrick extends javax.swing.JPanel implements ITrick {
     private hearts.client.hui.details.CardPlaceHolder cardPlaceHolder3;
     private hearts.client.hui.details.CardPlaceHolder cardPlaceHolder4;
     // End of variables declaration//GEN-END:variables
-    protected CardPlaceHolder[] placeHolders = {cardPlaceHolder1,
-        cardPlaceHolder2, cardPlaceHolder3, cardPlaceHolder4};
-    protected int userId = 0;
-    protected int activeUser = 0;
 }

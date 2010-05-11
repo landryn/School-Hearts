@@ -243,6 +243,8 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         }
         this.setCards(cards);
         this.setFlipped(false);
+        this.trick.setUserId(2);
+        this.trick.setActiveUser(3);
     }
 
     public ITrick getTrick() {
