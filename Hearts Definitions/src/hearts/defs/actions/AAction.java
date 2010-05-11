@@ -14,12 +14,15 @@ public abstract class AAction implements Serializable, Cloneable {
 
     /**
      * Pole musi być ustawione podczas tworzenia obiektu
+     * 
      */
     protected int receiver;
     /**
      * To pole musi być ustawione podczas odbierania obiektu z socketu
      * na bazie przynależności tego socketu.
      * Jest transient więc nie będzie serializowane.
+     *
+     * wartości -1 autorem zdarzenia jest serwer, 0-3 któryś z graczy Paweł
      */
     protected transient int sender;
 

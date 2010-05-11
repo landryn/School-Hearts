@@ -27,6 +27,12 @@ public interface IUserState extends Serializable, Cloneable {
      * @throws UserStateException jeśli karty nie ma w puli
      */
     public void withdrawCard(ICard c) throws UserStateException;
+    /**
+     * Sprawdza czy user ma taką kartę w tali.
+     * @param c
+     * @return
+     */
+    public boolean haveThisCard(ICard c);
 
     /**
      * Pobierz nazwę usera przyporządkowanego temu obiektowi
@@ -68,4 +74,48 @@ public interface IUserState extends Serializable, Cloneable {
      * @param points
      */
     public void addPoints(int points);
+    /**
+     * czyści tablicę punktów gracza.
+     */
+    public void clearPoints();
+    /**
+     * Usuwa wszystkie karty gracza.
+     */
+    public void removeAllCard();
+    /**
+     * Sprawdza czy gracz ma kartę  w tym kolorze.
+     * @param color
+     * @return
+     */
+    public boolean userHaveCardInColor(CardColor color);
+    
+    /**
+     * Sprawdza czy gracz ma wyższą kartę w kolorze.
+     * @param card
+     * @return
+     */
+    public boolean uHHigerCardIColor(ICard card);
+    /**
+     * Ustawia ile wziątek gracz musi oddać.
+     * @param debet
+     */
+
+
+    public void setDebet(int debet);
+    /**
+     * Zrwaca ile wziątek gracz musi oddać.
+     * @return
+     */
+    public int getDebet();
+
+    /**
+     * Ustawia gracza któremu, gracz musi oddać wziątki.
+     * @param banker
+     */
+    public void setBanker(int banker);
+    /**
+     * Zwraca gracza któremu dany gracz musi oddać wziątki.
+     * @return
+     */
+    public int getBanker();
 }

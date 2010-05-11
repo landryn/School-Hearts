@@ -26,4 +26,11 @@ public class GameConstants {
      */
     public static final int NOT_IMPORTANT = -3;
 
+
+    /**
+     * Wtedy gdy nie ma jeszcze żadnej karty w lewie;
+     */
+
+    public static final int NO_CARD_IN_TRIP=-1;
+
 }

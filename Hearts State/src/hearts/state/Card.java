@@ -4,6 +4,8 @@ import hearts.state.exceptions.WrongCardValueException;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.ICard;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implemantacja karty.
@@ -29,5 +31,16 @@ public class Card implements ICard, Serializable, Cloneable {
 
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public Card clone() {
+        Card ob = null;
+        try {
+            ob = (Card) super.clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(Card.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ob;
     }
 }

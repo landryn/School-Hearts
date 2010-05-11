@@ -4,10 +4,20 @@ import hearts.defs.actions.AAction;
 import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GUIStateException;
+import hearts.defs.state.IGUIPanel;
 import hearts.defs.state.IGUIState;
+import hearts.defs.state.ILoginPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  *
@@ -17,13 +27,22 @@ public class MainFrame
         extends javax.swing.JFrame
         implements IGUIState {
 
+    protected Map<IGUIPanel.Panel, JPanel> panels =
+            new EnumMap<IGUIPanel.Panel, JPanel>(IGUIPanel.Panel.class);
     protected IServerSocket socket;
     protected Thread socketThread;
-    
+
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
-        loginPanel.setGui(this);
+
+        IGUIPanel[] panelsToAdd = {loginPanel, gameTable};
+        for(IGUIPanel p: panelsToAdd) {
+            panels.put(p.getPanelType(), (JPanel) p);
+        }
+        //System.out.println(panels);
+        //System.out.println(((IGUIPanel)getCentralPanel()).getPanelType());
+        //this.setPanel(Panel.GAME);
     }
 
     /** This method is called from within the constructor to
@@ -35,13 +54,20 @@ public class MainFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loginPanel = new hearts.client.hui.loginPanel();
+        gameTable = new hearts.client.hui.GameTable();
+        loginPanel = new hearts.client.hui.LoginPanel();
         mainMenuBar = new javax.swing.JMenuBar();
         gameMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+        showDeck = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hearts Client");
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setMinimumSize(new java.awt.Dimension(700, 600));
+
+        loginPanel.setGui(this);
         getContentPane().add(loginPanel, java.awt.BorderLayout.CENTER);
 
         gameMenu.setText("Gra");
@@ -52,6 +78,15 @@ public class MainFrame
         mainMenuBar.add(gameMenu);
 
         helpMenu.setText("Pomoc");
+
+        showDeck.setText("Zaprezentuj talię kart");
+        showDeck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showDeckActionPerformed(evt);
+            }
+        });
+        helpMenu.add(showDeck);
+
         mainMenuBar.add(helpMenu);
 
         setJMenuBar(mainMenuBar);
@@ -59,23 +94,49 @@ public class MainFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void showDeckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDeckActionPerformed
+        new DeckTester().setVisible(true);
+    }//GEN-LAST:event_showDeckActionPerformed
+
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
+        try {
+            UIManager.put("control", new Color(183, 215, 143));
+            UIManager.put("nimbusBase", new Color(16, 96, 12));
+            UIManager.put("nimbusSelectionBackground", new Color(16, 96, 12));
+
+            UIManager.put("nimbusLightBackground", new Color(245, 245, 229));
+            UIManager.put("text", new Color(10, 78, 42));
+            UIManager.put("nimbusDisabledText", new Color(120, 150, 100));
+            UIManager.put("nimbusFocus", new Color(236, 241, 162));
+            
+            for (LookAndFeelInfo laf :
+                    UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(laf.getName())) {
+                    UIManager.setLookAndFeel(laf.getClassName());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new MainFrame().setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu gameMenu;
+    private hearts.client.hui.GameTable gameTable;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
-    private hearts.client.hui.loginPanel loginPanel;
+    private hearts.client.hui.LoginPanel loginPanel;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JMenuItem showDeck;
     // End of variables declaration//GEN-END:variables
 
     public void setSocket(IServerSocket socket) {
@@ -88,7 +149,6 @@ public class MainFrame
     public IServerSocket getSocket() {
         return socket;
     }
-
 
     public void actionReceived(AAction a) {
         if (a instanceof AGUIAction) {
@@ -106,5 +166,42 @@ public class MainFrame
         JOptionPane.showMessageDialog(this, message, title, type);
     }
 
+    public ILoginPanel getLoginPanel() {
+        return loginPanel;
+    }
+
+    public Panel getPanelType() {
+        Component c = getCentralPanel();
+        if(c instanceof IGUIPanel) {
+            return ((IGUIPanel) c).getPanelType();
+        } else {
+            return null;
+        }
+    }
+
+    private Component getCentralPanel() {
+        return ((BorderLayout)this.getContentPane().getLayout()).getLayoutComponent(BorderLayout.CENTER);
+    }
+
+    public synchronized void setPanel(Panel p) {
+        this.getContentPane().remove(getCentralPanel());
+        this.getContentPane().add(panels.get(p), BorderLayout.CENTER);
+
+        // obejscie deadlocka:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                validate();
+            }
+        });
+    }
+
+    /**
+     * Nie nie robi
+     * @param gui
+     */
+    public void setGui(IGUIState gui) {
+        //
+    }
 
 }

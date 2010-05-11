@@ -1,5 +1,6 @@
 package hearts.state;
 
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.ICard;
 import hearts.defs.state.ITrick;
 import hearts.defs.state.TrickException;
@@ -8,14 +9,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ *Przechowuje informacje o wziątce.
  * Implementacja wziątki
  * @author szymon
  */
 public class Trick implements ITrick, Serializable, Cloneable {
 
     protected ICard[] cards = new ICard[4];
+    /**
+     * Określa ilość kart w lewie, już połozonych na stole.
+     */
+    private int manyCards=0;
     protected boolean last;
-
+    /**
+     * Kto wyszedł jako pierwszy. Czyli jaki kolor jest wistujący. Nie mylić z atutem.
+     */
+    protected int first=GameConstants.NO_CARD_IN_TRIP;
     /**
      * Tworzy nową wziątkę.
      * @param last jeśli jest jedną z dwóch ostatnich wziątek.
@@ -31,6 +40,8 @@ public class Trick implements ITrick, Serializable, Cloneable {
         if (cards[userId] != null) {
             throw new TrickException("User " + userId + " already put card.", userId, cards);
         }
+        manyCards++;
+        cards[userId]=c;
     }
 
     public ICard[] getCards() {
@@ -55,9 +66,23 @@ public class Trick implements ITrick, Serializable, Cloneable {
             // klonuje tylko tablicę kart
             // klonowanie samych kart nie ma sensu, bo są obiektami niezmiennymi.
             trickClone.cards = this.cards.clone();
+
+           
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(Trick.class.getName()).log(Level.SEVERE, null, ex);
         }
         return trickClone;
+    }
+
+    public int getFirst() {
+        return first;
+    }
+
+    public void setFirst(int user) {
+        first=user;
+    }
+
+    public boolean ends() {
+       return (manyCards==4);
     }
 }
