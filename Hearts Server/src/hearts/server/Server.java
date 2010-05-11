@@ -13,6 +13,7 @@ import hearts.defs.state.GameStateException;
 import hearts.maintenance.CreateAccountMaintenance;
 import hearts.defs.protocol.IMaintenaceListener;
 import hearts.defs.protocol.IMaintenance;
+import hearts.defs.protocol.IUserSocket;
 import hearts.maintenance.LoginMaintenance;
 import hearts.maintenance.answers.CreateAccountAnswer;
 import hearts.maintenance.answers.JoinTableAnswer;
@@ -74,6 +75,7 @@ public class Server
                 ServerClient sc = new ServerClient(s);
                 sc.addActionListener(this);
                 sc.addMaintenanceListener(this);
+                this.addActionListener((IUserSocket)sc);
                 clientsList.add(sc);
                 Thread th = new Thread(sc);
                 th.start();
