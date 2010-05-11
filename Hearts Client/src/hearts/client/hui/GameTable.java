@@ -20,6 +20,7 @@ import hearts.defs.state.IGUIState;
 import hearts.defs.state.IGameState.Mode;
 import hearts.defs.state.ITrick;
 import hearts.state.Card;
+import hearts.state.actions.ChatAction;
 import hearts.state.exceptions.WrongCardValueException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -197,12 +198,26 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
         chatInput.setMinimumSize(new java.awt.Dimension(140, 29));
         chatInput.setPreferredSize(new java.awt.Dimension(120, 29));
+        chatInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                chatInputKeyReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(chatInput, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void chatInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chatInputKeyReleased
+        if (evt.getKeyChar() == '\n') {
+            chatInput.getText();
+            //gui.getSocket().actionReceived(new ChatAction())
+            chatInput.setText("");
+        }
+    }//GEN-LAST:event_chatInputKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardsPanel;
     private javax.swing.JTextArea chatArea;

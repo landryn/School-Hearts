@@ -1,5 +1,7 @@
 package hearts.defs.actions;
 
+import hearts.defs.actions.gui.AGUIAction;
+
 /**
  * <p>Klasa służąca o chatu. Sędzia powinien obsługiwać chat
  * podając do akcji dziedziczących po ChatAction pusty stan gry,
@@ -9,10 +11,9 @@ package hearts.defs.actions;
  * stanu gry oprócz ew. dodania komunikatów do rozesłania</p>
  * @author szymon
  */
-public abstract class AChatAction extends AAction {
+public abstract class AChatAction extends AGUIAction {
 
     public AChatAction(int receiver) {
         super(receiver);
     }
-
 }
