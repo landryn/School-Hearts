@@ -158,6 +158,7 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
             AChatAction aChatAction = (AChatAction) action;
             aChatAction.setSenderName(this.name);                    
         }
+        action.setSender(getId());
         
         for (IActionListener listener : this.listeners) {
             listener.actionReceived(action);
