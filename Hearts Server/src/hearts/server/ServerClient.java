@@ -5,6 +5,7 @@
 package hearts.server;
 
 import hearts.defs.actions.AAction;
+import hearts.defs.actions.AChatAction;
 import hearts.defs.actions.IActionListener;
 import hearts.defs.protocol.IUserSocket;
 import hearts.defs.protocol.IMaintenaceListener;
@@ -153,6 +154,11 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
      * @param action
      */
     public void notifyListeners(AAction action) {
+        if(action instanceof AChatAction) {
+            AChatAction aChatAction = (AChatAction) action;
+            aChatAction.setSenderName(this.name);                    
+        }
+        
         for (IActionListener listener : this.listeners) {
             listener.actionReceived(action);
         }
