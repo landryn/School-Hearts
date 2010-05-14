@@ -70,4 +70,6 @@ public interface IGUIGameTable extends IGUIPanel {
      * @param c
      */
     public void withdrawCard(ICard c) throws GameStateException;
+
+    public void showChooseTrumpDialog();
 }

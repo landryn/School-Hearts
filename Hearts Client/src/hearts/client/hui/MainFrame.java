@@ -64,10 +64,11 @@ public class MainFrame
         gameMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+        aboutItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
         showDeck = new javax.swing.JMenuItem();
         runTest1Item = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JSeparator();
-        aboutItem = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         gameTable.setGui(this);
 
@@ -88,6 +89,10 @@ public class MainFrame
 
         helpMenu.setText("Pomoc");
 
+        aboutItem.setText("O grze...");
+        helpMenu.add(aboutItem);
+        helpMenu.add(jSeparator1);
+
         showDeck.setText("Zaprezentuj talię kart");
         showDeck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,10 +108,14 @@ public class MainFrame
             }
         });
         helpMenu.add(runTest1Item);
-        helpMenu.add(jSeparator1);
 
-        aboutItem.setText("O grze...");
-        helpMenu.add(aboutItem);
+        jMenuItem2.setText("Pokaż dialog wyboru Trumpa");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        helpMenu.add(jMenuItem2);
 
         mainMenuBar.add(helpMenu);
 
@@ -122,6 +131,10 @@ public class MainFrame
     private void runTest1ItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runTest1ItemActionPerformed
         gameTable.uglyTest();
     }//GEN-LAST:event_runTest1ItemActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new ChooseTrumpDialog(this, true).setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -160,6 +173,7 @@ public class MainFrame
     private hearts.client.hui.GameTable gameTable;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JSeparator jSeparator1;
     private hearts.client.hui.LoginPanel loginPanel;
     private javax.swing.JMenuBar mainMenuBar;

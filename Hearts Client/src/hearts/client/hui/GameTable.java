@@ -27,6 +27,7 @@ import hearts.state.Card;
 import hearts.state.actions.ChatAction;
 import hearts.state.actions.gui.AddCardToTrickGUIAction;
 import hearts.state.exceptions.WrongCardValueException;
+import java.awt.Frame;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -62,6 +63,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         OpponentCardsStack[] cardsStacksTMP = {null, opponentCardsStack1,
             opponentCardsStack2, opponentCardsStack3};
         cardsStacks = cardsStacksTMP;
+
         //uglyTest();
     }
 
@@ -299,6 +301,8 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
             act2.setCard(new Card(CardColor.DIAMOND, 14));
             this.gui.actionReceived(act2);
             this.setActiveUser(0);
+
+            showChooseTrumpDialog();
         } catch (WrongCardValueException ex) {
             Logger.getLogger(GameTable.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -375,5 +379,12 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         if (!success) {
             throw new GameStateException("Cant find " + c + " in user stack");
         }
+    }
+
+    public void showChooseTrumpDialog() {
+        ChooseTrumpDialog dialog =
+                new ChooseTrumpDialog((Frame) gui, true);
+        dialog.setGui(gui);
+        dialog.setVisible(true);
     }
 }
