@@ -10,6 +10,7 @@
  */
 package hearts.client.hui;
 
+import hearts.client.hui.details.CardClickListener;
 import hearts.client.hui.details.CardIcon;
 import hearts.client.hui.details.CardPlaceHolder;
 import hearts.client.hui.details.OpponentCardsStack;
@@ -39,6 +40,8 @@ import javax.swing.JLabel;
 public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     private CardPlaceHolder[] placeHolders = new CardPlaceHolder[13];
+    protected CardClickListener[] cardClickListeners =
+            new CardClickListener[13];
     protected IGUIState gui;
     protected Mode mode = null;
     protected String tableName = null;
@@ -49,9 +52,14 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     public GameTable() {
         initComponents();
         for (int i = 0; i < placeHolders.length; ++i) {
-            CardPlaceHolder tmp = new CardPlaceHolder();
-            placeHolders[i] = tmp;
-            cardsPanel.add(tmp);
+            CardPlaceHolder holder = new CardPlaceHolder();
+            // gui jest i tak null, więc null
+            CardClickListener listener = new CardClickListener(null, holder);
+
+            holder.addMouseListener(listener);
+            placeHolders[i] = holder;
+            cardClickListeners[i] = listener;
+            cardsPanel.add(holder);
         }
         // dodanie jednego placeholdera na koniec:
         cardsPanel.add(new CardPlaceHolder());
@@ -319,6 +327,9 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     public void setGui(IGUIState gui) {
         this.gui = gui;
+        for(CardClickListener listener : cardClickListeners) {
+            listener.setGui(gui);
+        }
     }
 
     public void setUser(int place, String name) {

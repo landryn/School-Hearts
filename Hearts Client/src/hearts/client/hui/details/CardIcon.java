@@ -28,10 +28,10 @@ public class CardIcon extends CardBack implements ICard {
         CARD_SYMBOLS.put(CardColor.HEART, "♥");
         CARD_SYMBOLS.put(CardColor.SPADE, "♠");
 
-        for(int i = 0; i < JACK; ++i) {
+        for (int i = 0; i < JACK; ++i) {
             CARD_CHARACTERS[i] = "" + i;
         }
-        
+
         CARD_CHARACTERS[JACK] = "J";
         CARD_CHARACTERS[QUEEN] = "Q";
         CARD_CHARACTERS[KING] = "K";
@@ -64,15 +64,18 @@ public class CardIcon extends CardBack implements ICard {
         return card.getColor();
     }
 
+    public ICard getCard() {
+        return card;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if(this.card == obj) {
+        if (this.card == obj) {
             return true;
         }
-        if(this.card != null) {
+        if (this.card != null) {
             return this.card.equals(obj);
         }
         return false;
     }
-   
 }
