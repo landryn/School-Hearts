@@ -4,6 +4,8 @@
  */
 package hearts.client.hui.details;
 
+import hearts.defs.state.IOpponentCardStack;
+import hearts.defs.state.WrongCardsCountInOpponentStackException;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,7 +15,9 @@ import javax.swing.JComponent;
  *
  * @author szymon
  */
-public class OpponentCardsStack extends JComponent {
+public class OpponentCardsStack
+        extends JComponent
+        implements IOpponentCardStack {
 
     private int count = 13;
     private boolean vertical = true;

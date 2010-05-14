@@ -26,6 +26,7 @@
         <Property name="arrowOrientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Arrow.DOWN" type="code"/>
         </Property>
+        <Property name="flipped" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -56,6 +57,7 @@
         <Property name="arrowOrientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Arrow.LEFT" type="code"/>
         </Property>
+        <Property name="flipped" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -86,6 +88,7 @@
         <Property name="arrowOrientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Arrow.UP" type="code"/>
         </Property>
+        <Property name="flipped" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -116,6 +119,7 @@
         <Property name="arrowOrientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Arrow.RIGHT" type="code"/>
         </Property>
+        <Property name="flipped" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

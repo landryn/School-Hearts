@@ -65,6 +65,9 @@ public class MainFrame
         jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         showDeck = new javax.swing.JMenuItem();
+        runTest1Item = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
+        aboutItem = new javax.swing.JMenuItem();
 
         gameTable.setGui(this);
 
@@ -93,6 +96,18 @@ public class MainFrame
         });
         helpMenu.add(showDeck);
 
+        runTest1Item.setText("Pierwszy test stołu");
+        runTest1Item.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runTest1ItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(runTest1Item);
+        helpMenu.add(jSeparator1);
+
+        aboutItem.setText("O grze...");
+        helpMenu.add(aboutItem);
+
         mainMenuBar.add(helpMenu);
 
         setJMenuBar(mainMenuBar);
@@ -103,6 +118,10 @@ public class MainFrame
     private void showDeckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDeckActionPerformed
         new DeckTester().setVisible(true);
     }//GEN-LAST:event_showDeckActionPerformed
+
+    private void runTest1ItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runTest1ItemActionPerformed
+        gameTable.uglyTest();
+    }//GEN-LAST:event_runTest1ItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -136,12 +155,15 @@ public class MainFrame
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutItem;
     private javax.swing.JMenu gameMenu;
     private hearts.client.hui.GameTable gameTable;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JSeparator jSeparator1;
     private hearts.client.hui.LoginPanel loginPanel;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JMenuItem runTest1Item;
     private javax.swing.JMenuItem showDeck;
     // End of variables declaration//GEN-END:variables
 

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package hearts.client.hui.details;
+package hearts.defs.state;
 
 /**
  *

@@ -63,4 +63,16 @@ public class CardIcon extends CardBack implements ICard {
     public CardColor getColor() {
         return card.getColor();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this.card == obj) {
+            return true;
+        }
+        if(this.card != null) {
+            return this.card.equals(obj);
+        }
+        return false;
+    }
+   
 }

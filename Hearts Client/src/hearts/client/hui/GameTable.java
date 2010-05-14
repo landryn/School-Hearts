@@ -12,16 +12,20 @@ package hearts.client.hui;
 
 import hearts.client.hui.details.CardIcon;
 import hearts.client.hui.details.CardPlaceHolder;
+import hearts.client.hui.details.OpponentCardsStack;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.GameConstants;
+import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIPanel.Panel;
 import hearts.defs.state.IGUIState;
 import hearts.defs.state.IGameState.Mode;
+import hearts.defs.state.IOpponentCardStack;
 import hearts.defs.state.ITrick;
 import hearts.state.Card;
 import hearts.state.actions.ChatAction;
+import hearts.state.actions.gui.AddCardToTrickGUIAction;
 import hearts.state.exceptions.WrongCardValueException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +42,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     protected Mode mode = null;
     protected String tableName = null;
     protected JLabel[] playerLabels;
+    protected OpponentCardsStack[] cardsStacks;
 
     /** Creates new form gameTable */
     public GameTable() {
@@ -54,7 +59,10 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
             opponentLabel2, opponentLabel3};
         playerLabels = playerLabelsTMP;
 
-        uglyTest();
+        OpponentCardsStack[] cardsStacksTMP = {null, opponentCardsStack1,
+            opponentCardsStack2, opponentCardsStack3};
+        cardsStacks = cardsStacksTMP;
+        //uglyTest();
     }
 
     /** This method is called from within the constructor to
@@ -219,7 +227,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     private void chatInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chatInputKeyTyped
         if (evt.getKeyChar() == '\n') {
-            if(gui.getSocket() == null) {
+            if (gui.getSocket() == null) {
                 System.out.println("Nie ma socketa!");
                 return;
             }
@@ -267,19 +275,34 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         }
     }
 
-    private void uglyTest() {
-        ICard[] cards = new ICard[13];
-        for (int i = 0; i < 13; ++i) {
-            try {
-                cards[i] = new Card(CardColor.HEART, i + 2);
-            } catch (WrongCardValueException ex) {
-                Logger.getLogger(GameTable.class.getName()).log(Level.SEVERE, null, ex);
+    public void uglyTest() {
+        try {
+            ICard[] cards = new ICard[13];
+            for (int i = 0; i < 13; ++i) {
+                try {
+                    cards[i] = new Card(CardColor.HEART, i + 2);
+                } catch (WrongCardValueException ex) {
+                    Logger.getLogger(GameTable.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            this.setCards(cards);
+            this.setFlipped(false);
+            this.trick.setUserId(2);
+            this.trick.setActiveUser(2);
+
+            AddCardToTrickGUIAction acttguia = new AddCardToTrickGUIAction(0);
+            acttguia.setCard(new Card(CardColor.HEART, 10));
+            this.gui.actionReceived(acttguia);
+            this.setActiveUser(3);
+
+            AddCardToTrickGUIAction act2 = new AddCardToTrickGUIAction(0);
+            act2.setCard(new Card(CardColor.DIAMOND, 14));
+            this.gui.actionReceived(act2);
+            this.setActiveUser(0);
+        } catch (WrongCardValueException ex) {
+            Logger.getLogger(GameTable.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.setCards(cards);
-        this.setFlipped(false);
-        this.trick.setUserId(2);
-        this.trick.setActiveUser(3);
+
     }
 
     public ITrick getTrick() {
@@ -319,8 +342,38 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         trick.setUserId(id);
     }
 
+    public int getLocalUserId() {
+        return trick.getUserId();
+    }
+
     public void appendToChatArea(String line) {
         chatArea.append('\n' + line);
         chatArea.setCaretPosition(chatArea.getText().length() - 1);
+    }
+
+    public void setActiveUser(int id) {
+        this.trick.setActiveUser(id);
+    }
+
+    public int getActiveUser() {
+        return this.trick.getActiveUser();
+    }
+
+    public IOpponentCardStack getCardsStack(int id) {
+        return cardsStacks[trick.getPlace(id)];
+    }
+
+    public void withdrawCard(ICard c) throws GameStateException {
+        boolean success = false;
+        for (CardPlaceHolder holder : placeHolders) {
+            if (holder.getCardIcon().equals(c)) {
+                holder.setCardIcon(null);
+                success = true;
+                break;
+            }
+        }
+        if (!success) {
+            throw new GameStateException("Cant find " + c + " in user stack");
+        }
     }
 }

@@ -43,4 +43,24 @@ public class Card implements ICard, Serializable, Cloneable {
         }
         return ob;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof ICard) {
+            ICard other = (ICard) obj;
+            if (this.color.equals(other.getColor()) &&
+                    this.value == other.getValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return color + "_" + value;
+    }
 }

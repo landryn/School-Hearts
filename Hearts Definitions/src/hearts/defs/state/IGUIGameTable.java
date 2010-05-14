@@ -43,6 +43,8 @@ public interface IGUIGameTable extends IGUIPanel {
 
     public void setLocalUserId(int id);
 
+    public int getLocalUserId();
+
     /**
      * Ustaw tryb gry
      * @param mode
@@ -56,4 +58,16 @@ public interface IGUIGameTable extends IGUIPanel {
     public void setTableName(String name);
 
     public void appendToChatArea(String line);
+
+    public void setActiveUser(int id);
+
+    public int getActiveUser();
+
+    public IOpponentCardStack getCardsStack(int id);
+
+    /**
+     * Wyciągnij kartę c z kart trzymanych prze lokalnego użytkownika
+     * @param c
+     */
+    public void withdrawCard(ICard c) throws GameStateException;
 }

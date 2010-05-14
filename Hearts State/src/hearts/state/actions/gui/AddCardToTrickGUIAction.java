@@ -2,13 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.state.actions.gui;
 
 import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.state.GUIStateException;
+import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
+import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIState;
+import hearts.defs.state.TrickException;
+import hearts.defs.state.WrongCardsCountInOpponentStackException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Klasa dodaje kartę na stół. 
@@ -19,7 +24,7 @@ public class AddCardToTrickGUIAction extends AGUIAction {
     public AddCardToTrickGUIAction(int receiver) {
         super(receiver);
     }
-    protected ICard card=null;
+    protected ICard card = null;
 
     public ICard getCard() {
         return card;
@@ -29,10 +34,28 @@ public class AddCardToTrickGUIAction extends AGUIAction {
         this.card = card;
     }
 
-
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        try {
+            // TODO: user ma byc przesylany jako pole w tej akcji
 
+            IGUIGameTable table = gui.getGameTable();
+            int activeUser = table.getActiveUser();
+            
+            table.getTrick().addCard(card, activeUser);
+            if (activeUser == table.getLocalUserId()) {
+                // wyciaga karte z kart lokalnego usera
+                table.withdrawCard(card);
+            } else {
+                // badz z ktoregos z przeciwnikow
+                table.getCardsStack(activeUser).decrease();
+            }
+        } catch (TrickException ex) {
+            Logger.getLogger(AddCardToTrickGUIAction.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (WrongCardsCountInOpponentStackException ex) {
+            Logger.getLogger(AddCardToTrickGUIAction.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (GameStateException ex) {
+            Logger.getLogger(AddCardToTrickGUIAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
