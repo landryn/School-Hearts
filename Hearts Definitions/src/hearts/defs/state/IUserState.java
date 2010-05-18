@@ -70,6 +70,11 @@ public interface IUserState extends Serializable, Cloneable {
     public List<Integer> getPointsList();
 
     /**
+     * Zwraca liste punktow wszystkich uzytkownikow od poczatku gry
+     */
+    public List<Integer>[] getAllPointsList();
+
+    /**
      * Dodaj punkty graczowi
      * @param points
      */

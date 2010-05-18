@@ -21,7 +21,8 @@ import java.util.List;
 public class NewDealForUserGUIAction extends AGUIAction {
 
     private ICard []cards=null;
-    private List<Integer> listPoints=null;
+    //private List<Integer> listPoints=null;
+    private List<Integer> listPoints[]=null;
     private IGameState.Mode mode;
     private int dealer;
     private int activeUser;
@@ -61,12 +62,16 @@ public class NewDealForUserGUIAction extends AGUIAction {
         this.cards = cards;
     }
 
-    public List<Integer> getListPoints() {
+    public List<Integer>[] getListPoints() {
         return listPoints;
     }
 
-    public void setListPoints(List<Integer> listPoints) {
+    public void setListPoints(List<Integer>[] listPoints) {
         this.listPoints = listPoints;
+    }
+
+    public void setListPointsAt(List<Integer> listPoints, int index) {
+        this.listPoints[index]=listPoints;
     }
 
     
