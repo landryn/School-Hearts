@@ -359,7 +359,7 @@ public class Judge implements hearts.defs.judge.IJudge {
                 if (i == first) {
                     continue;
                 }
-                if (cards[i].getColor() == cards[first].getColor()) {
+                if ((cards[i]!=null)&&cards[i].getColor() == cards[first].getColor()) {
                     if (cards[i].getValue() > cards[win].getValue()) {
                         win = i;
                     }

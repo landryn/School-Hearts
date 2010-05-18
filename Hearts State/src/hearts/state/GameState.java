@@ -270,5 +270,9 @@ public class GameState
 
 
      }
+
+     public void haks2(Mode mod){
+         this.mode=mod;
+     }
     
 }

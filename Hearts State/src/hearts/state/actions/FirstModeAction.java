@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class FirstModeAction  extends AAction{
     private ICard [][]cards=new ICard[4][];
     //ilość zbójów i odgrywek w grze
-    private int modes;
+    private int modes=4;
 
     public int getModes() {
         return modes;
