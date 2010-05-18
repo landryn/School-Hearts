@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.state.actions.gui;
 
 import hearts.defs.actions.gui.AGUIAction;
@@ -14,7 +13,7 @@ import hearts.defs.state.IGUIState;
  * pierwszy wychodził.
  * @author Paweł Trynkiewicz
  */
-public class AuctionFinalGUIAction extends AGUIAction{
+public class AuctionFinalGUIAction extends AGUIAction {
 
     public AuctionFinalGUIAction(int receiver) {
         super(receiver);
@@ -56,16 +55,8 @@ public class AuctionFinalGUIAction extends AGUIAction{
         this.quotion = quotion;
     }
 
-    
-
-
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
-
-
-
 }

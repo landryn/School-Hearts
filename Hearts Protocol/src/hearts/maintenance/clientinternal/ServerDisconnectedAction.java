@@ -17,9 +17,7 @@ public class ServerDisconnectedAction extends AMaintenaceAction {
 
     @Override
     public void perform(final IGUIState gui) throws GUIStateException {
-
-        gui.getGameTable().clearTrick();
-        gui.getGameTable().setTableName(null);
+        gui.getGameTable().reset();
 
         gui.getLoginPanel().setEnabled(true);
 

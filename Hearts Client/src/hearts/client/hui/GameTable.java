@@ -46,6 +46,9 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     protected Mode mode = null;
     protected String tableName = null;
     protected JLabel[] playerLabels;
+    protected String[] playerNames = {null, null, null, null};
+    protected int[] playerTricks = {0, 0, 0, 0};
+    protected int[] playerPoints = {0, 0, 0, 0};
     protected OpponentCardsStack[] cardsStacks;
 
     /** Creates new form gameTable */
@@ -326,13 +329,21 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     public void setGui(IGUIState gui) {
         this.gui = gui;
-        for(CardClickListener listener : cardClickListeners) {
+        for (CardClickListener listener : cardClickListeners) {
             listener.setGui(gui);
         }
     }
 
     public void setUser(int place, String name) {
-        playerLabels[trick.getPlace(place)].setText(name);
+        playerNames[place] = name;
+        refreshPlayerLabel(place);
+    }
+
+    private void refreshPlayerLabel(int id) {
+        playerLabels[trick.getPlace(id)].setText(
+                playerNames[id] +
+                "\nwziątek: " + playerTricks[id] +
+                "\npunktów: " + playerPoints[id]);
     }
 
     public void setMode(Mode mode) {
@@ -380,7 +391,8 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     public void withdrawCard(ICard c) throws GameStateException {
         boolean success = false;
         for (CardPlaceHolder holder : placeHolders) {
-            if (holder.getCardIcon().equals(c)) {
+            CardIcon ci = holder.getCardIcon();
+            if (ci != null && ci.equals(c)) {
                 holder.setCardIcon(null);
                 success = true;
                 break;
@@ -397,4 +409,33 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         dialog.setGui(gui);
         dialog.setVisible(true);
     }
+
+    public void setUserPoints(int id, int points) {
+        playerPoints[id] = points;
+        refreshPlayerLabel(id);
+    }
+
+    public void setUserTricks(int id, int tricks) {
+        playerTricks[id] = tricks;
+        refreshPlayerLabel(id);
+    }
+
+    public void increaseUserTricks(int id) {
+        playerTricks[id]++;
+        refreshPlayerLabel(id);
+    }
+
+    public void reset() {
+        clearTrick();
+        setTableName(null);
+        for(int i = 0; i < 4; ++i) {
+            playerNames[i] = "";
+            playerPoints[i] = 0;
+            playerTricks[i] = 0;
+            refreshPlayerLabel(i);
+        }
+        // TODO wiecej fajnego stuffu
+    }
+
+
 }

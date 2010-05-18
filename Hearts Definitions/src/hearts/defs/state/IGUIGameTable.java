@@ -41,6 +41,12 @@ public interface IGUIGameTable extends IGUIPanel {
      */
     public void setUser(int place, String name);
 
+    public void setUserPoints(int id, int points);
+
+    public void setUserTricks(int id, int tricks);
+
+    public void increaseUserTricks(int id);
+
     public void setLocalUserId(int id);
 
     public int getLocalUserId();
@@ -72,4 +78,6 @@ public interface IGUIGameTable extends IGUIPanel {
     public void withdrawCard(ICard c) throws GameStateException;
 
     public void showChooseTrumpDialog();
+
+    public void reset();
 }
