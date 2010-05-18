@@ -59,7 +59,7 @@ public class NetClient implements IServerSocket {
         try {
             while (true) {
                 Serializable object = (Serializable) input.readObject();
-                Logger.getLogger(NetClient.class.getName()).log(Level.SEVERE, "Dostałem obiekt: "+object.getClass().getName());
+                Logger.getLogger(NetClient.class.getName()).log(Level.INFO, "Dostałem obiekt: "+object.getClass().getName());
                 if (object == null) {
                     break;
                 }
