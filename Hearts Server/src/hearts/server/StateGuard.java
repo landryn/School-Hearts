@@ -15,6 +15,7 @@ import hearts.defs.state.IServerStateGuard;
 import hearts.maintenance.answers.JoinTableAnswer;
 import hearts.maintenance.answers.TableUpdate;
 import hearts.state.DumbState;
+import hearts.state.GameState;
 
 /**
  * Klasa implementująca StateGuarda
@@ -54,6 +55,11 @@ public class StateGuard implements IServerStateGuard {
         notifyAboutTableChange();
         socket.addActionListener(this);
         userCount++;
+
+        if (userCount == 4) {
+            gameState = new GameState()
+        }
+
         return userCount - 1;
     }
 
