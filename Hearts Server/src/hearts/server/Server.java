@@ -102,7 +102,7 @@ public class Server
         return GameConstants.SERVER;
     }
 
-    public void addActionListener(IActionListener listener) {
+    public synchronized void addActionListener(IActionListener listener) {
         listeners.add(listener);
     }
 
@@ -110,7 +110,7 @@ public class Server
      * Powiadamia wszystkich actionsListenerów o zdarzeniu.
      * @param action o której powiadamia
      */
-    public void notifyListeners(AAction action) {
+    public synchronized void notifyListeners(AAction action) {
         for(IActionListener listener: listeners) {
             listener.actionReceived(action);
         }

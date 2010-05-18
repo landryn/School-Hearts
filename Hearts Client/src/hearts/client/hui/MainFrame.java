@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -225,15 +226,18 @@ public class MainFrame
         return ((BorderLayout) this.getContentPane().getLayout()).getLayoutComponent(BorderLayout.CENTER);
     }
 
-    public synchronized void setPanel(Panel p) {
-        this.getContentPane().remove(getCentralPanel());
-        this.getContentPane().add(panels.get(p), BorderLayout.CENTER);
-
-        // obejscie deadlocka:
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    public synchronized void setPanel(final Panel p) {
+        SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                validate();
+                getContentPane().remove(getCentralPanel());
+                JPanel jp = panels.get(p);
+                getContentPane().add(jp, BorderLayout.CENTER);
+                if (isValid()) {
+                    repaint();
+                } else {
+                    repaint();
+                }
             }
         });
     }
