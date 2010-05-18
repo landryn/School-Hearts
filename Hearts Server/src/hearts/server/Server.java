@@ -68,6 +68,7 @@ public class Server
      * dodaje go do list i startuje wątek nasłuchujący.
      */
     public void run() {
+        Logger.getLogger(Server.class.getName()).log(Level.INFO, "Wystartowałem!");
         try {
             while (true) {
                 Socket s = this.socket.accept();
