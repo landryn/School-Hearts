@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.state.actions.gui;
 
 import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.state.GUIStateException;
 import hearts.defs.state.ICard;
+import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIState;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.IGameState.Mode;
@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class NewDealForUserGUIAction extends AGUIAction {
 
-    private ICard []cards=null;
-    private List<Integer> listPoints=null;
+    private ICard[] cards = null;
+    private List<Integer> listPoints = null;
     private IGameState.Mode mode;
     private int dealer;
     private int activeUser;
-    private boolean  auction;
+    private boolean auction;
 
     public boolean isAuction() {
         return auction;
@@ -35,8 +35,6 @@ public class NewDealForUserGUIAction extends AGUIAction {
         this.auction = auction;
     }
 
-
-    
     public int getDealer() {
         return dealer;
     }
@@ -52,7 +50,7 @@ public class NewDealForUserGUIAction extends AGUIAction {
     public void setActiveUser(int activeUser) {
         this.activeUser = activeUser;
     }
-    
+
     public ICard[] getCards() {
         return cards;
     }
@@ -69,10 +67,6 @@ public class NewDealForUserGUIAction extends AGUIAction {
         this.listPoints = listPoints;
     }
 
-    
-
-    
-
     public Mode getMode() {
         return mode;
     }
@@ -81,21 +75,20 @@ public class NewDealForUserGUIAction extends AGUIAction {
         this.mode = mode;
     }
 
-    
-
-
-
-    
     public NewDealForUserGUIAction(int receiver) {
         super(receiver);
     }
-    
-
-   
 
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        IGUIGameTable table = gui.getGameTable();
+        /* TODO: nieuzyte dane:
+         * dealer
+         * listpoints
+         * auction
+         */
+        table.setCards(cards);
+        table.setMode(mode);
+        table.setActiveUser(activeUser);
     }
-
 }

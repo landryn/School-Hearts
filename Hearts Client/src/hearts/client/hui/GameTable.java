@@ -310,7 +310,6 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
             this.gui.actionReceived(act2);
             this.setActiveUser(0);
 
-            showChooseTrumpDialog();
         } catch (WrongCardValueException ex) {
             Logger.getLogger(GameTable.class.getName()).log(Level.SEVERE, null, ex);
         }
