@@ -19,6 +19,7 @@ import hearts.state.DumbState;
 import hearts.state.GameState;
 import hearts.state.Judge;
 import hearts.state.UserState;
+import hearts.state.actions.FirstModeAction;
 import hearts.state.exceptions.ExceptionGUIAction;
 
 /**
@@ -28,8 +29,8 @@ import hearts.state.exceptions.ExceptionGUIAction;
 public class StateGuard implements IServerStateGuard {
 
     IGameState chatState = new DumbState();
-    IGameState gameState = null;
-    IJudge judge = null;
+    IGameState gameState = new GameState();
+    IJudge judge = new Judge();
     IUserSocket[] users = new IUserSocket[4];
     int userCount = 0;
     String name = "Dupa słonia.";
@@ -60,16 +61,12 @@ public class StateGuard implements IServerStateGuard {
         notifyAboutTableChange();
         socket.addActionListener(this);
         userCount++;
-
-        // inicjalizacja Judg'a i GameState'a
+        
+        gameState.addUser(new UserState(socket.getId(), socket.getName()));
         if (userCount == 4) {
-            gameState = new GameState();
-            judge = new Judge();
-            for(IUserSocket user: users) {
-                gameState.addUser(new UserState(user.getId(), user.getName()));
-            }
+            gameState = judge.judge(gameState, new FirstModeAction(GameConstants.SERVER));
         }
-
+        
         return userCount - 1;
     }
 
