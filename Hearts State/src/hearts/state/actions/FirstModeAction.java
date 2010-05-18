@@ -6,11 +6,14 @@
 package hearts.state.actions;
 
 import hearts.defs.actions.AAction;
+import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGameState;
 import hearts.state.actions.gui.NewDealForUserGUIAction;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Akcja odpowiedzialna u ustawienie pierwszego rozdania. Wywoływana raz po dołączeniu czwartego
@@ -55,8 +58,10 @@ public class FirstModeAction  extends AAction{
 
 
         for(int i=0;i<4;i++){
-           
+            if(GameConstants.GET_LOGGER) Logger.getLogger(FirstModeAction.class.getName()).log(Level.INFO, "Gracz: "+ clone.getUserState(i).getName());
+          
             for(int k=0;k<13;k++){
+          if(GameConstants.GET_LOGGER)  Logger.getLogger(FirstModeAction.class.getName()).log(Level.INFO,"|"+cards[i][k].getColor().name()+" "+cards[i][k].getValue()+"|");
                 clone.getUserState(i).addCard(cards[i][k]);
                
             }
@@ -100,7 +105,7 @@ public class FirstModeAction  extends AAction{
             //dodanie akcji do wysłania
             clone.addAction(tab[i]);
         }
-
+       if(GameConstants.GET_LOGGER) Logger.getLogger(FirstModeAction.class.getName()).log(Level.INFO, "Wychodzący: "+ clone.getActiveUser());
         return clone;
     }
 

@@ -14,6 +14,8 @@ import hearts.defs.state.IGameState;
 import hearts.defs.state.SFinalPoints;
 import hearts.state.Judge;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *Klasa podsumowuje rozdanie, ustawia typ następnego, i rozdaje karty graczom.
@@ -39,7 +41,7 @@ public class NextModeAction extends AAction {
 
     @Override
     public IGameState perform(IGameState old) throws GameStateException {
-        System.out.println("NextModeAction public IGameState perform(IGameState old) throws GameStateException");
+       if(GameConstants.GET_LOGGER)  Logger.getLogger(NextModeAction.class.getName()).log(Level.INFO,"NextModeAction public IGameState perform(IGameState old) throws GameStateException");
         /**
          * 1. zliczam punkty
          * 2. czyszcze Trick
@@ -61,8 +63,11 @@ public class NextModeAction extends AAction {
 
             //dodałem punkty graczowi
             old.getUserState(i).addPoints(date.points[i]);
+             if(GameConstants.GET_LOGGER) Logger.getLogger(NextModeAction.class.getName()).log(Level.INFO, "gracz: "+ i + "punkty " + date.points[i] );
             old.getUserState(i).clearTricks();
+            // Logger.getLogger(NextModeAction.class.getName()).log(Level.INFO, "Gracz: "+ old.getUserState(i).getName());
              for(int k=0;k<13;k++){
+                 //  Logger.getLogger(NextModeAction.class.getName()).log(Level.INFO,"|"+cards[i][k].getColor().name()+" "+cards[i][k].getValue()+"|");
                   old.getUserState(i).addCard(cards[i][k]);
              }//dodałem graczowi karty
             
@@ -102,6 +107,7 @@ public class NextModeAction extends AAction {
                 tab[i].setAuction(old.isAuction());
                 old.addAction(tab[i]);//dadałem akcję do wysłania
             }
+        if(GameConstants.GET_LOGGER) Logger.getLogger(NextModeAction.class.getName()).log(Level.INFO, "Wychodzący: "+ old.getActiveUser());
         //dodaję aukcje rozpoczynającą licytację.
             if(old.isAuction()) old.addAction(new AuctionBeginAction(GameConstants.SERVER));
         return old;
