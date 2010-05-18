@@ -97,12 +97,15 @@ public class StateGuard implements IServerStateGuard {
         
         AAction action = null;
         while ((action = state.nextAction()) != null) {
-            if (action.getReceiver() == GameConstants.ALL_USERS) {
+            int recv = action.getReceiver();
+            if (recv == GameConstants.ALL_USERS) {
                 for (int i = 0; i < userCount; i++) {
                     users[i].actionReceived(action);
                 }
+            } else if(recv == GameConstants.SERVER) {
+                actionReceived(action);
             } else {
-                users[action.getReceiver()].actionReceived(action);
+                users[recv].actionReceived(action);
             }
         }
     }

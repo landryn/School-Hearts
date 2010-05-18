@@ -11,7 +11,10 @@ import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIState;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.IGameState.Mode;
+import hearts.defs.state.WrongCardsCountInOpponentStackException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Klasa przygotowana specjalnie z myślą o klijencie, zawiera nowe karty gracza i zaktualizowaną punktacje
@@ -88,6 +91,16 @@ public class NewDealForUserGUIAction extends AGUIAction {
          * auction
          */
         table.setCards(cards);
+        for(int id = 0; id < 4; ++id) {
+            if(id != table.getLocalUserId()) {
+                try {
+                    table.getCardsStack(id).setCount(13);
+                } catch (WrongCardsCountInOpponentStackException ex) {
+                    Logger.getLogger(NewDealForUserGUIAction.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        table.setFlipped(false);
         table.setMode(mode);
         table.setActiveUser(activeUser);
     }

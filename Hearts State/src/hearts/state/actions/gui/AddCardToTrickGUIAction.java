@@ -41,7 +41,7 @@ public class AddCardToTrickGUIAction extends AGUIAction {
 
             IGUIGameTable table = gui.getGameTable();
             int activeUser = table.getActiveUser();
-            
+
             table.getTrick().addCard(card, activeUser);
             if (activeUser == table.getLocalUserId()) {
                 // wyciaga karte z kart lokalnego usera
@@ -50,6 +50,7 @@ public class AddCardToTrickGUIAction extends AGUIAction {
                 // badz z ktoregos z przeciwnikow
                 table.getCardsStack(activeUser).decrease();
             }
+            table.setActiveUser((activeUser + 1) % 4);
         } catch (TrickException ex) {
             Logger.getLogger(AddCardToTrickGUIAction.class.getName()).log(Level.SEVERE, null, ex);
         } catch (WrongCardsCountInOpponentStackException ex) {
