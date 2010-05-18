@@ -7,6 +7,7 @@ package hearts.server;
 import hearts.defs.actions.AAction;
 import hearts.defs.actions.AChatAction;
 import hearts.defs.actions.IActionNotifier;
+import hearts.defs.judge.IJudge;
 import hearts.defs.protocol.IUserSocket;
 import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
@@ -16,6 +17,9 @@ import hearts.maintenance.answers.JoinTableAnswer;
 import hearts.maintenance.answers.TableUpdate;
 import hearts.state.DumbState;
 import hearts.state.GameState;
+import hearts.state.Judge;
+import hearts.state.UserState;
+import hearts.state.exceptions.ExceptionGUIAction;
 
 /**
  * Klasa implementująca StateGuarda
@@ -25,6 +29,7 @@ public class StateGuard implements IServerStateGuard {
 
     IGameState chatState = new DumbState();
     IGameState gameState = null;
+    IJudge judge = null;
     IUserSocket[] users = new IUserSocket[4];
     int userCount = 0;
     String name = "Dupa słonia.";
@@ -56,8 +61,13 @@ public class StateGuard implements IServerStateGuard {
         socket.addActionListener(this);
         userCount++;
 
+        // inicjalizacja Judg'a i GameState'a
         if (userCount == 4) {
-            gameState = new GameState()
+            gameState = new GameState();
+            judge = new Judge();
+            for(IUserSocket user: users) {
+                gameState.addUser(new UserState(user.getId(), user.getName()));
+            }
         }
 
         return userCount - 1;
@@ -84,6 +94,10 @@ public class StateGuard implements IServerStateGuard {
      * @param state kolejka do opróżnienia
      */
     private void sendQueue(IGameState state) {
+        if (state == null) {
+            return;
+        }
+        
         AAction action = null;
         while ((action = state.nextAction()) != null) {
             if (action.getReceiver() == GameConstants.ALL_USERS) {
@@ -114,9 +128,16 @@ public class StateGuard implements IServerStateGuard {
     public void actionReceived(AAction a) {
         if(a instanceof AChatAction) {
             chatState.addAction(a);
+        } else {
+            try {
+                this.gameState = judge.judge(gameState, a);
+            } catch (GameStateException ex) {
+                ExceptionGUIAction reply = new ExceptionGUIAction(a.getSender(), ex);
+                users[a.getSender()].actionReceived(reply);
+            }
         }
         sendQueue(chatState);
-        //sendQueue(gameState);
+        sendQueue(gameState);
     }
 
     public void run() {
