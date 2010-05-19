@@ -35,5 +35,6 @@ public class NextTripGUIAction extends AGUIAction {
         IGUIGameTable table = gui.getGameTable();
         table.clearTrick();
         table.increaseUserTricks(winer);
+        table.setActiveUser(winer);
     }
 }

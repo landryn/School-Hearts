@@ -64,7 +64,9 @@ public class StateGuard implements IServerStateGuard {
         
         gameState.addUser(new UserState(socket.getId(), socket.getName()));
         if (userCount == 4) {
-            gameState = judge.judge(gameState, new FirstModeAction(GameConstants.SERVER));
+            //gameState = judge.judge(gameState, new FirstModeAction(GameConstants.SERVER));
+            //sendQueue(gameState);
+            actionReceived(new FirstModeAction(GameConstants.SERVER));
         }
         
         return userCount - 1;

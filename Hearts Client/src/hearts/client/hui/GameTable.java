@@ -341,9 +341,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     private void refreshPlayerLabel(int id) {
         playerLabels[trick.getPlace(id)].setText(
-                playerNames[id] +
-                "\nwziątek: " + playerTricks[id] +
-                "\npunktów: " + playerPoints[id]);
+                playerNames[id] + ", " + playerTricks[id]);
     }
 
     public void setMode(Mode mode) {

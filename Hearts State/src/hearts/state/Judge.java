@@ -22,6 +22,8 @@ import hearts.state.actions.FirstModeAction;
 import hearts.state.actions.NextModeAction;
 import hearts.state.actions.NextTripAction;
 import hearts.state.exceptions.WrongCardValueException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -419,16 +421,24 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         Random ran = new Random(new Date().getTime()); //zamieszałem random
         ICard tmp;
-      /*  for (int i = 0; i < tab.length/2; i++) {
-            int r = ran.nextInt(52);
-            int q = 0;
-            while ((q = ran.nextInt(52)) == r);
-            tmp = tab[r];
-            tab[r] = tab[q];
-            tab[q] = tab[r];
 
+        List<ICard> raw = new ArrayList<ICard>(52);
+        for(ICard card : tab) {
+            raw.add(card);
+        }
+        Collections.shuffle(raw);
+        tab = raw.toArray(tab);
 
-        }//zamieszałem talię kart, cheja!!!*/
+//        for (int i = 0; i < tab.length; i++) {
+//            int r = ran.nextInt(52);
+//            int q = 0;
+//            while ((q = ran.nextInt(52)) == r);
+//            tmp = tab[r];
+//            tab[r] = tab[q];
+//            tab[q] = tab[r];
+//
+//
+//        }//zamieszałem talię kart, cheja!!!
 
         return tab;
     }
