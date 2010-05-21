@@ -4,8 +4,11 @@ import hearts.defs.actions.AAction;
 import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GUIStateException;
+import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIPanel;
 import hearts.defs.state.IGUIState;
+import hearts.defs.state.IGameState;
+import hearts.defs.state.IGameState.Mode;
 import hearts.defs.state.ILoginPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -27,6 +31,7 @@ public class MainFrame
         extends javax.swing.JFrame
         implements IGUIState {
 
+    public static final String TITLE = "Hearts Client";
     protected Map<IGUIPanel.Panel, JPanel> panels =
             new EnumMap<IGUIPanel.Panel, JPanel>(IGUIPanel.Panel.class);
     protected IServerSocket socket;
@@ -37,7 +42,7 @@ public class MainFrame
         initComponents();
 
         IGUIPanel[] panelsToAdd = {loginPanel, gameTable};
-        for(IGUIPanel p: panelsToAdd) {
+        for (IGUIPanel p : panelsToAdd) {
             panels.put(p.getPanelType(), (JPanel) p);
         }
         //System.out.println(panels);
@@ -60,10 +65,16 @@ public class MainFrame
         gameMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+        aboutItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
         showDeck = new javax.swing.JMenuItem();
+        runTest1Item = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+
+        gameTable.setGui(this);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Hearts Client");
+        setTitle(TITLE);
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setMinimumSize(new java.awt.Dimension(700, 600));
 
@@ -79,6 +90,10 @@ public class MainFrame
 
         helpMenu.setText("Pomoc");
 
+        aboutItem.setText("O grze...");
+        helpMenu.add(aboutItem);
+        helpMenu.add(jSeparator1);
+
         showDeck.setText("Zaprezentuj talię kart");
         showDeck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,6 +101,22 @@ public class MainFrame
             }
         });
         helpMenu.add(showDeck);
+
+        runTest1Item.setText("Pierwszy test stołu");
+        runTest1Item.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runTest1ItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(runTest1Item);
+
+        jMenuItem2.setText("Pokaż dialog wyboru Trumpa");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        helpMenu.add(jMenuItem2);
 
         mainMenuBar.add(helpMenu);
 
@@ -97,6 +128,14 @@ public class MainFrame
     private void showDeckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDeckActionPerformed
         new DeckTester().setVisible(true);
     }//GEN-LAST:event_showDeckActionPerformed
+
+    private void runTest1ItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runTest1ItemActionPerformed
+        gameTable.uglyTest();
+    }//GEN-LAST:event_runTest1ItemActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new ChooseTrumpDialog(this, true).setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,7 +150,7 @@ public class MainFrame
             UIManager.put("text", new Color(10, 78, 42));
             UIManager.put("nimbusDisabledText", new Color(120, 150, 100));
             UIManager.put("nimbusFocus", new Color(236, 241, 162));
-            
+
             for (LookAndFeelInfo laf :
                     UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(laf.getName())) {
@@ -130,12 +169,16 @@ public class MainFrame
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutItem;
     private javax.swing.JMenu gameMenu;
     private hearts.client.hui.GameTable gameTable;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JSeparator jSeparator1;
     private hearts.client.hui.LoginPanel loginPanel;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JMenuItem runTest1Item;
     private javax.swing.JMenuItem showDeck;
     // End of variables declaration//GEN-END:variables
 
@@ -172,7 +215,7 @@ public class MainFrame
 
     public Panel getPanelType() {
         Component c = getCentralPanel();
-        if(c instanceof IGUIPanel) {
+        if (c instanceof IGUIPanel) {
             return ((IGUIPanel) c).getPanelType();
         } else {
             return null;
@@ -180,18 +223,21 @@ public class MainFrame
     }
 
     private Component getCentralPanel() {
-        return ((BorderLayout)this.getContentPane().getLayout()).getLayoutComponent(BorderLayout.CENTER);
+        return ((BorderLayout) this.getContentPane().getLayout()).getLayoutComponent(BorderLayout.CENTER);
     }
 
-    public synchronized void setPanel(Panel p) {
-        this.getContentPane().remove(getCentralPanel());
-        this.getContentPane().add(panels.get(p), BorderLayout.CENTER);
-
-        // obejscie deadlocka:
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    public synchronized void setPanel(final Panel p) {
+        SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                validate();
+                getContentPane().remove(getCentralPanel());
+                JPanel jp = panels.get(p);
+                getContentPane().add(jp, BorderLayout.CENTER);
+                if (isValid()) {
+                    repaint();
+                } else {
+                    repaint();
+                }
             }
         });
     }
@@ -204,4 +250,12 @@ public class MainFrame
         //
     }
 
+    public IGUIGameTable getGameTable() {
+        return gameTable;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        super.setTitle(TITLE + " : " + title);
+    }
 }

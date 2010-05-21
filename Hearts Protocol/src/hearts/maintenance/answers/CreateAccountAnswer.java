@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class CreateAccountAnswer extends LoginAnswer {
 
     public CreateAccountAnswer(boolean success, String message) {
-        super(success, message);
+        super(success, message, null);
     }
 
     @Override

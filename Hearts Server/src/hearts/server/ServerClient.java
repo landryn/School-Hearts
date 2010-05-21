@@ -5,6 +5,7 @@
 package hearts.server;
 
 import hearts.defs.actions.AAction;
+import hearts.defs.actions.AChatAction;
 import hearts.defs.actions.IActionListener;
 import hearts.defs.protocol.IUserSocket;
 import hearts.defs.protocol.IMaintenaceListener;
@@ -84,7 +85,7 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
         try {
             while (true) {
                 Serializable object = (Serializable) input.readObject();
-                Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Otrzymano obiekt.");
+                Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Jestem: " + this.getName() + "\nOtrzymano obiekt: " + object.getClass().getName());
                 if(object instanceof AAction && isLoggedIn()) {
                     Logger.getLogger(ServerClient.class.getName()).log(Level.INFO, "Powiadomiam actionListenerow");
                     notifyListeners((AAction) object);
@@ -153,6 +154,12 @@ public class ServerClient implements IUserSocket, IMaintenanceNotifier {
      * @param action
      */
     public void notifyListeners(AAction action) {
+        if(action instanceof AChatAction) {
+            AChatAction aChatAction = (AChatAction) action;
+            aChatAction.setSenderName(this.name);                    
+        }
+        action.setSender(getId());
+        
         for (IActionListener listener : this.listeners) {
             listener.actionReceived(action);
         }

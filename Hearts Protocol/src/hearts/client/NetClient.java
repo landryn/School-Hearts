@@ -10,6 +10,7 @@ import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GameConstants;
 import hearts.defs.protocol.IMaintenaceListener;
 import hearts.defs.protocol.IMaintenance;
+import hearts.maintenance.clientinternal.ServerDisconnectedAction;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -59,7 +60,7 @@ public class NetClient implements IServerSocket {
         try {
             while (true) {
                 Serializable object = (Serializable) input.readObject();
-                Logger.getLogger(NetClient.class.getName()).log(Level.SEVERE, "Got data from server.");
+                Logger.getLogger(NetClient.class.getName()).log(Level.INFO, "Dostałem obiekt: "+object.getClass().getName());
                 if (object == null) {
                     break;
                 }
@@ -78,6 +79,7 @@ public class NetClient implements IServerSocket {
                 input.close();
                 output.close();
                 socket.close();
+                notifyActionListeners(new ServerDisconnectedAction());
             } catch (IOException ex) {
                 Logger.getLogger(NetClient.class.getName()).log(Level.SEVERE, "Error closing socket.", ex);
             }

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.state.actions.gui;
 
 import hearts.defs.actions.gui.AGUIAction;
@@ -19,12 +18,8 @@ public class GameEndGUIAction extends AGUIAction {
         super(receiver);
     }
 
-
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
-
 }

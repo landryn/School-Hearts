@@ -9,11 +9,14 @@ import hearts.defs.actions.IActionListener;
 import hearts.defs.actions.IActionNotifier;
 import hearts.defs.protocol.IServerSocket;
 import hearts.defs.state.GameConstants;
+import hearts.defs.state.GameStateException;
 import hearts.maintenance.CreateAccountMaintenance;
 import hearts.defs.protocol.IMaintenaceListener;
 import hearts.defs.protocol.IMaintenance;
+import hearts.defs.protocol.IUserSocket;
 import hearts.maintenance.LoginMaintenance;
 import hearts.maintenance.answers.CreateAccountAnswer;
+import hearts.maintenance.answers.JoinTableAnswer;
 import hearts.maintenance.answers.LoginAnswer;
 import java.io.IOException;
 import java.net.Socket;
@@ -38,6 +41,8 @@ public class Server
     private ArrayList<ServerClient> clientsList = null;
     private ArrayList<IActionListener> listeners = null;
 
+    private StateGuard table;
+
     private UserAuthenticator authenticator = new UserAuthenticator();
 
     /**
@@ -53,6 +58,8 @@ public class Server
         this.socket = new java.net.ServerSocket(port);
         clientsList = new ArrayList<ServerClient>();
         listeners = new ArrayList<IActionListener>();
+
+        table = new StateGuard(this);
     }
 
     /**
@@ -61,6 +68,7 @@ public class Server
      * dodaje go do list i startuje wątek nasłuchujący.
      */
     public void run() {
+        Logger.getLogger(Server.class.getName()).log(Level.INFO, "Wystartowałem!");
         try {
             while (true) {
                 Socket s = this.socket.accept();
@@ -68,6 +76,7 @@ public class Server
                 ServerClient sc = new ServerClient(s);
                 sc.addActionListener(this);
                 sc.addMaintenanceListener(this);
+                this.addActionListener((IUserSocket)sc);
                 clientsList.add(sc);
                 Thread th = new Thread(sc);
                 th.start();
@@ -93,7 +102,7 @@ public class Server
         return GameConstants.SERVER;
     }
 
-    public void addActionListener(IActionListener listener) {
+    public synchronized void addActionListener(IActionListener listener) {
         listeners.add(listener);
     }
 
@@ -101,14 +110,13 @@ public class Server
      * Powiadamia wszystkich actionsListenerów o zdarzeniu.
      * @param action o której powiadamia
      */
-    public void notifyListeners(AAction action) {
+    public synchronized void notifyListeners(AAction action) {
         for(IActionListener listener: listeners) {
             listener.actionReceived(action);
         }
     }
 
     public void actionReceived(AAction a) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void maintenanceReceived(IMaintenance maintenance) {
@@ -119,13 +127,22 @@ public class Server
             ServerClient sc = (ServerClient) maintenance.getUserSocket();
             LoginMaintenance m = (LoginMaintenance) maintenance;
             if(sc.isLoggedIn()) {
-                sc.actionReceived(new LoginAnswer(true, ""));
+                sc.actionReceived(new LoginAnswer(true, "", m.getLogin()));
             } else if(authenticator.checkUser(m.getLogin(), m.getPassword())) {
                 sc.setName(m.getLogin());
                 sc.setLoggedIn(true);
-                sc.actionReceived(new LoginAnswer(true, ""));
+                sc.actionReceived(new LoginAnswer(true, "", m.getLogin()));
+
+                //dosadzanie pierwszego lepszego usera do stołu.
+                //to jest tymczasowe dla tego milestone'a
+                try {
+                    table.addUser(sc);
+                } catch (GameStateException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.INFO, "Stół jest pełny.");
+                    sc.actionReceived(new JoinTableAnswer(table.getName(), Boolean.FALSE, GameConstants.NOT_IMPORTANT));
+                }
             } else {
-                sc.actionReceived(new LoginAnswer(false, "Bad username or password."));
+                sc.actionReceived(new LoginAnswer(false, "Bad username or password.", m.getLogin()));
             }
         }
 

@@ -61,7 +61,7 @@ public class AuctionEndGUIAction  extends AGUIAction{
 
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

@@ -8,21 +8,30 @@
  *
  * Created on 2010-05-06, 19:06:12
  */
-
 package hearts.client.hui;
 
+import hearts.client.hui.details.CardClickListener;
 import hearts.client.hui.details.CardIcon;
 import hearts.client.hui.details.CardPlaceHolder;
+import hearts.client.hui.details.OpponentCardsStack;
 import hearts.defs.state.CardColor;
+import hearts.defs.state.GameConstants;
+import hearts.defs.state.GameStateException;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIPanel.Panel;
 import hearts.defs.state.IGUIState;
+import hearts.defs.state.IGameState.Mode;
+import hearts.defs.state.IOpponentCardStack;
 import hearts.defs.state.ITrick;
 import hearts.state.Card;
+import hearts.state.actions.ChatAction;
+import hearts.state.actions.gui.AddCardToTrickGUIAction;
 import hearts.state.exceptions.WrongCardValueException;
+import java.awt.Frame;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 
 /**
  *
@@ -31,20 +40,42 @@ import java.util.logging.Logger;
 public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     private CardPlaceHolder[] placeHolders = new CardPlaceHolder[13];
+    protected CardClickListener[] cardClickListeners =
+            new CardClickListener[13];
     protected IGUIState gui;
+    protected Mode mode = null;
+    protected String tableName = null;
+    protected JLabel[] playerLabels;
+    protected String[] playerNames = {null, null, null, null};
+    protected int[] playerTricks = {0, 0, 0, 0};
+    protected int[] playerPoints = {0, 0, 0, 0};
+    protected OpponentCardsStack[] cardsStacks;
 
     /** Creates new form gameTable */
     public GameTable() {
         initComponents();
-        for(int i = 0; i < placeHolders.length; ++i ) {
-            CardPlaceHolder tmp = new CardPlaceHolder();
-            placeHolders[i] = tmp;
-            cardsPanel.add(tmp);
+        for (int i = 0; i < placeHolders.length; ++i) {
+            CardPlaceHolder holder = new CardPlaceHolder();
+            // gui jest i tak null, więc null
+            CardClickListener listener = new CardClickListener(null, holder);
+
+            holder.addMouseListener(listener);
+            placeHolders[i] = holder;
+            cardClickListeners[i] = listener;
+            cardsPanel.add(holder);
         }
         // dodanie jednego placeholdera na koniec:
         cardsPanel.add(new CardPlaceHolder());
 
-        uglyTest();
+        JLabel[] playerLabelsTMP = {userLabel, opponentLabel1,
+            opponentLabel2, opponentLabel3};
+        playerLabels = playerLabelsTMP;
+
+        OpponentCardsStack[] cardsStacksTMP = {null, opponentCardsStack1,
+            opponentCardsStack2, opponentCardsStack3};
+        cardsStacks = cardsStacksTMP;
+
+        //uglyTest();
     }
 
     /** This method is called from within the constructor to
@@ -78,7 +109,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentCardsStack2.setLayout(opponentCardsStack2Layout);
         opponentCardsStack2Layout.setHorizontalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 448, Short.MAX_VALUE)
+            .addGap(0, 391, Short.MAX_VALUE)
         );
         opponentCardsStack2Layout.setVerticalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,8 +207,14 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         gridBagConstraints.insets = new java.awt.Insets(10, 2, 2, 2);
         add(userLabel, gridBagConstraints);
 
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 27));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 87));
+
         chatArea.setColumns(10);
+        chatArea.setEditable(false);
+        chatArea.setLineWrap(true);
         chatArea.setRows(5);
+        chatArea.setTabSize(4);
         jScrollPane1.setViewportView(chatArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -189,6 +226,11 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
         chatInput.setMinimumSize(new java.awt.Dimension(140, 29));
         chatInput.setPreferredSize(new java.awt.Dimension(120, 29));
+        chatInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                chatInputKeyTyped(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
@@ -196,7 +238,18 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         add(chatInput, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-
+    private void chatInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chatInputKeyTyped
+        if (evt.getKeyChar() == '\n') {
+            if (gui.getSocket() == null) {
+                System.out.println("Nie ma socketa!");
+                return;
+            }
+            gui.getSocket().actionReceived(
+                    new ChatAction(GameConstants.ALL_USERS,
+                    chatInput.getText()));
+            chatInput.setText("");
+        }
+    }//GEN-LAST:event_chatInputKeyTyped
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardsPanel;
     private javax.swing.JTextArea chatArea;
@@ -220,34 +273,50 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         int i = 0;
 
         // ustawianie kart
-        for(; i < cards.length && i < placeHolders.length; ++i) {
+        for (; i < cards.length && i < placeHolders.length; ++i) {
             placeHolders[i].setCardIcon(new CardIcon(cards[i]));
         }
         // kasowanie ew. pozostałych kart
-        for(; i < placeHolders.length; ++i) {
+        for (; i < placeHolders.length; ++i) {
             placeHolders[i].setCardIcon(null);
         }
     }
 
     public void setFlipped(boolean flipped) {
-        for(CardPlaceHolder placeHolder : placeHolders) {
+        for (CardPlaceHolder placeHolder : placeHolders) {
             placeHolder.setFlipped(flipped);
         }
     }
 
-    private void uglyTest() {
-        ICard[] cards = new ICard[13];
-        for(int i = 0; i < 13; ++i) {
-            try {
-                cards[i] = new Card(CardColor.HEART, i + 2);
-            } catch (WrongCardValueException ex) {
-                Logger.getLogger(GameTable.class.getName()).log(Level.SEVERE, null, ex);
+    public void uglyTest() {
+        try {
+            ICard[] cards = new ICard[13];
+            for (int i = 0; i < 13; ++i) {
+                try {
+                    cards[i] = new Card(CardColor.HEART, i + 2);
+                } catch (WrongCardValueException ex) {
+                    Logger.getLogger(GameTable.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            this.setCards(cards);
+            this.setFlipped(false);
+            this.trick.setUserId(2);
+            this.trick.setActiveUser(2);
+
+            AddCardToTrickGUIAction acttguia = new AddCardToTrickGUIAction(0);
+            acttguia.setCard(new Card(CardColor.HEART, 10));
+            this.gui.actionReceived(acttguia);
+            this.setActiveUser(3);
+
+            AddCardToTrickGUIAction act2 = new AddCardToTrickGUIAction(0);
+            act2.setCard(new Card(CardColor.DIAMOND, 14));
+            this.gui.actionReceived(act2);
+            this.setActiveUser(0);
+
+        } catch (WrongCardValueException ex) {
+            Logger.getLogger(GameTable.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.setCards(cards);
-        this.setFlipped(false);
-        this.trick.setUserId(2);
-        this.trick.setActiveUser(3);
+
     }
 
     public ITrick getTrick() {
@@ -260,6 +329,111 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     public void setGui(IGUIState gui) {
         this.gui = gui;
+        for (CardClickListener listener : cardClickListeners) {
+            listener.setGui(gui);
+        }
     }
+
+    public void setUser(int place, String name) {
+        playerNames[place] = name;
+        refreshPlayerLabel(place);
+    }
+
+    private void refreshPlayerLabel(int id) {
+        playerLabels[trick.getPlace(id)].setText(
+                playerNames[id] + ", " + playerTricks[id]);
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
+    public Mode getMode() {
+        return mode;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String name) {
+        this.tableName = name;
+    }
+
+    public void setLocalUserId(int id) {
+        // TODO gdzies jeszcze ustawic?
+        trick.setUserId(id);
+    }
+
+    public int getLocalUserId() {
+        return trick.getUserId();
+    }
+
+    public void appendToChatArea(String line) {
+        chatArea.append('\n' + line);
+        chatArea.setCaretPosition(chatArea.getText().length() - 1);
+    }
+
+    public void setActiveUser(int id) {
+        this.trick.setActiveUser(id);
+    }
+
+    public int getActiveUser() {
+        return this.trick.getActiveUser();
+    }
+
+    public IOpponentCardStack getCardsStack(int id) {
+        return cardsStacks[trick.getPlace(id)];
+    }
+
+    public void withdrawCard(ICard c) throws GameStateException {
+        boolean success = false;
+        for (CardPlaceHolder holder : placeHolders) {
+            CardIcon ci = holder.getCardIcon();
+            if (ci != null && ci.equals(c)) {
+                holder.setCardIcon(null);
+                success = true;
+                break;
+            }
+        }
+        if (!success) {
+            throw new GameStateException("Cant find " + c + " in user stack");
+        }
+    }
+
+    public void showChooseTrumpDialog() {
+        ChooseTrumpDialog dialog =
+                new ChooseTrumpDialog((Frame) gui, true);
+        dialog.setGui(gui);
+        dialog.setVisible(true);
+    }
+
+    public void setUserPoints(int id, int points) {
+        playerPoints[id] = points;
+        refreshPlayerLabel(id);
+    }
+
+    public void setUserTricks(int id, int tricks) {
+        playerTricks[id] = tricks;
+        refreshPlayerLabel(id);
+    }
+
+    public void increaseUserTricks(int id) {
+        playerTricks[id]++;
+        refreshPlayerLabel(id);
+    }
+
+    public void reset() {
+        clearTrick();
+        setTableName(null);
+        for(int i = 0; i < 4; ++i) {
+            playerNames[i] = "";
+            playerPoints[i] = 0;
+            playerTricks[i] = 0;
+            refreshPlayerLabel(i);
+        }
+        // TODO wiecej fajnego stuffu
+    }
+
 
 }

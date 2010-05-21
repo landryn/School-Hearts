@@ -7,13 +7,20 @@ package hearts.server;
 import hearts.defs.actions.AAction;
 import hearts.defs.actions.AChatAction;
 import hearts.defs.actions.IActionNotifier;
+import hearts.defs.judge.IJudge;
 import hearts.defs.protocol.IUserSocket;
 import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.IServerStateGuard;
+import hearts.maintenance.answers.JoinTableAnswer;
+import hearts.maintenance.answers.TableUpdate;
 import hearts.state.DumbState;
-import hearts.state.NewUserAtTableAction;
+import hearts.state.GameState;
+import hearts.state.Judge;
+import hearts.state.UserState;
+import hearts.state.actions.FirstModeAction;
+import hearts.state.exceptions.ExceptionGUIAction;
 
 /**
  * Klasa implementująca StateGuarda
@@ -22,11 +29,16 @@ import hearts.state.NewUserAtTableAction;
 public class StateGuard implements IServerStateGuard {
 
     IGameState chatState = new DumbState();
-    IGameState gameState = null;
+    IGameState gameState = new GameState();
+    IJudge judge = new Judge();
     IUserSocket[] users = new IUserSocket[4];
     int userCount = 0;
+    String name = "Dupa słonia.";
 
-    public StateGuard() {        
+    Server server;
+
+    public StateGuard(Server server) {
+        this.server = server;
     }
 
     /**
@@ -45,28 +57,35 @@ public class StateGuard implements IServerStateGuard {
         }
         users[userCount] = socket;
         socket.setId(userCount);
-        notifyAboutNewUser(userCount);
+        socket.actionReceived(new JoinTableAnswer(name, Boolean.TRUE, userCount));
+        notifyAboutTableChange();
         socket.addActionListener(this);
         userCount++;
+        
+        gameState.addUser(new UserState(socket.getId(), socket.getName()));
+        if (userCount == 4) {
+            //gameState = judge.judge(gameState, new FirstModeAction(GameConstants.SERVER));
+            //sendQueue(gameState);
+            actionReceived(new FirstModeAction(GameConstants.SERVER));
+        }
+        
         return userCount - 1;
     }
 
     /**
-     * Powiadamia użytkowników o przybyciu nowego.
-     * Podłączonemu użytkownikowi wysyła powiadomienia o wszystkich użytkownikach przy stole.
-     * Robi to przez chatState ktory jest tylko kolejką do wysyłania powiadomień.
      * @param id
      */
-    private void notifyAboutNewUser(int id) {
-        AAction action = new NewUserAtTableAction(GameConstants.ALL_USERS, users[id].getName(), id);
-        chatState.addAction(action);
-
-        for (int i = 0; i < userCount; i++) {
-            if (i != id) {
-                chatState.addAction(new NewUserAtTableAction(id, users[i].getName(), users[i].getId()));
-            }
+    private void notifyAboutTableChange() {
+        TableUpdate update = new TableUpdate(name, users[0].getName());
+        for (int i = 0; i < users.length; i++) {
+            IUserSocket iUserSocket = users[i];
+            if(iUserSocket!=null) {
+                update.setPlayer(i, iUserSocket.getName());            
+            } else {
+                update.setPlayer(i, null);
+            }            
         }
-        sendQueue(chatState);
+        server.notifyListeners(update);
     }
 
     /**
@@ -74,14 +93,21 @@ public class StateGuard implements IServerStateGuard {
      * @param state kolejka do opróżnienia
      */
     private void sendQueue(IGameState state) {
+        if (state == null) {
+            return;
+        }
+        
         AAction action = null;
         while ((action = state.nextAction()) != null) {
-            if (action.getReceiver() == GameConstants.ALL_USERS) {
+            int recv = action.getReceiver();
+            if (recv == GameConstants.ALL_USERS) {
                 for (int i = 0; i < userCount; i++) {
                     users[i].actionReceived(action);
                 }
+            } else if(recv == GameConstants.SERVER) {
+                actionReceived(action);
             } else {
-                users[action.getReceiver()].actionReceived(action);
+                users[recv].actionReceived(action);
             }
         }
     }
@@ -104,12 +130,24 @@ public class StateGuard implements IServerStateGuard {
     public void actionReceived(AAction a) {
         if(a instanceof AChatAction) {
             chatState.addAction(a);
+        } else {
+            try {
+                this.gameState = judge.judge(gameState, a);
+            } catch (GameStateException ex) {
+                ExceptionGUIAction reply = new ExceptionGUIAction(a.getSender(), ex);
+                users[a.getSender()].actionReceived(reply);
+            }
         }
         sendQueue(chatState);
-        //sendQueue(gameState);
+        sendQueue(gameState);
     }
 
     public void run() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public String getName() {
+        return name;
+    }
+
 }

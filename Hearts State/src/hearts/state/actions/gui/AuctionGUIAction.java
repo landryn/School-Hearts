@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hearts.state.actions.gui;
 
 import hearts.defs.actions.gui.AGUIAction;
@@ -15,7 +14,7 @@ import hearts.defs.state.IGUIState;
  * z jego ofertą. Aukcja kończy się w momęcie gdy, w licytacji zostanie jeden gracz.
  * @author Paweł Trynkiewicz
  */
-public class AuctionGUIAction extends AGUIAction{
+public class AuctionGUIAction extends AGUIAction {
 
     int lider;
     int commece;
@@ -53,10 +52,6 @@ public class AuctionGUIAction extends AGUIAction{
     public void setActiveUser(int activeUser) {
         this.activeUser = activeUser;
     }
-    
-
-    
-    
 
     public AuctionGUIAction(int receiver) {
         super(receiver);
@@ -64,10 +59,6 @@ public class AuctionGUIAction extends AGUIAction{
 
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
-
-
 }

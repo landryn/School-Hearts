@@ -25,29 +25,25 @@ public class GameState
     protected ITrick trick = new Trick(false);
     protected CardColor trump = null;
     protected IUserState[] userStates = {null, null, null, null};
-
-    protected int dealer=0;
-    
-    protected int activeUserId=0;
-    protected boolean dealEnd=false;
-    private int menyTricks=0;
+    protected int dealer = 0;
+    protected int activeUserId = 0;
+    protected boolean dealEnd = false;
+    private int menyTricks = 0;
     protected boolean auction = false;
     protected int actualCommence;
     protected Mode mode = Mode.WAITING_FOR_PLAYERS;
-
     protected AAuction autcionUser;
-
     /**
      * Lista typów rozgrywek. Na początku zbóje, póżniej odgrywki. A potem wzalerzności
      * od przebiegu gry. Gra kónczy się gdy, lista jest pusta.
      */
-    protected ArrayList<Mode> modeList=new ArrayList<Mode>();
+    protected ArrayList<Mode> modeList = new ArrayList<Mode>();
     /**
      * Lista graczy, którzy maja prawo wychodzić w danym rozdaniu. Silnie skojarzona z modeList.
      * Na poczatku kolejni gracze, potem w zalorzności od przebiegu rozgrywki, tzn. pojawienia się ślizgów i maksów.
      */
-    protected ArrayList<Integer> commence=new ArrayList<Integer>();
-  
+    protected ArrayList<Integer> commence = new ArrayList<Integer>();
+
     /**
      * Klonowanie głębokie stanu gry.
      * Wszystkie modyfikowalne obiekty są klonowane:
@@ -72,20 +68,22 @@ public class GameState
         // klonowanie wziątki:
         stateClone.trick = this.trick.clone();
         //klonowanie Mode
-        stateClone.modeList=new ArrayList(this.modeList);
+        stateClone.modeList = new ArrayList(this.modeList);
         //klonowanie wychdzących
-        stateClone.commence=new ArrayList<Integer>(this.commence);
+        stateClone.commence = new ArrayList<Integer>(this.commence);
 
         //klonowanie rozgrywek
 
         stateClone.clearMode();
         try {
-            
-            if(this.autcionUser!=null)  stateClone.autcionUser = this.autcionUser.clone();
+
+            if (this.autcionUser != null) {
+                stateClone.autcionUser = this.autcionUser.clone();
+            }
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(GameState.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for(int i=0; i< modeList.size(); i++) {
+        for (int i = 0; i < modeList.size(); i++) {
             stateClone.addMode(modeList.get(i));
         }
         return stateClone;
@@ -133,10 +131,10 @@ public class GameState
     @Override
     public synchronized Mode nextMode() throws IllegalModeChangeException {
         Mode modee = null;
-        if (modeList.size()==0) {
+        if (modeList.size() == 0) {
             modee = Mode.END;
         } else {
-            modee=modeList.remove(0);
+            modee = modeList.remove(0);
         }
         return modee;
     }
@@ -177,15 +175,19 @@ public class GameState
         trick = new Trick(last);
         trick.setFirst(GameConstants.NO_CARD_IN_TRIP);
     }
-    
+
     public Mode addUser(IUserState user) {
-        int i=0;
-        while(i<userStates.length && userStates[i]!=null) i++;
-        
-        if (i<userStates.length ) {
-            userStates[i]=user;
-            if(i==3) mode=Mode.BANDIT;
-            
+        int i = 0;
+        while (i < userStates.length && userStates[i] != null) {
+            i++;
+        }
+
+        if (i < userStates.length) {
+            userStates[i] = user;
+            if (i == 3) {
+                mode = Mode.BANDIT;
+            }
+
         }
         return mode;
 
@@ -196,33 +198,33 @@ public class GameState
     }
 
     public boolean dealEnds() {
-        return (menyTricks==13);
-       
+        return (menyTricks == 13);
+
     }
 
     public int getNumTrick() {
         return menyTricks;
     }
 
-    public void setNumTrick(int i){
-        this.menyTricks=i;
+    public void setNumTrick(int i) {
+        this.menyTricks = i;
     }
 
     public void setActiveUser(int user) {
-        this.activeUserId=user;
+        this.activeUserId = user;
     }
 
     public void setDealer(int dealer) {
-       this.dealer=dealer;
+        this.dealer = dealer;
     }
 
     public int nextDealer() {
-        dealer=(dealer+1)%4;
+        dealer = (dealer + 1) % 4;
         return dealer;
     }
 
     public int getDealer() {
-       return this.dealer;
+        return this.dealer;
     }
 
     public void addMode(Mode mode) {
@@ -230,17 +232,23 @@ public class GameState
     }
 
     public void clearMode() {
-       modeList=new ArrayList<Mode>();
+        modeList = new ArrayList<Mode>();
     }
 
     public void addCommence(int user) {
         commence.add(user);
-        System.out.println("size "+ commence.size());
+        System.out.println("size " + commence.size());
     }
 
     public int removeCommence() {
-       
-        actualCommence=commence.remove(0);
+        try {
+            if (commence.size() > 0) {
+                actualCommence = commence.remove(0);
+            }
+        } catch (IndexOutOfBoundsException ex) {
+            // TODO właściwa obsługa
+            ex.printStackTrace();
+        }
         return actualCommence;
     }
 
@@ -249,7 +257,7 @@ public class GameState
     }
 
     public void setAuction(AAuction auction) {
-        this.autcionUser=auction;
+        this.autcionUser = auction;
     }
 
     public AAuction getAuction() {
@@ -260,13 +268,14 @@ public class GameState
     /** haks 1
      * Fukcja zrobiona tylko do testów ustawia stan gry na początek licytacji niezaleznie od tego co się dzieje na stole
      */
-     public void haks1(){
-         this.autcionUser=new Auction(2);
-         this.dealEnd=true;
-         this.auction=true;
-         this.actualCommence=2;
-         this.menyTricks=13;
-         this.mode=GameState.Mode.WIN_BACK;      
+    public void haks1() {
+        this.autcionUser = new Auction(2);
+        this.dealEnd = true;
+        this.auction = true;
+        this.actualCommence = 2;
+        this.menyTricks = 13;
+        this.mode = GameState.Mode.WIN_BACK;
+
 
 
      }
@@ -275,4 +284,7 @@ public class GameState
          this.mode=mod;
      }
     
+
+    
+
 }
