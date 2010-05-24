@@ -91,7 +91,7 @@ public class FirstModeAction  extends AAction{
         //ustawiłem numer lewy
         clone.setNumTrick(0);
         //ustawiam akcje urzytkowników
-
+        clone.clearTrick(false);
         for(int i=0;i<tab.length;i++){
             tab[i]=new NewDealForUserGUIAction(i);
             tab[i].setSender(this.sender);

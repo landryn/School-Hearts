@@ -57,6 +57,7 @@ public class Judge implements hearts.defs.judge.IJudge {
      */
     public IGameState judge(IGameState state, AAction action) throws GameStateException {
         IGameState copyState = null;
+        AddCardToTrickAction aa = null;
 
         
 
@@ -65,22 +66,23 @@ public class Judge implements hearts.defs.judge.IJudge {
          */
         
         if (action instanceof  AddCardToTrickAction) {
-            if(state.isAuction()) throw new GameStateException("Auction is active");
+            if(state.isAuction()) throw new GameStateException("Licytacja ciągle trwa.");
             if (state.getMode() == state.getMode().WAITING_FOR_PLAYERS) {
                 throw new GameStateException("WAITING_FOR_PLAYERS");
             }
             if (state.getMode() == state.getMode().END) {
-                throw new GameStateException("End");
+                throw new GameStateException("Zakończono rozgrywkę.");
             }
 
             if (state.getActiveUser() != action.getSender()) {
-                throw new GameStateException("You can not put card in this moment");
+                throw new GameStateException("Musisz zaczekać na swój ruch.");
             }
             // jesli kotś już połorzył karte, i karta ma inny kolor niz wistjący
 
-            if(!state.getUserState(action.getSender()).haveThisCard(((AddCardToTrickAction)action).getCard()))
-
-                    throw new GameStateException("Error: You don't have this card!");
+            if(!state.getUserState(action.getSender()).haveThisCard(((AddCardToTrickAction)action).getCard())) {
+                     aa =  (AddCardToTrickAction)action;
+                    throw new GameStateException("Błąd: Nie masz "+aa.getCard().getValue()+" "+aa.getCard().getColor() + " w ręce.");
+            }
             
             if (state.getMode() == state.getMode().BANDIT) {
                 checkBanditRules(state, action);
@@ -92,20 +94,20 @@ public class Judge implements hearts.defs.judge.IJudge {
             } else if (state.getMode() == state.getMode().WIN_BACK) {
                 checkWinBackRules(state, action);
             } else {
-                throw new GameStateException("Unknown state");
+                throw new GameStateException("Zły stan gry.");
             }     
            
 
 
         }else if (action instanceof NextTripAction) {
-            if(state.isAuction()) throw new GameStateException("Auction is active");
+            if(state.isAuction()) throw new GameStateException("Licytacja ciągle trwa.");
             if (!state.trickEnds()) {
-                throw new GameStateException("Trick not end");
+                throw new GameStateException("Błąd: lewa nie została zakończona.");
             }
            
             ((NextTripAction) action).setWiner(this.findWiner(state));
 
-            if (state.getMode() == state.getMode().BANDIT && state.getNumTrick() >= 11) {
+            if (state.getMode() == state.getMode().BANDIT && state.getNumTrick() >= 10 && state.getNumTrick() < 12) {
                 ((NextTripAction) action).setLast(true);
             } else {
                 ((NextTripAction) action).setLast(false);
@@ -116,9 +118,9 @@ public class Judge implements hearts.defs.judge.IJudge {
 
 
         } else if (action instanceof NextModeAction) {
-            if(state.isAuction()) throw new GameStateException("Auction is active");
+            if(state.isAuction()) throw new GameStateException("Licytacja ciągle trwa.");
             if (!state.dealEnds()) {
-                throw new GameStateException("Deal not end");
+                throw new GameStateException("Błąd: Rozdanie nie zostało zakończone.");
             }
             /*Zrobione skreślić
              *
@@ -152,7 +154,7 @@ public class Judge implements hearts.defs.judge.IJudge {
              *
              */
             FirstModeAction act=(FirstModeAction)action;
-            if (act.getModes()%4!=0) throw new GameStateException("Wrong number of mode");
+            if (act.getModes()%4!=0) throw new GameStateException("Zła liczba modów.");
 
             /*Dodaje kart graczom
              */
@@ -173,27 +175,27 @@ public class Judge implements hearts.defs.judge.IJudge {
 
 
         } else if(action instanceof AuctionBeginAction) {
-            if(!state.isAuction()) throw new GameStateException("Auction is not active");
+            if(!state.isAuction()) throw new GameStateException("Licytacja nie została rozpoczęta.");
 
         } else if (action instanceof AuctionOfferAction) {
             
-            if(!state.isAuction()) throw new GameStateException("Auction is not active");
-            if(state.getAuction().getActivetUser()!=action.getSender()) throw new GameStateException("You can not do it");
+            if(!state.isAuction()) throw new GameStateException("Licytacja nie została rozpoczęta.");
+            if(state.getAuction().getActivetUser()!=action.getSender()) throw new GameStateException("Musisz zaczekać na swoja kolej.");
 
         } else if(action instanceof AuctionDecisionAction) {
 
-            if(!state.isAuction()) throw new GameStateException("Auction is not active");
+            if(!state.isAuction()) throw new GameStateException("Licytacja nie jest aktywna.");
             if(state.getActiveUser()!=action.getSender()|| (!state.getAuction().isEnd()))
-                throw new GameStateException("You can not take decision");
+                throw new GameStateException("To nie jest Twoja kolej.");
 
 
         }else if(action instanceof ChooseTrumpAction){
-            if(!state.isAuction()) throw new GameStateException("You can not change trump");
+            if(!state.isAuction()) throw new GameStateException("Nie możesz zmienić atutu.");
              if(state.getActiveUser()!=action.getSender()|| (!state.getAuction().isEnd()) || state.getMode()!=IGameState.Mode.WIN_BACK )
-                 throw new GameStateException("You are not active user");
+                 throw new GameStateException("To nie Twoja kolej.");
 
         }else {
-            throw new GameStateException("Unknown action");
+            throw new GameStateException("Błąd: nie znana akcja.");
         }
 
         /**
@@ -218,20 +220,20 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         ICard card=act.getCard();
         if(state.getNumTrick()==1&&card.getColor()==CardColor.HEART&&card.getValue()==ICard.KING)
-            throw new GameStateException("You can not put king heart in first trick");
+            throw new GameStateException("Nie możesz połorzyć króla kier w pierwszej lewie.");
 
         if(state.getTrick().getFirst()==GameConstants.NO_CARD_IN_TRIP) {
             if(card.getColor()==CardColor.HEART) {
                 IUserState user=state.getUserState(action.getSender());
                 if(user.userHaveCardInColor(CardColor.CLUB)||user.userHaveCardInColor(CardColor.DIAMOND) || user.userHaveCardInColor(CardColor.SPADE))
-                    throw new GameStateException("You can not put heart, you have card in other color");
+                    throw new GameStateException("Nie możesz wyjść w kiera, masz inne kolory.");
             } else return;
         } else {
             int first=state.getTrick().getFirst();
             CardColor firstColor=state.getTrick().getCards()[first].getColor();
             CardColor userColor=act.getCard().getColor();
             if (firstColor==userColor) return;
-            if(state.getUserState(action.getSender()).userHaveCardInColor(firstColor)) throw new GameStateException("You must put card in correct color");
+            if(state.getUserState(action.getSender()).userHaveCardInColor(firstColor)) throw new GameStateException("Musisz połorzyć kartę w kolorze wistującym.");
             
 
         }
@@ -276,7 +278,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         if(firstColor==act.getCard().getColor()) return;
         else {
             if(state.getUserState(sender).userHaveCardInColor(firstColor))
-                throw new GameStateException("You must put card in correct color");
+                throw new GameStateException("Musisz połorzyć kartę w kolorze wistującym: "+firstColor);
         }
     
         //najwyższa karta w lewie
@@ -290,7 +292,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             else {
                 if(!state.getUserState(sender).uHHigerCardIColor(higerCard)) return;
                 else {
-                    throw new GameStateException("You have card in trump");
+                    throw new GameStateException("Masz  atutu w ręce: "+trump);
                 }
             }
         }
@@ -332,7 +334,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             if(act.getCard().getValue()>higerCard.getValue())  return;
             else {
                 if(state.getUserState(sender).uHHigerCardIColor(higerCard))
-                    throw new GameStateException("You have higher card");
+                    throw new GameStateException("Przymus bicia, musisz połorzyć wyższą kartę.");
                 else return;
 
             }
@@ -340,7 +342,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
         }
         if(state.getUserState(sender).userHaveCardInColor(firstColor))
-            throw new GameStateException("You have card in "+firstColor);
+            throw new GameStateException("Masz kartę w kolorze: "+firstColor);
     }
 
     /**
@@ -427,18 +429,8 @@ public class Judge implements hearts.defs.judge.IJudge {
             raw.add(card);
         }
         Collections.shuffle(raw);
-        tab = raw.toArray(tab);
+        //tab = raw.toArray(tab);
 
-//        for (int i = 0; i < tab.length; i++) {
-//            int r = ran.nextInt(52);
-//            int q = 0;
-//            while ((q = ran.nextInt(52)) == r);
-//            tmp = tab[r];
-//            tab[r] = tab[q];
-//            tab[q] = tab[r];
-//
-//
-//        }//zamieszałem talię kart, cheja!!!
 
         return tab;
     }
@@ -461,6 +453,7 @@ public class Judge implements hearts.defs.judge.IJudge {
                 userPoints.points[i]=0;
                 IUserState ust=state.getUserState(i);
                 List<ITrick> list=ust.getTricks();
+                if (GameConstants.GET_LOGGER) Logger.getLogger(Judge.class.getName()).log(Level.INFO, "wziątki " + list.size() );
                 for(int k=0;k<list.size();k++){
                     //punkty za lewę
                     userPoints.points[i]-=2;
@@ -471,15 +464,21 @@ public class Judge implements hearts.defs.judge.IJudge {
                         if(cards[l].getValue()==Card.KING || cards[l].getValue()==Card.JACK) userPoints.points[i]-=3;
                         //punkty za dame
                           if(cards[l].getValue()==Card.QUEEN)  userPoints.points[i]-=5;
+                        //punkty za króla kier
+                        if (cards[l].getValue()==Card.KING && cards[l].getColor()==CardColor.HEART) userPoints.points[i]-=16;
                         //punkty za kiera
-                        if(cards[l].getColor().equals(CardColor.HEART))  userPoints.points[i]-=3;
+                        if(cards[l].getColor()==CardColor.HEART)  userPoints.points[i]-=2;
                         //punkty za ostatnią lewe
                         //opis w jest dośc nie jasny
-                        if (list.get(k).isLast()) userPoints.points[i]-=2*9;
+                        if (list.get(k).isLast()){
+                            if (GameConstants.GET_LOGGER) Logger.getLogger(Judge.class.getName()).log(Level.INFO, "Ostatnia wziątka" );
+                            userPoints.points[i]-=9;
+                        }
                     }
 
 
                 }
+                if (GameConstants.GET_LOGGER) Logger.getLogger(Judge.class.getName()).log(Level.INFO, "Punkty gracza " + userPoints.points[i] );
 
             }// gracze mają podliczone punkty
 
@@ -488,8 +487,7 @@ public class Judge implements hearts.defs.judge.IJudge {
                 if(userPoints.points[i]==0){
                     //dodaje rozbójnika
 
-                    userPoints.addMode(IGameState.Mode.REAVER,i);
-                   
+                    userPoints.addMode(IGameState.Mode.REAVER,i);               
               
                     zero++;
                 }
@@ -503,7 +501,7 @@ public class Judge implements hearts.defs.judge.IJudge {
                 }
             } else {
                 //jeśli każdy coś wziął to pętla się nie wykona zero=1 lub 2
-                for( int i=0;i<zero;i++){
+                for( int i=0;i<4;i++){
                     // zmieniamy punkty graczy
                     //- jeden gracz 0pkt – pozostali pkt ujemne x2
                     //- dwóch graczy 0pkt – pozostali pkt ujemne x3
