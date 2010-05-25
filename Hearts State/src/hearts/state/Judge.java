@@ -68,7 +68,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         if (action instanceof  AddCardToTrickAction) {
             if(state.isAuction()) throw new GameStateException("Licytacja ciągle trwa.");
             if (state.getMode() == state.getMode().WAITING_FOR_PLAYERS) {
-                throw new GameStateException("WAITING_FOR_PLAYERS");
+                throw new GameStateException("Oczekiwanie na graczy.");
             }
             if (state.getMode() == state.getMode().END) {
                 throw new GameStateException("Zakończono rozgrywkę.");
@@ -107,7 +107,7 @@ public class Judge implements hearts.defs.judge.IJudge {
            
             ((NextTripAction) action).setWiner(this.findWiner(state));
 
-            if (state.getMode() == state.getMode().BANDIT && state.getNumTrick() >= 10 && state.getNumTrick() < 12) {
+            if (state.getMode() == state.getMode().BANDIT && (state.getNumTrick() == 10 || state.getNumTrick() == 11)) {
                 ((NextTripAction) action).setLast(true);
             } else {
                 ((NextTripAction) action).setLast(false);
@@ -219,7 +219,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         AddCardToTrickAction act=(AddCardToTrickAction)action;
 
         ICard card=act.getCard();
-        if(state.getNumTrick()==1&&card.getColor()==CardColor.HEART&&card.getValue()==ICard.KING)
+        if(state.getNumTrick()==0&&card.getColor()==CardColor.HEART&&card.getValue()==ICard.KING)
             throw new GameStateException("Nie możesz połorzyć króla kier w pierwszej lewie.");
 
         if(state.getTrick().getFirst()==GameConstants.NO_CARD_IN_TRIP) {
@@ -429,7 +429,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             raw.add(card);
         }
         Collections.shuffle(raw);
-        //tab = raw.toArray(tab);
+        tab = raw.toArray(tab);
 
 
         return tab;
@@ -453,7 +453,7 @@ public class Judge implements hearts.defs.judge.IJudge {
                 userPoints.points[i]=0;
                 IUserState ust=state.getUserState(i);
                 List<ITrick> list=ust.getTricks();
-                if (GameConstants.GET_LOGGER) Logger.getLogger(Judge.class.getName()).log(Level.INFO, "wziątki " + list.size() );
+                //if (GameConstants.GET_LOGGER) Logger.getLogger(Judge.class.getName()).log(Level.INFO, "wziątki " + list.size() );
                 for(int k=0;k<list.size();k++){
                     //punkty za lewę
                     userPoints.points[i]-=2;
@@ -469,12 +469,13 @@ public class Judge implements hearts.defs.judge.IJudge {
                         //punkty za kiera
                         if(cards[l].getColor()==CardColor.HEART)  userPoints.points[i]-=2;
                         //punkty za ostatnią lewe
-                        //opis w jest dośc nie jasny
-                        if (list.get(k).isLast()){
-                            if (GameConstants.GET_LOGGER) Logger.getLogger(Judge.class.getName()).log(Level.INFO, "Ostatnia wziątka" );
+                        
+                        
+                    }
+                    if (list.get(k).isLast()){
+                            if (GameConstants.GET_LOGGER) Logger.getLogger(Judge.class.getName()).log(Level.INFO, "Ostatnia wziątka nr lewy "+k  );
                             userPoints.points[i]-=9;
                         }
-                    }
 
 
                 }

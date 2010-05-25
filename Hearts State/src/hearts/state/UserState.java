@@ -86,7 +86,7 @@ public class UserState implements  IUserState,Cloneable, Serializable {
 
             Card card=(Card) cardList.get(number);
             if(card.getColor()==c.getColor()&&card.getValue()==c.getValue()){
-                 if(GameConstants.GET_LOGGER) Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
+                // if(GameConstants.GET_LOGGER) Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
                 this.cardList.remove(number);
                 return;
             }
@@ -155,7 +155,7 @@ public class UserState implements  IUserState,Cloneable, Serializable {
 
             Card card=(Card) cardList.get(number);
             if(card.getColor()==c.getColor()&&card.getValue()==c.getValue()){
-                if(GameConstants.GET_LOGGER) Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
+              //  if(GameConstants.GET_LOGGER) Logger.getLogger(UserState.class.getName()).log(Level.INFO, "Szukałem karty:"+c.getColor()+" "+c.getValue()+" Znalazłem: " +card.getColor()+" "+card.getValue() );
                 break;
             }
             ++number;

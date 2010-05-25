@@ -63,7 +63,7 @@ public class NextTripAction extends AAction {
             }
         old.setActiveUser(winer);
         //koniec rozdania, dodaje akcję o nowym rozdaniu.
-       if(GameConstants.GET_LOGGER) Logger.getLogger(NextTripAction.class.getName()).log(Level.INFO, "Aktywny gracz: "+old.getActiveUser());
+        if(GameConstants.GET_LOGGER) Logger.getLogger(NextTripAction.class.getName()).log(Level.INFO, "Aktywny gracz: "+old.getActiveUser());
         if(old.dealEnds()) old.addAction(new NextModeAction(GameConstants.SERVER));
         return old;
     }

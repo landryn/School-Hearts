@@ -20,7 +20,7 @@ public class Trick implements ITrick, Serializable, Cloneable {
      * Określa ilość kart w lewie, już połozonych na stole.
      */
     private int manyCards=0;
-    protected boolean last;
+    protected boolean last=false;
     /**
      * Kto wyszedł jako pierwszy. Czyli jaki kolor jest wistujący. Nie mylić z atutem.
      */
