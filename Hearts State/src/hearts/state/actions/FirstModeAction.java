@@ -71,6 +71,7 @@ public class FirstModeAction  extends AAction{
 
         }
         int commence=1;
+        
         for(int i=0;i<modes;i++){
             clone.addMode(IGameState.Mode.BANDIT);
             clone.addCommence(commence%4);

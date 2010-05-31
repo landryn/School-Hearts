@@ -14,9 +14,11 @@ import hearts.client.hui.details.CardClickListener;
 import hearts.client.hui.details.CardIcon;
 import hearts.client.hui.details.CardPlaceHolder;
 import hearts.client.hui.details.OpponentCardsStack;
+import hearts.client.hui.details.PointsTableModel;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.GameConstants;
 import hearts.defs.state.GameStateException;
+import hearts.defs.state.IAuctionPanel;
 import hearts.defs.state.ICard;
 import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIPanel.Panel;
@@ -28,10 +30,14 @@ import hearts.state.Card;
 import hearts.state.actions.ChatAction;
 import hearts.state.actions.gui.AddCardToTrickGUIAction;
 import hearts.state.exceptions.WrongCardValueException;
-import java.awt.Frame;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -48,8 +54,9 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     protected JLabel[] playerLabels;
     protected String[] playerNames = {null, null, null, null};
     protected int[] playerTricks = {0, 0, 0, 0};
-    protected int[] playerPoints = {0, 0, 0, 0};
+    //protected int[] playerPoints = {0, 0, 0, 0};
     protected OpponentCardsStack[] cardsStacks;
+    protected PointsTableModel points = new PointsTableModel();
 
     /** Creates new form gameTable */
     public GameTable() {
@@ -66,6 +73,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         }
         // dodanie jednego placeholdera na koniec:
         cardsPanel.add(new CardPlaceHolder());
+
 
         JLabel[] playerLabelsTMP = {userLabel, opponentLabel1,
             opponentLabel2, opponentLabel3};
@@ -88,6 +96,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        auctionPanel = new hearts.client.hui.AuctionPanel();
         opponentCardsStack2 = new hearts.client.hui.details.OpponentCardsStack();
         opponentCardsStack1 = new hearts.client.hui.details.OpponentCardsStack();
         opponentCardsStack3 = new hearts.client.hui.details.OpponentCardsStack();
@@ -97,9 +106,11 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentLabel3 = new javax.swing.JLabel();
         opponentLabel1 = new javax.swing.JLabel();
         userLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        chatScrollPane = new javax.swing.JScrollPane();
         chatArea = new javax.swing.JTextArea();
         chatInput = new javax.swing.JTextField();
+        pointsScrollPane = new javax.swing.JScrollPane();
+        pointsTable = new javax.swing.JTable();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -109,7 +120,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         opponentCardsStack2.setLayout(opponentCardsStack2Layout);
         opponentCardsStack2Layout.setHorizontalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 391, Short.MAX_VALUE)
+            .addGap(0, 482, Short.MAX_VALUE)
         );
         opponentCardsStack2Layout.setVerticalGroup(
             opponentCardsStack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +145,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         );
         opponentCardsStack1Layout.setVerticalGroup(
             opponentCardsStack1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 232, Short.MAX_VALUE)
+            .addGap(0, 327, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -153,7 +164,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         );
         opponentCardsStack3Layout.setVerticalGroup(
             opponentCardsStack3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 232, Short.MAX_VALUE)
+            .addGap(0, 327, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -175,6 +186,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(trick, gridBagConstraints);
@@ -207,22 +219,22 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         gridBagConstraints.insets = new java.awt.Insets(10, 2, 2, 2);
         add(userLabel, gridBagConstraints);
 
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 27));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 87));
+        chatScrollPane.setMinimumSize(new java.awt.Dimension(200, 27));
+        chatScrollPane.setPreferredSize(new java.awt.Dimension(200, 87));
 
         chatArea.setColumns(10);
         chatArea.setEditable(false);
         chatArea.setLineWrap(true);
         chatArea.setRows(5);
         chatArea.setTabSize(4);
-        jScrollPane1.setViewportView(chatArea);
+        chatScrollPane.setViewportView(chatArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        add(jScrollPane1, gridBagConstraints);
+        add(chatScrollPane, gridBagConstraints);
 
         chatInput.setMinimumSize(new java.awt.Dimension(140, 29));
         chatInput.setPreferredSize(new java.awt.Dimension(120, 29));
@@ -236,6 +248,15 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(chatInput, gridBagConstraints);
+
+        pointsTable.setModel(points);
+        pointsScrollPane.setViewportView(pointsTable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        add(pointsScrollPane, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void chatInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chatInputKeyTyped
@@ -251,16 +272,19 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         }
     }//GEN-LAST:event_chatInputKeyTyped
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private hearts.client.hui.AuctionPanel auctionPanel;
     private javax.swing.JPanel cardsPanel;
     private javax.swing.JTextArea chatArea;
     private javax.swing.JTextField chatInput;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane chatScrollPane;
     private hearts.client.hui.details.OpponentCardsStack opponentCardsStack1;
     private hearts.client.hui.details.OpponentCardsStack opponentCardsStack2;
     private hearts.client.hui.details.OpponentCardsStack opponentCardsStack3;
     private javax.swing.JLabel opponentLabel1;
     private javax.swing.JLabel opponentLabel2;
     private javax.swing.JLabel opponentLabel3;
+    private javax.swing.JScrollPane pointsScrollPane;
+    private javax.swing.JTable pointsTable;
     private hearts.client.hui.details.GUITrick trick;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
@@ -332,11 +356,14 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         for (CardClickListener listener : cardClickListeners) {
             listener.setGui(gui);
         }
+
+        auctionPanel.setGui(gui);
     }
 
     public void setUser(int place, String name) {
         playerNames[place] = name;
         refreshPlayerLabel(place);
+        points.setColumnIdentifiers(playerNames);
     }
 
     private void refreshPlayerLabel(int id) {
@@ -403,13 +430,13 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
 
     public void showChooseTrumpDialog() {
         ChooseTrumpDialog dialog =
-                new ChooseTrumpDialog((Frame) gui, true);
+                new ChooseTrumpDialog((JFrame) gui, true);
         dialog.setGui(gui);
         dialog.setVisible(true);
     }
 
     public void setUserPoints(int id, int points) {
-        playerPoints[id] = points;
+        //playerPoints[id] = points;
         refreshPlayerLabel(id);
     }
 
@@ -426,13 +453,51 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     public void reset() {
         clearTrick();
         setTableName(null);
-        for(int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) {
             playerNames[i] = "";
-            playerPoints[i] = 0;
+            //playerPoints[i] = 0;
             playerTricks[i] = 0;
             refreshPlayerLabel(i);
         }
         // TODO wiecej fajnego stuffu
+    }
+
+    /**
+     * Pokazuje panel aukcji, gdy show, badz panel wziatki gdy ~show.
+     * @param show
+     */
+    public void showAuction(boolean show) {
+        boolean trickVisible = false;
+        boolean auctionVisible = false;
+        for (Component c : this.getComponents()) {
+            if (c == trick) {
+                trickVisible = true;
+            } else if (c == auctionPanel) {
+                auctionVisible = true;
+            }
+        }
+
+        invalidate();
+        if (show && trickVisible) {
+            GridBagConstraints constraints = ((GridBagLayout) this.getLayout()).getConstraints(trick);
+            this.remove(trick);
+            this.add(auctionPanel, constraints);
+        } else if (auctionVisible) {
+            GridBagConstraints constraints = ((GridBagLayout) this.getLayout()).getConstraints(auctionPanel);
+            this.remove(auctionPanel);
+            this.add(trick, constraints);
+        }
+        
+        SwingUtilities.invokeLater(new Runnable() {
+
+            public void run() {
+                repaint();
+            }
+        });
+    }
+
+    public IAuctionPanel getAuctionPanel() {
+        return auctionPanel;
     }
 
 

@@ -6,6 +6,8 @@ package hearts.state.actions.gui;
 
 import hearts.defs.actions.gui.AGUIAction;
 import hearts.defs.state.GUIStateException;
+import hearts.defs.state.IAuctionPanel;
+import hearts.defs.state.IGUIGameTable;
 import hearts.defs.state.IGUIState;
 
 /**
@@ -59,6 +61,9 @@ public class AuctionGUIAction extends AGUIAction {
 
     @Override
     public void perform(IGUIState gui) throws GUIStateException {
-//        throw new UnsupportedOperationException("Not supported yet.");
+        IGUIGameTable table = gui.getGameTable();
+        IAuctionPanel auction = table.getAuctionPanel();
+        auction.setUserBid(lider, quotion);
+        table.setActiveUser(activeUser);
     }
 }

@@ -77,7 +77,25 @@ public interface IGUIGameTable extends IGUIPanel {
      */
     public void withdrawCard(ICard c) throws GameStateException;
 
+    /**
+     * Pokaż dialog wyboru atutu
+     */
     public void showChooseTrumpDialog();
 
+/**
+ * resetuj stół
+ */
     public void reset();
+
+    /**
+     * Pokaż panel do aukcji, jeśli true, pokaż wziątkę jeśli false.
+     * @param show
+     */
+    public void showAuction(boolean show);
+
+    /**
+     * Zwraca panel aukcji
+     * @return
+     */
+    IAuctionPanel getAuctionPanel();
 }

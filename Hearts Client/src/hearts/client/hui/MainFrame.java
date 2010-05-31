@@ -70,6 +70,7 @@ public class MainFrame
         showDeck = new javax.swing.JMenuItem();
         runTest1Item = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         gameTable.setGui(this);
 
@@ -118,6 +119,14 @@ public class MainFrame
         });
         helpMenu.add(jMenuItem2);
 
+        jMenuItem3.setText("Pokaz aukcje");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        helpMenu.add(jMenuItem3);
+
         mainMenuBar.add(helpMenu);
 
         setJMenuBar(mainMenuBar);
@@ -136,6 +145,10 @@ public class MainFrame
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         new ChooseTrumpDialog(this, true).setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        gameTable.showAuction(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,6 +188,7 @@ public class MainFrame
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JSeparator jSeparator1;
     private hearts.client.hui.LoginPanel loginPanel;
     private javax.swing.JMenuBar mainMenuBar;

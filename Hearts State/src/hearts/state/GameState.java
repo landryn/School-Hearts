@@ -136,6 +136,11 @@ public class GameState
         } else {
             modee = modeList.remove(0);
         }
+        
+        // TODO: to dodal szymon w dobrej wierze:
+        //mode = modee;
+        // koniec dodatku
+        
         return modee;
     }
 

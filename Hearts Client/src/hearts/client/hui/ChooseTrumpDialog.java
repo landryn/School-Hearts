@@ -14,6 +14,7 @@ import hearts.defs.state.CardColor;
 import hearts.defs.state.GameConstants;
 import hearts.defs.state.IGUIState;
 import hearts.state.actions.ChooseTrumpAction;
+import java.awt.Color;
 import java.util.Hashtable;
 import javax.swing.JButton;
 
@@ -70,6 +71,8 @@ public class ChooseTrumpDialog extends javax.swing.JDialog {
         setMinimumSize(new java.awt.Dimension(300, 150));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        heartsButton.setFont(heartsButton.getFont().deriveFont(heartsButton.getFont().getStyle() | java.awt.Font.BOLD, 40));
+        heartsButton.setForeground(new java.awt.Color(168, 0, 0));
         heartsButton.setText("♥");
         heartsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,6 +87,8 @@ public class ChooseTrumpDialog extends javax.swing.JDialog {
         gridBagConstraints.weighty = 0.4;
         getContentPane().add(heartsButton, gridBagConstraints);
 
+        spadeButton.setFont(spadeButton.getFont().deriveFont(spadeButton.getFont().getStyle() | java.awt.Font.BOLD, 40));
+        spadeButton.setForeground(Color.black);
         spadeButton.setText("♠");
         spadeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,6 +103,8 @@ public class ChooseTrumpDialog extends javax.swing.JDialog {
         gridBagConstraints.weighty = 0.4;
         getContentPane().add(spadeButton, gridBagConstraints);
 
+        diamondButton.setFont(diamondButton.getFont().deriveFont(diamondButton.getFont().getStyle() | java.awt.Font.BOLD, 40));
+        diamondButton.setForeground(new java.awt.Color(168, 0, 0));
         diamondButton.setText("♦");
         diamondButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +119,8 @@ public class ChooseTrumpDialog extends javax.swing.JDialog {
         gridBagConstraints.weighty = 0.4;
         getContentPane().add(diamondButton, gridBagConstraints);
 
+        clubButton.setFont(clubButton.getFont().deriveFont(clubButton.getFont().getStyle() | java.awt.Font.BOLD, 40));
+        clubButton.setForeground(Color.black);
         clubButton.setText("♣");
         clubButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -88,7 +88,6 @@ public class NewDealForUserGUIAction extends AGUIAction {
         /* TODO: nieuzyte dane:
          * dealer
          * listpoints
-         * auction
          */
         table.setCards(cards);
         for(int id = 0; id < 4; ++id) {
@@ -100,6 +99,7 @@ public class NewDealForUserGUIAction extends AGUIAction {
                 }
             }
         }
+        table.showAuction(auction);
         table.setFlipped(false);
         table.setMode(mode);
         table.setActiveUser(activeUser);
