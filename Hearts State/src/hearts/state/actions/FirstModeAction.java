@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class FirstModeAction  extends AAction{
     private ICard [][]cards=new ICard[4][];
     //ilość zbójów i odgrywek w grze
-    private int modes;
+    private int modes=4;
 
     public int getModes() {
         return modes;
@@ -92,7 +92,7 @@ public class FirstModeAction  extends AAction{
         //ustawiłem numer lewy
         clone.setNumTrick(0);
         //ustawiam akcje urzytkowników
-
+        clone.clearTrick(false);
         for(int i=0;i<tab.length;i++){
             tab[i]=new NewDealForUserGUIAction(i);
             tab[i].setSender(this.sender);

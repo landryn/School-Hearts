@@ -49,22 +49,22 @@ public class NextTripAction extends AAction {
     public IGameState perform(IGameState old) throws GameStateException {
        
        
-       old.getUserState(winer).addTrick(old.getTrick());
-       old.clearTrick(last);
+       old.getUserState(getWiner()).addTrick(old.getTrick());
+       old.clearTrick(isLast());
        old.setNumTrick(old.getNumTrick()+1) ;
        
       
        NextTripGUIAction ac=null;
        for (int i = 0; i < 4; i++) {
                 ac = new NextTripGUIAction(i);
-                ac.setWiner(winer);
+                ac.setWiner(getWiner());
                 ac.setSender(this.getSender());
                 old.addAction(ac);
             }
         old.setActiveUser(winer);
         //koniec rozdania, dodaje akcję o nowym rozdaniu.
-       if(GameConstants.GET_LOGGER) Logger.getLogger(NextTripAction.class.getName()).log(Level.INFO, "Aktywny gracz: "+old.getActiveUser());
-        if(old.getNumTrick()==13) old.addAction(new NextModeAction(GameConstants.SERVER));
+        if(GameConstants.GET_LOGGER) Logger.getLogger(NextTripAction.class.getName()).log(Level.INFO, "Aktywny gracz: "+old.getActiveUser());
+        if(old.dealEnds()) old.addAction(new NextModeAction(GameConstants.SERVER));
         return old;
     }
 

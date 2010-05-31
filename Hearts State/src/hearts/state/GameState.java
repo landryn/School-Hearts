@@ -282,5 +282,14 @@ public class GameState
         this.mode = GameState.Mode.WIN_BACK;
 
 
-    }
+
+     }
+
+     public void haks2(Mode mod){
+         this.mode=mod;
+     }
+    
+
+    
+
 }

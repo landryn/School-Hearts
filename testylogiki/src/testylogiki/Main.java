@@ -8,6 +8,7 @@ import com.sun.xml.internal.ws.api.pipe.NextAction;
 import hearts.defs.actions.AAction;
 import hearts.defs.state.CardColor;
 import hearts.defs.state.GameStateException;
+import hearts.defs.state.IGameState.Mode;
 import hearts.state.Card;
 import hearts.state.UserState;
 import hearts.state.GameState;
@@ -34,7 +35,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws WrongCardValueException {
+    public static void main(String[] args) throws WrongCardValueException, GameStateException {
         GameState g = new GameState();
         System.out.println(g.getMode());
         Judge j = new Judge();
@@ -46,13 +47,27 @@ public class Main {
 
         FirstModeAction kkkkkk = new FirstModeAction(1);
         kkkkkk.setModes(4);
+
         try {
             g = (GameState) j.judge(g, kkkkkk);
         } catch (GameStateException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+        g.clearMode();
+        g.haks2(Mode.REAVER);
+  
+        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Typ rozgrywki "+g.getMode());
+        try {
+            g.setAuction(false);
+        } catch (GameStateException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        for (int i = 2; i <= 14; i++) {
+        g.setTrump(CardColor.SPADE);
+        
+
+        for (int i = 2; i <= 14; i++)
+        {
             AddCardToTrickAction dodajKarte = null;
             dodajKarte = new AddCardToTrickAction(1);
 
@@ -84,6 +99,9 @@ public class Main {
             karta = new Card(CardColor.SPADE, i);
             dodajKarte.setCard(karta);
             dodajKarte.setSender(3);
+
+
+
             try {
                 g = (GameState) j.judge(g, dodajKarte);
             } catch (GameStateException ex) {

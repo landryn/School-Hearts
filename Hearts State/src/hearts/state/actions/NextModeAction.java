@@ -91,7 +91,6 @@ public class NextModeAction extends AAction {
         //nowy wychodzący do niego bedzie należała decyzja co dalej
         old.setActiveUser(old.removeCommence());
 
-
         for (int i = 0; i < 4; i++) {
             tab[i] = new NewDealForUserGUIAction(i);
             tab[i].setCards(cards[i]);
