@@ -4,6 +4,8 @@
  */
 package hearts.defs.state;
 
+import java.util.List;
+
 /**
  * Stan stołu gui
  * @author szymon
@@ -41,7 +43,11 @@ public interface IGUIGameTable extends IGUIPanel {
      */
     public void setUser(int place, String name);
 
-    public void setUserPoints(int id, int points);
+    /**
+     * Ustaw tablicę punktów
+     * @param points
+     */
+    public void setPoints(List<Integer>[] points);
 
     public void setUserTricks(int id, int tricks);
 

@@ -12,6 +12,7 @@ import hearts.defs.state.IGUIState;
 import hearts.defs.state.IGameState;
 import hearts.defs.state.IGameState.Mode;
 import hearts.defs.state.WrongCardsCountInOpponentStackException;
+import java.lang.Integer;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ public class NewDealForUserGUIAction extends AGUIAction {
 
     private ICard []cards=null;
     //private List<Integer> listPoints=null;
-    private List<Integer> listPoints[]=null;
+    private List<Integer> listPoints[]= new List[4];
     private IGameState.Mode mode;
     private int dealer;
     private int activeUser;
@@ -110,5 +111,6 @@ public class NewDealForUserGUIAction extends AGUIAction {
         table.setFlipped(false);
         table.setMode(mode);
         table.setActiveUser(activeUser);
+        table.setPoints(listPoints);
     }
 }

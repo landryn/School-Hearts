@@ -81,9 +81,8 @@ public class Judge implements hearts.defs.judge.IJudge {
                 throw new GameStateException("WAITING_FOR_PLAYERS");
             }
             if (state.getMode() == state.getMode().END) {
-                throw new GameStateException("End");
+                throw new GameStateException("Koniec gry");
             }
-
 
             if (state.getActiveUser() != action.getSender() || state.isAuction()) {
                 throw new GameStateException("Nie mozna polozyc tej karty");
@@ -107,13 +106,7 @@ public class Judge implements hearts.defs.judge.IJudge {
 
                 throw new GameStateException("Nieznany blad");
             }
-
-
-
-
-
-        }
-        if (action instanceof NextTripAction) {
+        } else if (action instanceof NextTripAction) {
             if (state.isAuction()) {
                 throw new GameStateException("Trwa aukcja");
             }
@@ -130,8 +123,7 @@ public class Judge implements hearts.defs.judge.IJudge {
             }
 
             ((NextTripAction) action).setWiner(this.findWiner(state));
-        }
-        if (action instanceof NextModeAction) {
+        } else if (action instanceof NextModeAction) {
             if (state.isAuction()) {
                 throw new GameStateException("Trwa aukcja");
             }
@@ -488,7 +480,7 @@ public class Judge implements hearts.defs.judge.IJudge {
         ICard tmp;
 
         List<ICard> raw = new ArrayList<ICard>(52);
-        for(ICard card : tab) {
+        for (ICard card : tab) {
             raw.add(card);
         }
         Collections.shuffle(raw);

@@ -20,4 +20,10 @@ public class PointsTableModel extends DefaultTableModel{
     public boolean isCellEditable(int row, int column) {
         return false;
     }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return Integer.class;
+    }
+
 }

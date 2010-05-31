@@ -33,6 +33,7 @@ import hearts.state.exceptions.WrongCardValueException;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -435,9 +436,15 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
         dialog.setVisible(true);
     }
 
-    public void setUserPoints(int id, int points) {
-        //playerPoints[id] = points;
-        refreshPlayerLabel(id);
+    public void setPoints(List<Integer>[] points) {
+        int lastRowNum = points[0].size() - 1;
+        if (lastRowNum >= 0) {
+            Integer[] tmp = new Integer[4];
+            for(int i = 0; i < points.length; ++i) {
+                tmp[i] = points[i].get(lastRowNum);
+            }
+            this.points.insertRow(lastRowNum, points);
+        }
     }
 
     public void setUserTricks(int id, int tricks) {
@@ -487,7 +494,7 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
             this.remove(auctionPanel);
             this.add(trick, constraints);
         }
-        
+
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
@@ -499,6 +506,4 @@ public class GameTable extends javax.swing.JPanel implements IGUIGameTable {
     public IAuctionPanel getAuctionPanel() {
         return auctionPanel;
     }
-
-
 }
