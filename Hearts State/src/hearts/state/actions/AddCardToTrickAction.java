@@ -20,7 +20,7 @@ import hearts.state.actions.gui.AddCardToTrickGUIAction;
 public class AddCardToTrickAction  extends  AAction{
 
     protected ICard card=null;
-
+    protected int userId=0;
 
     public AddCardToTrickAction(int receiver) {
         super(receiver);
@@ -34,7 +34,13 @@ public class AddCardToTrickAction  extends  AAction{
         this.card = card;
     }
 
+    public void setUserId(int id) {
+        this.userId=id;
+    }
 
+    public int getUserId() {
+        return this.userId;
+    }
 
     /**
      * Funkcja dodaje kartę do lewy, pocztym do stanu gry dodaje odpowiednie komunikaty.
@@ -59,6 +65,7 @@ public class AddCardToTrickAction  extends  AAction{
                 ac = new AddCardToTrickGUIAction(i);
                 ac.setCard(this.getCard());
                 ac.setSender(this.getSender());
+                ac.setUserId(this.getSender());
                 old.addAction(ac);
             }
        if(old.getTrick().ends()) old.addAction(new NextTripAction(GameConstants.SERVER));

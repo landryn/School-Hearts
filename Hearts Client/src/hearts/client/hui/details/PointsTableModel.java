@@ -20,9 +20,4 @@ public class PointsTableModel extends DefaultTableModel{
     public boolean isCellEditable(int row, int column) {
         return false;
     }
-
-    public void setUserName(int id, String name) {
-
-    }
-
 }

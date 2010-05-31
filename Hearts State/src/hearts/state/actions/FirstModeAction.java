@@ -99,7 +99,10 @@ public class FirstModeAction  extends AAction{
             //dodaje karty
             tab[i].setCards(cards[i]);
             //dodaje punkty do tali gracza
-            tab[i].setListPoints(new ArrayList(clone.getUserState(i).getPointsList()));
+            //tab[i].setListPoints(new ArrayList(clone.getUserState(i).getPointsList()));
+            for (int j = 0; j < tab.length; j++) {
+                tab[i].setListPointsAt(new ArrayList(clone.getUserState(j).getPointsList()), j);
+            }
             tab[i].setMode(clone.getMode());
             tab[i].setDealer(clone.getDealer());
             tab[i].setActiveUser(clone.getActiveUser());

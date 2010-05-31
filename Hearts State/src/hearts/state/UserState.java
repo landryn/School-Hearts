@@ -130,17 +130,14 @@ public class UserState implements  IUserState,Cloneable, Serializable {
         this.cardList=new Vector();
     }
 
-    public boolean userHaveCardInColor(CardColor color) {
-       boolean ok=false;
-
+    public boolean userHaveCardInColor(CardColor color) {      
        for(int i=0;i<cardList.size();i++){
            if (cardList.get(i).getColor().equals(color)) {
-               ok=true;
-               break;
+               //ok=true;
+               return true;               
            }
        }
-
-       return ok;
+        return false;       
     }
 
     public void clearPoints() {

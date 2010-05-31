@@ -24,7 +24,8 @@ public class AddCardToTrickGUIAction extends AGUIAction {
     public AddCardToTrickGUIAction(int receiver) {
         super(receiver);
     }
-    protected ICard card = null;
+    protected ICard card=null;
+    protected int userId=0;
 
     public ICard getCard() {
         return card;
@@ -32,6 +33,14 @@ public class AddCardToTrickGUIAction extends AGUIAction {
 
     public void setCard(ICard card) {
         this.card = card;
+    }
+
+    public void setUserId(int id) {
+        this.userId=id;
+    }
+
+    public int getUserId() {
+        return this.userId;
     }
 
     @Override
