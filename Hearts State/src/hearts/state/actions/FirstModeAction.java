@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class FirstModeAction  extends AAction{
     private ICard [][]cards=new ICard[4][];
     //ilość zbójów i odgrywek w grze
-    private int modes=4;
+    private int modes=1;
 
     public int getModes() {
         return modes;
@@ -72,14 +72,15 @@ public class FirstModeAction  extends AAction{
         }
         int commence=1;
         
+       
         for(int i=0;i<modes;i++){
-            clone.addMode(IGameState.Mode.BANDIT);
+            clone.addMode(IGameState.Mode.REAVER);
             clone.addCommence(commence%4);
             ++commence;
 
         }
-        for(int i=0;i<modes;i++){
-            clone.addMode(IGameState.Mode.REAVER);
+         for(int i=0;i<modes;i++){
+            clone.addMode(IGameState.Mode.BANDIT);
             clone.addCommence(commence%4);
             ++commence;
 
@@ -93,6 +94,13 @@ public class FirstModeAction  extends AAction{
         clone.setNumTrick(0);
         //ustawiam akcje urzytkowników
         clone.clearTrick(false);
+
+        if (clone.nextMode().equals(IGameState.Mode.REAVER) || clone.getMode().equals(IGameState.Mode.WAITING_FOR_PLAYERS)) {
+            clone.setAuction(true);
+        } else {
+            clone.setAuction(false);
+        }
+
         for(int i=0;i<tab.length;i++){
             tab[i]=new NewDealForUserGUIAction(i);
             tab[i].setSender(this.sender);
@@ -109,8 +117,12 @@ public class FirstModeAction  extends AAction{
             //dodanie akcji do wysłania
             clone.addAction(tab[i]);
         }
+        if (clone.isAuction()) {
+            clone.addAction(new AuctionBeginAction(GameConstants.SERVER));
+        }
        if(GameConstants.GET_LOGGER) Logger.getLogger(FirstModeAction.class.getName()).log(Level.INFO, "Wychodzący: "+ clone.getActiveUser());
         return clone;
+
     }
 
     public FirstModeAction(int receiver) {

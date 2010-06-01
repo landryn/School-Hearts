@@ -155,7 +155,7 @@ public class Judge implements hearts.defs.judge.IJudge {
              */
             FirstModeAction act = (FirstModeAction) action;
             if (act.getModes() % 4 != 0) {
-                throw new GameStateException("Zła liczba modów.");
+               // throw new GameStateException("Zła liczba modów.");
             }
 
             /*Dodaje kart graczom
